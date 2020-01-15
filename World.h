@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 #include "Random.h"
+#include "TimeDate.h"
+#include "WorldEconomy.h"
 
 class Country;
 
@@ -17,11 +19,17 @@ public:
 	std::vector<Country*> GetCountries() { return m_countries; }
 
 	Country* NewCountry(Random random);
+	Country* GetCountry(int index) { return m_countries[index]; }
+
+	void UpdateWorld(TimeDate date);
+
+	WorldEconomy* GetWorldEconomy() { return &m_worldEconomy; }
 
 private:
+
+	WorldEconomy m_worldEconomy;
 
 	std::vector<Country*> m_countries;
 	std::string m_worldName;
 
 };
-

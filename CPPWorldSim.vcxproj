@@ -150,16 +150,27 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Country.cpp" />
+    <ClCompile Include="CountryEconomy.cpp" />
+    <ClCompile Include="Government.cpp" />
+    <ClCompile Include="GovernmentMinistry.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Organization.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="World.cpp" />
+    <ClCompile Include="WorldEconomy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Country.h" />
+    <ClInclude Include="CountryEconomy.h" />
+    <ClInclude Include="Government.h" />
+    <ClInclude Include="GovernmentMinistry.h" />
+    <ClInclude Include="names_people.h" />
     <ClInclude Include="name_countries.h" />
+    <ClInclude Include="Organization.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="TimeDate.h" />
     <ClInclude Include="World.h" />
+    <ClInclude Include="WorldEconomy.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

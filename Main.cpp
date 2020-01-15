@@ -25,7 +25,9 @@ int main() {
 	std::cout << "Generated the world: " << pWorld->GetName() << " with " << worldCountries.size() << " countries" << std::endl;
 	
 	for (size_t i = 0; i < worldCountries.size(); i++) {
-		std::cout << "[" << (i + 1) << "] " << worldCountries.at(i)->GetName() << std::endl;
+		Country* country = worldCountries[i];
+		std::cout << "[" << (i + 1) << "] " << country->GetName() << std::endl;
+		std::cout << "\tGovernment: " << getGovTypeName(country->GetGovernment()->GetGovernmentType()) << std::endl;
 	}
 
 	system("pause");
@@ -38,9 +40,12 @@ int main() {
 		std::cout << "World Simulator (C++)" << std::endl;
 		std::cout << "Date: " << date.getNameOfMonth() << " " << date.day << ", " << date.year << std::endl;
 
-		date = date.nextDay();
+		pWorld->UpdateWorld(date);
+
+		// Print additional data here
 
 		system("cls");
+		date = date.nextDay();
 
 	}
 

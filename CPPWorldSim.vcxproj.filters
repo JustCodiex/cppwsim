@@ -30,6 +30,21 @@
     <ClCompile Include="Country.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WorldEconomy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CountryEconomy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Government.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Organization.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GovernmentMinistry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.h">
@@ -46,6 +61,24 @@
     </ClInclude>
     <ClInclude Include="name_countries.h">
       <Filter>Header Files\names</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldEconomy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CountryEconomy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="names_people.h">
+      <Filter>Header Files\names</Filter>
+    </ClInclude>
+    <ClInclude Include="Government.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Organization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GovernmentMinistry.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

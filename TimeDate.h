@@ -2,10 +2,10 @@
 #include <string>
 
 // The amount of days in each month
-int day_in_months[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+const int day_in_months[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
 // The name of the months
-std::string month_names[12] = { 
+const std::string month_names[12] = { 
 	"January", "February", "March", "April", "May", "June", 
 	"July", "August", "September", "October", "November", "December" 
 };

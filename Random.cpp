@@ -16,6 +16,10 @@ int Random::NextInt(int minInclusive, int maxExclusive) {
 	return (rand() % (maxExclusive - minInclusive)) + minInclusive;
 }
 
+float Random::NextFloat(float max) {
+	return max * NextPercentage();
+}
+
 float Random::NextPercentage() {
 	return NextInt(0, 10001) / 10000.0f;
 }
