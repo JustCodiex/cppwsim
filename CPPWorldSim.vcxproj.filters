@@ -16,15 +16,30 @@
     <Filter Include="Header Files\names">
       <UniqueIdentifier>{57eb9ced-f8c2-46e3-a9bd-cb7b37d9c9b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\people">
+      <UniqueIdentifier>{0f2dc895-04c3-4771-b8c7-737bea6ad0b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\people">
+      <UniqueIdentifier>{ae5ccd83-a6f3-49e4-b172-e66f638f26ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\geography">
+      <UniqueIdentifier>{de66d020-5d54-4f7a-9c68-481afe23c5be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\geography">
+      <UniqueIdentifier>{1f6dc9ad-deff-43da-a450-b265afe8a7ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{5bb4c097-989a-44ca-a3b8-f72a03226fc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{133d2c4f-aeaf-4201-b84b-857a25d7052a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="World.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Random.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Country.cpp">
@@ -45,12 +60,36 @@
     <ClCompile Include="GovernmentMinistry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Person.cpp">
+      <Filter>Source Files\people</Filter>
+    </ClCompile>
+    <ClCompile Include="RoyalFamily.cpp">
+      <Filter>Source Files\people</Filter>
+    </ClCompile>
+    <ClCompile Include="Legislature.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="City.cpp">
+      <Filter>Source Files\geography</Filter>
+    </ClCompile>
+    <ClCompile Include="CityDistrict.cpp">
+      <Filter>Source Files\geography</Filter>
+    </ClCompile>
+    <ClCompile Include="Region.cpp">
+      <Filter>Source Files\geography</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>Source Files\geography</Filter>
+    </ClCompile>
+    <ClCompile Include="StringUtilities.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="Random.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Random.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TimeDate.h">
@@ -79,6 +118,33 @@
     </ClInclude>
     <ClInclude Include="GovernmentMinistry.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Person.h">
+      <Filter>Header Files\people</Filter>
+    </ClInclude>
+    <ClInclude Include="RoyalFamily.h">
+      <Filter>Header Files\people</Filter>
+    </ClInclude>
+    <ClInclude Include="Legislature.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="City.h">
+      <Filter>Header Files\geography</Filter>
+    </ClInclude>
+    <ClInclude Include="CityDistrict.h">
+      <Filter>Header Files\geography</Filter>
+    </ClInclude>
+    <ClInclude Include="Region.h">
+      <Filter>Header Files\geography</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Header Files\geography</Filter>
+    </ClInclude>
+    <ClInclude Include="Random.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="StringUtilities.h">
+      <Filter>Header Files\util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

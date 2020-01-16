@@ -35,7 +35,7 @@ public:
 			Weight<T> e = values[i];
 			weightSum += e.w;
 		}
-		int rnd = NextFloat(weightSum);
+		float rnd = NextFloat(weightSum);
 		for (int i = 0; i < values.size(); i++) {
 			Weight<T> e = values[i];
 			if (rnd < e.w)

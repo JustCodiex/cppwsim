@@ -10,7 +10,7 @@ std::vector<std::string> countryNames = {
 	"Usnon", "Cosnaria", "Speulia", "Floaze", "Xesken", "Graela", "Astrea", "Efrye", "Fleup Fryae", "Bliuji", "Oplaecor",
 	"Meskary", "Asturg", "Streay Bona", "Fushus", "Wachein", "Clae Chijan", "Plaisil", "Ieclines", "Aflurg", "Spueze", 
 	"Ascen", "Pra Chal", "Pustiussau", "Koswieji", "Ecryae", "Cluyh Strana", "Ramonia", "Permen", "Hawhington", "Tosmoyssau",
-	"Yuthuinga", "Swoai Whil", "Lusnax", "Shauland", "Futholand", "Agrela", "Fuspein",
+	"Yuthuinga", "Swoai Whil", "Lusnax", "Shauland", "Futholand", "Agrela", "Fuspein", "Baskerland", "Rockland"
 };
 
 // Checks if the name can be found in the vector

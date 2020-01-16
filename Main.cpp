@@ -10,7 +10,9 @@
 #include "World.h"
 #include "Country.h"
 #include "Random.h"
+#include "Person.h"
 #include "TimeDate.h"
+#include "StringUtilities.h"
 
 int main() {
 
@@ -26,8 +28,23 @@ int main() {
 	
 	for (size_t i = 0; i < worldCountries.size(); i++) {
 		Country* country = worldCountries[i];
-		std::cout << "[" << (i + 1) << "] " << country->GetName() << std::endl;
+		std::cout << "[" << (i + 1) << "] " << country->GetName() << " (Head of State: " << country->GetHeadOfState()->GetFullName() << ")" << std::endl;
+		std::cout << "\tPopulation: " << to_quantity(country->GetPopulationSize()) << std::endl;
 		std::cout << "\tGovernment: " << getGovTypeName(country->GetGovernment()->GetGovernmentType()) << std::endl;
+		std::cout << "\tLegislature: ";
+		Legislature* legislature = country->GetLegislature();
+		if (legislature) {
+			if (legislature->IsBicameral()) {
+				Legislature::Chamber* f = legislature->GetChamber(true);
+				Legislature::Chamber* s = legislature->GetChamber(false);
+				std::cout << "2 Chambers, (" << f->seatCount << " seats)(" << s->seatCount << " seats, " << ((s->isElectable)?"elected":"picked") << ")" << std::endl;
+			} else {
+				Legislature::Chamber* f = legislature->GetChamber(true);
+				std::cout << "1 Chamber, " << f->seatCount << " seats" << std::endl;
+			}
+		} else {
+			std::cout << "Not Established" << std::endl;
+		}
 	}
 
 	system("pause");
