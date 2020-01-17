@@ -7,6 +7,7 @@
 #include "Government.h"
 #include "Legislature.h"
 #include "CountryEconomy.h"
+#include "PoliticalParty.h"
 
 class World;
 class Person;
@@ -45,6 +46,8 @@ public:
 
 	int GetStateCount() { return (int)m_states.size(); }
 
+	std::vector<PoliticalParty> GetPartyList() { return m_parties; }
+
 private:
 
 	void UpdateEconomy(World* pWorld);
@@ -55,6 +58,7 @@ private:
 	void GenerateGovernment(Random random);
 	
 	void GenerateLegislature(Random random);
+	void GeneratePoliticalParties(Random random);
 
 private:
 
@@ -69,5 +73,11 @@ private:
 	RoyalFamily* m_royals;
 
 	std::vector<State*> m_states;
+	std::vector<PoliticalParty> m_parties;
+
+	bool m_useInitialPartyIndex;
+	std::vector<std::string> m_partyShorts;
+
+	friend class PoliticalParty;
 
 };

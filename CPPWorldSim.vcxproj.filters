@@ -87,6 +87,12 @@
     <ClCompile Include="Random.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="PoliticalParty.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Ideology.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.h">
@@ -145,6 +151,15 @@
     </ClInclude>
     <ClInclude Include="StringUtilities.h">
       <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="PoliticalParty.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="names_party.h">
+      <Filter>Header Files\names</Filter>
+    </ClInclude>
+    <ClInclude Include="Ideology.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -20,6 +20,9 @@ void Country::GenerateCountry(Random random) {
 	// Generate the government
 	GenerateGovernment(random);
 
+	// Generate political parties
+	GeneratePoliticalParties(random);
+
 }
 
 void Country::GenerateGeography(Random random) {
@@ -91,6 +94,23 @@ void Country::GenerateLegislature(Random random) {
 
 	m_countryLegislature = new Legislature;
 	m_countryLegislature->GenerateLegislature(this, random);
+
+}
+
+void Country::GeneratePoliticalParties(Random random) {
+
+	m_useInitialPartyIndex = random.NextBool(0.5f);
+
+	int politicalPartyList = random.NextInt(2, 6);
+
+	for (int i = 0; i < politicalPartyList; i++) {
+
+		PoliticalParty party = PoliticalParty();
+		party.CreateParty(1800, this, random);
+
+		m_parties.push_back(party);
+
+	}
 
 }
 

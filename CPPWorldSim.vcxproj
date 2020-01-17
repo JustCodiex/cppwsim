@@ -155,10 +155,12 @@
     <ClCompile Include="CountryEconomy.cpp" />
     <ClCompile Include="Government.cpp" />
     <ClCompile Include="GovernmentMinistry.cpp" />
+    <ClCompile Include="Ideology.cpp" />
     <ClCompile Include="Legislature.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Organization.cpp" />
     <ClCompile Include="Person.cpp" />
+    <ClCompile Include="PoliticalParty.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Region.cpp" />
     <ClCompile Include="RoyalFamily.cpp" />
@@ -174,11 +176,14 @@
     <ClInclude Include="CountryEconomy.h" />
     <ClInclude Include="Government.h" />
     <ClInclude Include="GovernmentMinistry.h" />
+    <ClInclude Include="Ideology.h" />
     <ClInclude Include="Legislature.h" />
+    <ClInclude Include="names_party.h" />
     <ClInclude Include="names_people.h" />
     <ClInclude Include="name_countries.h" />
     <ClInclude Include="Organization.h" />
     <ClInclude Include="Person.h" />
+    <ClInclude Include="PoliticalParty.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Region.h" />
     <ClInclude Include="RoyalFamily.h" />

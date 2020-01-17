@@ -14,7 +14,7 @@ void Legislature::GenerateLegislature(Country* pCountry, Random random) {
 
 	unsigned int popSize = pCountry->GetPopulationSize();
 
-	m_isBicameral = random.NextBool(0.4f);
+	m_isBicameral = random.NextBool(0.2f);
 	int chamberCount = (m_isBicameral) ? 2 : 1;
 
 	for (int i = 0; i < chamberCount; i++) {
@@ -26,14 +26,14 @@ void Legislature::GenerateLegislature(Country* pCountry, Random random) {
 
 		if (popSize > 250000000 && i == 0) {
 			maxSeats = 750;
-			minSeats = 500;
+			minSeats = 430;
 			m_chambers[i]->isElectable = true;
 		} else if (popSize > 10500000 && i == 0) {
-			maxSeats = 650;
-			minSeats = 380;
+			maxSeats = 480;
+			minSeats = 350;
 			m_chambers[i]->isElectable = true;
 		} else if (i == 0) {
-			maxSeats = 450;
+			maxSeats = 350;
 			minSeats = 68;
 			m_chambers[i]->isElectable = true;
 		} else {

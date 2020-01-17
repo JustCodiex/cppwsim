@@ -45,6 +45,12 @@ int main() {
 		} else {
 			std::cout << "Not Established" << std::endl;
 		}
+		std::cout << "\tParties " << std::endl;
+		std::vector<PoliticalParty> parties = country->GetPartyList();
+		for (int i = 0; i < parties.size(); i++) {
+			std::cout << "\t\tParty: " << parties[i].GetName() << " (" << parties[i].GetShort() << "), ideology " << GetIdeologyName(parties[i].GetIdeology()->GetIdeology());
+			std::cout << ", established in " << parties[i].GetYear() << std::endl;
+		}
 	}
 
 	system("pause");
