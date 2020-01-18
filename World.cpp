@@ -41,6 +41,9 @@ Country* World::NewCountry(Random random) {
 
 void World::UpdateWorld(TimeDate date) {
 
+	// Update time
+	m_currentDate = date;
+
 	// For each Country in the world, update
 	for (auto* country : m_countries) {
 

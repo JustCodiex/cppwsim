@@ -1,21 +1,14 @@
 #pragma once
 #include "Random.h"
+#include "TimeDate.h"
+
+#include "LegislativeChamber.h"
+#include "LegislativeCommittee.h"
 
 class Country;
+class World;
 
 class Legislature {
-
-public:
-
-	struct Chamber {
-		
-		unsigned short seatCount;
-		bool isElectable;
-
-		bool eachStateGetsSeats;
-		unsigned char eachStateSeatCount;
-
-	};
 
 public:
 
@@ -25,7 +18,7 @@ public:
 
 	bool IsBicameral() { return m_isBicameral; }
 
-	Chamber* GetChamber(bool firstChamber) {
+	LegislativeChamber* GetChamber(bool firstChamber) {
 		if (firstChamber) {
 			return m_chambers[0];
 		} else {
@@ -33,9 +26,19 @@ public:
 		}
 	}
 
+	void UpdateLegislature(World* pWorld);
+
+private:
+
+	void UpdateChamber(LegislativeChamber* pChamber, World* pWorld);
+
+	void ElectChamber(LegislativeChamber* pChamber, World* pWorld);
+
 private:
 
 	bool m_isBicameral;
-	Chamber* m_chambers[2];
+	LegislativeChamber* m_chambers[2];
+
+	Country* m_targetCountry;
 
 };

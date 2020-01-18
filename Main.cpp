@@ -14,6 +14,14 @@
 #include "TimeDate.h"
 #include "StringUtilities.h"
 
+void printLegChamber(LegislativeChamber* pChamber) {
+	std::cout << "\t\t" << pChamber->GetName() << ": " << pChamber->GetSeatCount() << " seats, " << (int)pChamber->GetTermLimit() << " year term. " << std::endl;
+	if (pChamber->IsElectableChamber()) {
+		std::cout << "\t\t\tLast election: " << pChamber->GetLastElectionDate().toString() << std::endl;
+		std::cout << "\t\t\tNext election: " << pChamber->GetNextElectionDate().toString() << std::endl;
+	}
+}
+
 int main() {
 
 	std::cout << "World Simulator (C++)" << std::endl;
@@ -31,24 +39,20 @@ int main() {
 		std::cout << "[" << (i + 1) << "] " << country->GetName() << " (Head of State: " << country->GetHeadOfState()->GetFullName() << ")" << std::endl;
 		std::cout << "\tPopulation: " << to_quantity(country->GetPopulationSize()) << std::endl;
 		std::cout << "\tGovernment: " << getGovTypeName(country->GetGovernment()->GetGovernmentType()) << std::endl;
-		std::cout << "\tLegislature: ";
 		Legislature* legislature = country->GetLegislature();
 		if (legislature) {
+			std::cout << "\tLegislature: " << std::endl;
 			if (legislature->IsBicameral()) {
-				Legislature::Chamber* f = legislature->GetChamber(true);
-				Legislature::Chamber* s = legislature->GetChamber(false);
-				std::cout << "2 Chambers, (" << f->seatCount << " seats)(" << s->seatCount << " seats, " << ((s->isElectable)?"elected":"picked") << ")" << std::endl;
+				printLegChamber(legislature->GetChamber(true));
+				printLegChamber(legislature->GetChamber(false));
 			} else {
-				Legislature::Chamber* f = legislature->GetChamber(true);
-				std::cout << "1 Chamber, " << f->seatCount << " seats" << std::endl;
+				printLegChamber(legislature->GetChamber(true));
 			}
-		} else {
-			std::cout << "Not Established" << std::endl;
 		}
-		std::cout << "\tParties " << std::endl;
+		std::cout << "\tParties: " << std::endl;
 		std::vector<PoliticalParty> parties = country->GetPartyList();
 		for (int i = 0; i < parties.size(); i++) {
-			std::cout << "\t\tParty: " << parties[i].GetName() << " (" << parties[i].GetShort() << "), ideology " << GetIdeologyName(parties[i].GetIdeology()->GetIdeology());
+			std::cout << "\t\t" << parties[i].GetName() << " (" << parties[i].GetShort() << "), " << GetIdeologyName(parties[i].GetIdeology()->GetIdeology());
 			std::cout << ", established in " << parties[i].GetYear() << std::endl;
 		}
 	}
@@ -61,7 +65,7 @@ int main() {
 	while (!date.isDate(2100, 1, 1)) {
 
 		std::cout << "World Simulator (C++)" << std::endl;
-		std::cout << "Date: " << date.getNameOfMonth() << " " << date.day << ", " << date.year << std::endl;
+		std::cout << "Date: " << date.toString() << std::endl;
 
 		pWorld->UpdateWorld(date);
 

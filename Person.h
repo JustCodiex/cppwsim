@@ -22,9 +22,9 @@ public:
 
 	Person();
 	Person(Random random);
-	Person(int age, Random random);
+	Person(unsigned char age, Random random);
 	Person(Sex sex, Random random);
-	Person(int age, Sex sex, Random random);
+	Person(unsigned char age, Sex sex, Random random);
 
 	std::string GetFullName() {
 		if (m_middleName != "") {
@@ -36,7 +36,7 @@ public:
 
 	Sex GetSex() { return m_sex; }
 
-	int GetAge() { return m_age; }
+	unsigned char GetAge() { return m_age; }
 
 	Birthday GetBirthday() { return m_birthday; }
 
@@ -44,7 +44,7 @@ private:
 
 	Sex m_sex;
 	
-	int m_age;
+	unsigned char m_age;
 	Birthday m_birthday;
 
 	std::string m_firstName;

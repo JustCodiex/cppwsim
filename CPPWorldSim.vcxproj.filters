@@ -93,6 +93,18 @@
     <ClCompile Include="Ideology.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Ballot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LegislativeChamber.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LegislativeCommittee.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LegislativeSeat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.h">
@@ -159,6 +171,18 @@
       <Filter>Header Files\names</Filter>
     </ClInclude>
     <ClInclude Include="Ideology.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ballot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LegislativeChamber.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LegislativeCommittee.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LegislativeSeat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

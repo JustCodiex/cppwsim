@@ -30,3 +30,17 @@ std::string to_quantity(unsigned int quantity) {
 	}
 
 }
+
+std::string get_n_suffix(int n) {
+	std::string s = std::to_string(n);
+	char last = s.at(s.length() - 1);
+	if (last == '1') {
+		return "st";
+	} else if (last == '2') {
+		return "nd";
+	} else if (last == '3') {
+		return "rd";
+	} else {
+		return "th";
+	}
+}

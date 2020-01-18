@@ -101,7 +101,7 @@ void Country::GeneratePoliticalParties(Random random) {
 
 	m_useInitialPartyIndex = random.NextBool(0.5f);
 
-	int politicalPartyList = random.NextInt(2, 6);
+	int politicalPartyList = random.NextInt(1, 4);
 
 	for (int i = 0; i < politicalPartyList; i++) {
 
@@ -116,13 +116,24 @@ void Country::GeneratePoliticalParties(Random random) {
 
 void Country::UpdateCountry(World* pWorld) {
 
+	// Call Economy update
 	this->UpdateEconomy(pWorld);
+
+	// Call legislature update
+	this->UpdateLegislature(pWorld);
 
 }
 
 void Country::UpdateEconomy(World* pWorld) {
 
 
+
+}
+void Country::UpdateLegislature(World* pWorld) {
+
+	if (m_countryLegislature) {
+		m_countryLegislature->UpdateLegislature(pWorld);
+	}
 
 }
 

@@ -25,7 +25,8 @@ float Random::NextPercentage() {
 }
 
 bool Random::NextBool(float chanceTrue) {
-	return chanceTrue < NextPercentage();
+	float p = NextPercentage();
+	return p > (1.0f - chanceTrue);
 }
 
 void Random::Reset() {

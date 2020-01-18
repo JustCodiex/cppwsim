@@ -25,7 +25,12 @@ public:
 
 	WorldEconomy* GetWorldEconomy() { return &m_worldEconomy; }
 
+	TimeDate GetDate() { return m_currentDate; }
+
 private:
+
+
+	TimeDate m_currentDate;
 
 	WorldEconomy m_worldEconomy;
 

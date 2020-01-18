@@ -51,6 +51,7 @@ public:
 private:
 
 	void UpdateEconomy(World* pWorld);
+	void UpdateLegislature(World* pWorld);
 
 	void GenerateRoyalFamily(Random random);
 
