@@ -39,3 +39,11 @@ unsigned int State::GetPopulationSize() {
 	}
 	return count;
 }
+
+int State::GetCityCount() {
+	int count = 0;
+	for (Region*& region : m_regions) {
+		region += region->GetCityCount();
+	}
+	return count;
+}

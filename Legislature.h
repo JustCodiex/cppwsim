@@ -28,6 +28,8 @@ public:
 
 	void UpdateLegislature(World* pWorld);
 
+	void RecalculateElectionDistricts();
+
 private:
 
 	void UpdateChamber(LegislativeChamber* pChamber, World* pWorld);

@@ -43,8 +43,14 @@ public:
 	bool IsRepublic() { return m_countryGovernment.GetGovernmentType() == GovernmentType::Democracy; }
 
 	unsigned int GetPopulationSize();
+	int GetCityCount();
 
 	int GetStateCount() { return (int)m_states.size(); }
+
+	// SLOW
+	City* GetCityByUnsafeIndex(int index);
+
+	std::vector<City*> GetCities();
 
 	std::vector<PoliticalParty> GetPartyList() { return m_parties; }
 
@@ -74,6 +80,7 @@ private:
 	RoyalFamily* m_royals;
 
 	std::vector<State*> m_states;
+
 	std::vector<PoliticalParty> m_parties;
 
 	bool m_useInitialPartyIndex;

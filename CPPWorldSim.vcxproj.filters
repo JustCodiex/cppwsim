@@ -105,6 +105,12 @@
     <ClCompile Include="LegislativeSeat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Politician.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ElectoralDistrict.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.h">
@@ -183,6 +189,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LegislativeSeat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Politician.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ElectoralDistrict.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

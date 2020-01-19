@@ -94,6 +94,7 @@ void Country::GenerateLegislature(Random random) {
 
 	m_countryLegislature = new Legislature;
 	m_countryLegislature->GenerateLegislature(this, random);
+	m_countryLegislature->RecalculateElectionDistricts();
 
 }
 
@@ -143,4 +144,46 @@ unsigned int Country::GetPopulationSize() {
 		size += state->GetPopulationSize();
 	}
 	return size;
+}
+
+int Country::GetCityCount() {
+	int count = 0;
+	for (State*& state : m_states) {
+		count += state->GetCityCount();
+	}
+	return count;
+}
+
+City* Country::GetCityByUnsafeIndex(int index) {
+
+	int i = index;
+	for (State*& state : m_states) {
+		for (Region*& region : state->GetRegions()) {
+			if (i < region->GetCityCount()) {
+				i -= region->GetCityCount();
+				return region->GetCities()[i];
+			} else {
+				i -= region->GetCityCount();
+			}
+		}
+	}
+
+	return NULL;
+
+}
+
+std::vector<City*> Country::GetCities() {
+
+	std::vector<City*> citylist;
+
+	for (auto state : m_states) {
+		for (auto region : state->GetRegions()) {
+			for (auto city : region->GetCities()) {
+				citylist.push_back(city);
+			}
+		}
+	}
+
+	return citylist;
+
 }

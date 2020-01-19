@@ -85,6 +85,16 @@ struct TimeDate {
 		return this->year == date.year && this->month == date.month && this->day == date.day;
 	}
 
+	// Returns true if this date is later than other.
+	bool isLaterThan(TimeDate other) {
+		return this->getTotalDays() > other.getTotalDays();
+	}
+
+	// Returns true if this date is later or the same as other.
+	bool isLaterOrSameThan(TimeDate other) {
+		return this->getTotalDays() >= other.getTotalDays();
+	}
+
 	// Get the name of the month
 	std::string getNameOfMonth() {
 		return month_names[this->month - 1];

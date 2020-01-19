@@ -6,21 +6,24 @@
 
 const std::vector<std::string> maleNames = {
 	"Henry", "Harry", "James", "John", "Jonas", "Jonathan", "Oswald", "Larry", "Percival", "Rick", "Morty", "Garry", "Allan", "Frederick", "Alex",
-	"Alexander", "Thomas", "Joe", "Cameron", "David",
+	"Alexander", "Thomas", "Joe", "Cameron", "David", "Neville", "Marshall", "Eric", "Harrold", "Ronald", "Martin", "Oliver", "Jack", "Fred",
+	"George", "Arthur", "Uther",
 };
 
 const std::vector<std::string> femaleNames = {
 	"Alexandria", "Sophia", "Tara", "Freya", "Victoria", "Monica", "Jillian", "Jill", "Elizabeth", "Margaret", "Aubrey", "Amy", "Emilty", "Emilia", "Jo",
-	"Karla", "Kaya", "Kate",
+	"Karla", "Kaya", "Kate", "Octavia", "Olivia", "Sophie", "Amanda", "Andromeda", "Vannessa", "Clarke", "Sarah", "Grace", "Rose", "Rosalina", "Guineviere",
+	"Molly", "Guenevere", "Gabriella", "Isabelle", "Isabella", "Isa",
 };
 
 const std::vector<std::string> middleNames = {
-	"Ostergaard", "Vestergaard", "Lokke", "Lunde", "", "Scavenius",
+	"", "Ostergaard", "", "Vestergaard", "Lokke", "Lunde", "", "Scavenius", "John", "", "",
 };
 
 const std::vector<std::string> lastNames = {
 	"Plaza", "Pratt", "Black", "White", "Green", "Brown", "Johnson", "Doe", "Potter", "Frederiksen", "Rasmussen", "Stein", "Steiner", "Larsson", "Shulz", "Preker", "Reichswald",
-	"Stauning", "Dove", "Sturgeon", "Middleton", "Middleditch",
+	"Stauning", "Dove", "Sturgeon", "Middleton", "Middleditch", "Longbottom", "Chamberlain", "Mozart", "Eriksen", "Ericsson", "Hansen", "Hill", "Meadows", "Baker", "Whitehall",
+	"Malfoy", "Dursley", "Banks", "Diaz", "Pendragon",
 };
 
 const std::string RandomMaleName(Random random) { return maleNames[random.NextInt(0, (int)maleNames.size())]; }

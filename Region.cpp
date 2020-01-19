@@ -58,3 +58,7 @@ unsigned int Region::GetPopulationSize() {
 	}
 	return count;
 }
+
+int Region::GetCityCount() {
+	return (int)m_cities.size();
+}

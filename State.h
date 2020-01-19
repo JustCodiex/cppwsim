@@ -15,6 +15,9 @@ public:
 	void GenerateRegions(Random random);
 
 	unsigned int GetPopulationSize();
+	int GetCityCount();
+
+	std::vector<Region*> GetRegions() { return m_regions; }
 
 private:
 

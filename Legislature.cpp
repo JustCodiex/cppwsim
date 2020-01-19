@@ -1,5 +1,6 @@
 #include "Legislature.h"
 #include "Country.h"
+#include "Ballot.h"
 #include "World.h"
 #include <iostream>
 
@@ -23,9 +24,16 @@ void Legislature::GenerateLegislature(Country* pCountry, Random random) {
 	m_isBicameral = random.NextBool(0.2f);
 	int chamberCount = (m_isBicameral) ? 2 : 1;
 
+	std::vector<Weight< ElectoralSystem>> systemChances = {
+		Weight(45.0f, ElectoralSystem::ES_FIRST_PAST_THE_POST),
+		Weight(35.0f, ElectoralSystem::ES_PROPORTIONAL),
+		Weight(20.0f, ElectoralSystem::ES_TWO_ROUND_SYSTEM),
+	};
+
 	for (int i = 0; i < chamberCount; i++) {
 
 		m_chambers[i] = new LegislativeChamber;
+		m_chambers[i]->SetElectoralSystem(random.Select(systemChances));
 
 		unsigned short maxSeats = 0;
 		unsigned short minSeats = 0;
@@ -77,6 +85,17 @@ void Legislature::GenerateLegislature(Country* pCountry, Random random) {
 	}
 
 }
+
+void Legislature::RecalculateElectionDistricts() {
+
+	if (m_chambers[0])
+		m_chambers[0]->CalculateElectoralDistricts(m_targetCountry);
+
+	if (m_chambers[1])
+		m_chambers[1]->CalculateElectoralDistricts(m_targetCountry);
+
+}
+
 void Legislature::UpdateLegislature(World* pWorld) {
 
 	if (m_chambers[0])
@@ -107,15 +126,48 @@ void Legislature::ElectChamber(LegislativeChamber* pChamber, World* pWorld) {
 	// Update election date
 	pChamber->CalculateNextElectionDateAndSetLast(pWorld->GetDate());
 
+	// Seats to elect
+	std::vector<int> seats;
+
 	// Determine the type of election to have
 	if (pChamber->HasMidterms()) {
 
+		// Calculate the max amount of seats we'll allow to be up for graps.
+		// We're doing it like this to make sure we force midterm elections.
+		int maxSeats = (pChamber->GetSeatCount() / 2) + 1;
 
+		// Go through all the available seats
+		for (int i = 0; i < pChamber->GetSeatCount() && seats.size() < maxSeats; i++) {
+
+			// Get seat
+			LegislativeSeat* pSeat = pChamber->GetSeat(i);
+			if (pSeat) {
+
+				// Are we supposed to elect this seat?
+				if (pWorld->GetDate().isLaterOrSameThan(pSeat->GetElectDate().addYears(pChamber->GetTermLimit()))) {
+
+					// Add seat
+					seats.push_back(i);
+
+				}
+
+			}
+
+		}
 
 	} else {
 
+		// For all seats in chamber
+		for (int i = 0; i < pChamber->GetSeatCount(); i++) {
 
+			// Add seat to election
+			seats.push_back(i);
+
+		}
 
 	}
+
+	// Hold the election
+	pChamber->HoldElection(seats, m_targetCountry);
 
 }

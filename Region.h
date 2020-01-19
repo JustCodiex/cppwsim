@@ -13,6 +13,9 @@ public:
 	void Generate(bool isPartOfFederation, Random random);
 
 	unsigned int GetPopulationSize();
+	int GetCityCount();
+
+	std::vector<City*> GetCities() { return m_cities; }
 
 private:
 

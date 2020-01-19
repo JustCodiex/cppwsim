@@ -154,6 +154,7 @@
     <ClCompile Include="CityDistrict.cpp" />
     <ClCompile Include="Country.cpp" />
     <ClCompile Include="CountryEconomy.cpp" />
+    <ClCompile Include="ElectoralDistrict.cpp" />
     <ClCompile Include="Government.cpp" />
     <ClCompile Include="GovernmentMinistry.cpp" />
     <ClCompile Include="Ideology.cpp" />
@@ -165,6 +166,7 @@
     <ClCompile Include="Organization.cpp" />
     <ClCompile Include="Person.cpp" />
     <ClCompile Include="PoliticalParty.cpp" />
+    <ClCompile Include="Politician.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Region.cpp" />
     <ClCompile Include="RoyalFamily.cpp" />
@@ -179,6 +181,7 @@
     <ClInclude Include="CityDistrict.h" />
     <ClInclude Include="Country.h" />
     <ClInclude Include="CountryEconomy.h" />
+    <ClInclude Include="ElectoralDistrict.h" />
     <ClInclude Include="Government.h" />
     <ClInclude Include="GovernmentMinistry.h" />
     <ClInclude Include="Ideology.h" />
@@ -192,6 +195,7 @@
     <ClInclude Include="Organization.h" />
     <ClInclude Include="Person.h" />
     <ClInclude Include="PoliticalParty.h" />
+    <ClInclude Include="Politician.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Region.h" />
     <ClInclude Include="RoyalFamily.h" />

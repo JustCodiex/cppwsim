@@ -1,6 +1,16 @@
 #pragma once
+#include <vector>
 #include "TimeDate.h"
 #include "LegislativeSeat.h"
+#include "ElectoralDistrict.h"
+
+enum class ElectoralSystem {
+	ES_FIRST_PAST_THE_POST, // Winner-Takes-All
+	ES_PROPORTIONAL,
+	ES_TWO_ROUND_SYSTEM,
+};
+
+class Country;
 
 class LegislativeChamber {
 
@@ -15,6 +25,8 @@ public:
 
 	void SetSeatCount(unsigned short seats);
 	void SetStateData(bool eachState, char seats);
+
+	void SetElectoralSystem(ElectoralSystem system) { m_electoralSystem = system; }
 
 	bool IsElectableChamber() { return m_isElectable; }
 	bool HasMidterms() { return m_hasMidTerms; }
@@ -35,6 +47,20 @@ public:
 
 	std::string GetName() { return m_chamberName; }
 
+	ElectoralSystem GetElectoralSystem() { return m_electoralSystem; }
+
+	void CalculateElectoralDistricts(Country* pCountry);
+
+	void HoldElection(std::vector<int> seats, Country* pCountry);
+
+	LegislativeSeat* GetSeat(int seatIndex) { return m_seats[seatIndex]; }
+
+private:
+
+	void ClearElectoralDistricts();
+
+	void ElectSeat(int seatIndex, ElectoralDistrictResult& voteResults);
+
 private:
 
 	char m_termLimit;
@@ -52,5 +78,8 @@ private:
 	std::string m_chamberName;
 
 	LegislativeSeat* m_seats[1024];
+
+	ElectoralSystem m_electoralSystem;
+	std::vector<ElectoralDistrict*> m_electoralDistricts;
 
 };
