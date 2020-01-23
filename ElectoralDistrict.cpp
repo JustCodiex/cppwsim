@@ -1,4 +1,5 @@
 #include "ElectoralDistrict.h"
+#include "Election.h"
 #include "Country.h"
 #include "Ballot.h"
 #include "City.h"
@@ -14,12 +15,12 @@ void ElectoralDistrict::SetDistrict(City* pCity, float fSizePercentage) {
 	m_cities.push_back(city);
 }
 
-unsigned int ElectoralDistrict::GetVoterCount() {
+unsigned int ElectoralDistrict::GetVoterCount(CountryProfile* pProfile) {
 	unsigned int voters = 0;
 	for (auto city : m_cities) {
-		voters += (unsigned int)(city.city->GetPopulationSize() * city.partition);
+		voters += (unsigned int)(city.city->GetVoterCount(pProfile) * city.partition);
 	}
-	return voters; // TODO: Make better
+	return voters;
 }
 
 ElectoralDistrict* ElectoralDistrict::Split() {
@@ -28,7 +29,7 @@ ElectoralDistrict* ElectoralDistrict::Split() {
 	
 	if (this->m_cities.size() == 1) {
 		pNewDistrict->SetDistrict(m_cities[0].city, m_cities[0].partition / 2.0f);
-		m_cities[0].partition /= 2.0f;
+		m_cities[0].partition = m_cities[0].partition / 2.0f;
 	} else {
 		pNewDistrict->m_cities.push_back(m_cities[0]);
 		m_cities.erase(m_cities.begin());
@@ -59,8 +60,37 @@ ElectoralDistrict* ElectoralDistrict::MergeAndDelete(ElectoralDistrict* pSmall, 
 
 Ballot* ElectoralDistrict::CreateBallot(Country* pCountry) {
 
+	// Create ballot
 	Ballot* pBallot = new Ballot;
 
+	// Get a list of all parties in the country
+	std::vector<Country::Party> parties = pCountry->GetPartyList();
+
+	// Loop through all the parties
+	for (size_t i = 0; i < parties.size(); i++) {
+
+		// Get the party at index
+		Country::Party p = parties[i];
+
+		// Make sure the election level is appropriate
+		if (p.level >= m_electionLevel) {
+
+			// Get the candidate (either generate one or retrieve one)
+			Politician* candidate = p.party->GetCandidate((int)this->m_electionLevel, this->m_cities[0].city);
+
+			// Make sure the candidate is valid
+			if (candidate) {
+
+				// Add candidate to ballot
+				pBallot->AddCandidate(candidate);
+
+			}
+
+		}
+
+	}
+
+	// Return ballot
 	return pBallot;
 
 }
@@ -68,6 +98,25 @@ Ballot* ElectoralDistrict::CreateBallot(Country* pCountry) {
 ElectoralDistrictResult ElectoralDistrict::CastVotes(Ballot* pBallot, Country* pCountry) {
 
 	ElectoralDistrictResult results;
+	results.totalVotes = 0;
+
+	if (m_electionLevel == ElectionLevel::National) {
+
+		unsigned int qualifiedVoters = this->GetVoterCount(pCountry->GetProfile());
+		Election::ElectionResult result = Election::National(pBallot, this, pCountry);
+
+		for (auto votes : result.votes) {
+			results.votes[votes.first] = votes.second;
+			results.totalVotes += results.votes[votes.first];
+		}
+
+		results.turnout = (results.totalVotes / (float)qualifiedVoters);
+
+		for (auto votes : result.votes) {
+			results.voteshare[votes.first] = results.votes[votes.first] / (float)results.totalVotes;
+		}
+
+	}
 
 	return results;
 

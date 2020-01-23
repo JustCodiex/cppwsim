@@ -20,6 +20,10 @@ float Random::NextFloat(float max) {
 	return max * NextPercentage();
 }
 
+float Random::NextFloat(float min, float max) {
+	return NextFloat(max - min) + min;
+}
+
 float Random::NextPercentage() {
 	return NextInt(0, 10001) / 10000.0f;
 }

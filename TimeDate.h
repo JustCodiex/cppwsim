@@ -155,4 +155,7 @@ struct TimeDate {
 
 	}
 
+	static TimeDate Decade;
+	static TimeDate Century;
+	
 };

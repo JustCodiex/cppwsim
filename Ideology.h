@@ -49,6 +49,46 @@ POLITICAL_IDEOLOGY GetRandomIdeology1960(Random random);
 
 #define lengthof(fixedarray, type) sizeof(fixedarray) / sizeof(type)
 
+struct compass_pos {
+	float libmin, libmax;
+	float colmin, colmax;
+	compass_pos(float libMin, float libMax, float colMin, float colMax) {
+		libmin = libMin;
+		libmax = libMax;
+		colmin = colMin;
+		colmax = colMax;
+	}
+};
+
+const compass_pos compass_pos_stance[] = {
+	//          lmin, lmax, cmin, cmax
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Communism, Traditional Communism (Marxist-Lenninism)
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Syndicalism, Extended Workers Right
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Agrarian Communism, Chinese Communism
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Democratic Socialism
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Socialism, Traditional Revolutionary Socialism
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Social Democracy
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Social Conservatism
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // National Conservatism
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Anarchism
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Anarcho-Capitalism
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Neo-Liberalism
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Social-Liberalism AKA Modern Liberalism
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Market-Liberalism
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Libertarian
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Social-Libertarian
+	compass_pos(-0.1f, 0.1f, -0.1f, 0.1f), // Radicalism (Centrist)
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Agrarianism
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Environmentalism
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Fascism
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Nazism
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Nationalism
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // National Liberalism
+	compass_pos(-0.3f, 0.1f, -0.3f, 0.3f), // Reformist
+	compass_pos(0.1f, 1.0f, -0.1f, 1.0f), // Reactionary
+	compass_pos(0.0f, 0.0f, 0.0f, 0.0f), // Centrism
+};
+
 class Ideology {
 
 public:
@@ -56,10 +96,22 @@ public:
 	Ideology();
 	Ideology(POLITICAL_IDEOLOGY ideology);
 
+	void RegenerateStancesFromIndexedIdeology(Random random);
+
+	void Drift(float libertarian, float collectivism);
+
+	void UpdateIndexedIdeology();
+
 	POLITICAL_IDEOLOGY GetIdeology() { return m_indexedIdeology; }
+
+	const float GetLibertarianStance() { return m_libStance; }
+	const float GetCollectiveStance() { return m_collectiveStance; }
 
 private:
 
 	POLITICAL_IDEOLOGY m_indexedIdeology;
+
+	float m_libStance;
+	float m_collectiveStance;
 
 };

@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <map>
 #include "TimeDate.h"
 #include "LegislativeSeat.h"
 #include "ElectoralDistrict.h"
@@ -13,6 +14,17 @@ enum class ElectoralSystem {
 class Country;
 
 class LegislativeChamber {
+
+public:
+
+	struct LegislatureElectionResult {
+		bool isMidTerms;
+		float turnout;
+		unsigned int totalVotes;
+		std::map<PoliticalParty*, int> gains;
+		std::map<PoliticalParty*, int> seats;
+		std::map<PoliticalParty*, float> voteShare;
+	};
 
 public:
 
@@ -51,7 +63,7 @@ public:
 
 	void CalculateElectoralDistricts(Country* pCountry);
 
-	void HoldElection(std::vector<int> seats, Country* pCountry);
+	LegislatureElectionResult HoldElection(std::vector<int> seats, Country* pCountry, TimeDate electionDate);
 
 	LegislativeSeat* GetSeat(int seatIndex) { return m_seats[seatIndex]; }
 
@@ -59,7 +71,7 @@ private:
 
 	void ClearElectoralDistricts();
 
-	void ElectSeat(int seatIndex, ElectoralDistrictResult& voteResults);
+	void ElectSeat(int seatIndex, ElectoralDistrictResult& voteResults, LegislatureElectionResult& chamberResults, TimeDate electionDate);
 
 private:
 

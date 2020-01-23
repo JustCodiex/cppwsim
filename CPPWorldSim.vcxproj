@@ -154,15 +154,19 @@
     <ClCompile Include="CityDistrict.cpp" />
     <ClCompile Include="Country.cpp" />
     <ClCompile Include="CountryEconomy.cpp" />
+    <ClCompile Include="CountryProfile.cpp" />
+    <ClCompile Include="Election.cpp" />
     <ClCompile Include="ElectoralDistrict.cpp" />
     <ClCompile Include="Government.cpp" />
     <ClCompile Include="GovernmentMinistry.cpp" />
+    <ClCompile Include="History.cpp" />
     <ClCompile Include="Ideology.cpp" />
     <ClCompile Include="LegislativeChamber.cpp" />
     <ClCompile Include="LegislativeCommittee.cpp" />
     <ClCompile Include="LegislativeSeat.cpp" />
     <ClCompile Include="Legislature.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Newspaper.cpp" />
     <ClCompile Include="Organization.cpp" />
     <ClCompile Include="Person.cpp" />
     <ClCompile Include="PoliticalParty.cpp" />
@@ -170,6 +174,7 @@
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Region.cpp" />
     <ClCompile Include="RoyalFamily.cpp" />
+    <ClCompile Include="SocialClass.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StringUtilities.cpp" />
     <ClCompile Include="World.cpp" />
@@ -181,9 +186,13 @@
     <ClInclude Include="CityDistrict.h" />
     <ClInclude Include="Country.h" />
     <ClInclude Include="CountryEconomy.h" />
+    <ClInclude Include="CountryProfile.h" />
+    <ClInclude Include="Election.h" />
     <ClInclude Include="ElectoralDistrict.h" />
+    <ClInclude Include="FixedChart.h" />
     <ClInclude Include="Government.h" />
     <ClInclude Include="GovernmentMinistry.h" />
+    <ClInclude Include="History.h" />
     <ClInclude Include="Ideology.h" />
     <ClInclude Include="LegislativeChamber.h" />
     <ClInclude Include="LegislativeCommittee.h" />
@@ -192,6 +201,7 @@
     <ClInclude Include="names_party.h" />
     <ClInclude Include="names_people.h" />
     <ClInclude Include="name_countries.h" />
+    <ClInclude Include="Newspaper.h" />
     <ClInclude Include="Organization.h" />
     <ClInclude Include="Person.h" />
     <ClInclude Include="PoliticalParty.h" />
@@ -199,6 +209,7 @@
     <ClInclude Include="Random.h" />
     <ClInclude Include="Region.h" />
     <ClInclude Include="RoyalFamily.h" />
+    <ClInclude Include="SocialClass.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StringUtilities.h" />
     <ClInclude Include="TimeDate.h" />

@@ -6,12 +6,14 @@
 #include "Region.h"
 #include "Government.h"
 #include "Legislature.h"
+#include "CountryProfile.h"
 #include "CountryEconomy.h"
 #include "PoliticalParty.h"
 
 class World;
 class Person;
 class RoyalFamily;
+class Newspaper;
 
 enum class CountryType {
 	Kingdom,
@@ -20,6 +22,17 @@ enum class CountryType {
 };
 
 class Country {
+
+public:
+
+	struct Party {
+		PoliticalParty* party;
+		ElectionLevel level;
+		Party() {
+			party = 0;
+			level = ElectionLevel::National;
+		}
+	};
 
 public:
 
@@ -35,9 +48,12 @@ public:
 	Legislature* GetLegislature() { return m_countryLegislature; }
 
 	CountryEconomy* GetEconomy() { return &m_countryEconomy; }
+	CountryProfile* GetProfile() { return &m_countryProfile; }
 
 	Person* GetHeadOfState() { return m_headOfState; }
 	RoyalFamily* GetRoyalFamily() { return m_royals; }
+
+	Newspaper* GetNewspaper() { return m_nationalNewspaper; }
 
 	bool IsFederation() { return (int)m_states.size() > 1; }
 	bool IsRepublic() { return m_countryGovernment.GetGovernmentType() == GovernmentType::Democracy; }
@@ -52,7 +68,8 @@ public:
 
 	std::vector<City*> GetCities();
 
-	std::vector<PoliticalParty> GetPartyList() { return m_parties; }
+	std::vector<Party> GetPartyList() { return m_parties; }
+	bool HasParty(std::string partyname);
 
 private:
 
@@ -67,6 +84,8 @@ private:
 	void GenerateLegislature(Random random);
 	void GeneratePoliticalParties(Random random);
 
+	void GenerateCountryProfile(Random random);
+
 private:
 
 	std::string m_countryName;
@@ -75,13 +94,16 @@ private:
 	Legislature* m_countryLegislature;
 
 	CountryEconomy m_countryEconomy;
+	CountryProfile m_countryProfile;
 
 	Person* m_headOfState;
 	RoyalFamily* m_royals;
 
+	Newspaper* m_nationalNewspaper;
+
 	std::vector<State*> m_states;
 
-	std::vector<PoliticalParty> m_parties;
+	std::vector<Party> m_parties;
 
 	bool m_useInitialPartyIndex;
 	std::vector<std::string> m_partyShorts;

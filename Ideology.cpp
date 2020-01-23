@@ -1,17 +1,47 @@
 #include "Ideology.h"
 
 Ideology::Ideology() {
-    m_indexedIdeology = POLITICAL_IDEOLOGY::ID_AGRAGIANISM;
+    m_indexedIdeology = POLITICAL_IDEOLOGY::ID_CENTRISM;
+    m_libStance = 0.0f;
+    m_collectiveStance = 0.0f;
 }
 
 Ideology::Ideology(POLITICAL_IDEOLOGY ideology) {
     m_indexedIdeology = ideology;
+    m_libStance = m_collectiveStance = 0.0f;
 }
 
+void Ideology::RegenerateStancesFromIndexedIdeology(Random random) {
 
+    // Convet indexed ideology to integer
+    int index = (int)m_indexedIdeology;
 
+    // Get random values from compass
+    m_libStance = random.NextFloat(compass_pos_stance[index].libmin, compass_pos_stance[index].libmax);
+    m_collectiveStance = random.NextFloat(compass_pos_stance[index].colmin, compass_pos_stance[index].colmax);
 
+}
 
+void Ideology::Drift(float libertarian, float collectivism) {
+
+    // Drift values
+    m_libStance += libertarian;
+    m_collectiveStance += collectivism;
+
+    // Clamp values
+    m_libStance = fmaxf(-1.0f, fminf(m_libStance, 1.0f));
+    m_collectiveStance = fmaxf(-1.0f, fminf(m_collectiveStance, 1.0f));
+
+    // Update indexed ideology
+    this->UpdateIndexedIdeology();
+
+}
+
+void Ideology::UpdateIndexedIdeology() {
+
+}
+
+#pragma region Static Ideology Functions
 
 const std::string GetIdeologyName(POLITICAL_IDEOLOGY name) {
 	switch (name) {
@@ -136,3 +166,5 @@ POLITICAL_IDEOLOGY GetRandomIdeology(int y, Random random) {
         return GetRandomIdeology1960(random);
     }
 }
+
+#pragma endregion

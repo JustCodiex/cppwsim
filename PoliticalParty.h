@@ -1,4 +1,5 @@
 #pragma once
+#include <map>
 #include <vector>
 #include <string>
 #include "Random.h"
@@ -11,9 +12,20 @@ enum class PartyColour {
 	GRAY, ORANGE
 };
 
+class City;
 class Country;
+class Politician;
 
 class PoliticalParty {
+
+private:
+
+	struct PartyMember {
+		int electionLvl;
+		Politician* pMember;
+		Country* pCountry;
+		City* pCity;
+	};
 
 public:
 
@@ -29,9 +41,15 @@ public:
 
 	int GetYear() { return m_establishYear; }
 
+	Politician* GetCandidate(int electionLvl, City* pCity);
+
 private:
 
+	Politician* FindCandidate(int electionLvl, City* pCity, Country* pCountry);
+	Politician* NewCandidate(int electionLvl, City* pCity, Country* pCountry);
+
 	void ConvertNameToShort();
+	std::string FindPartyName(Country* pCountry, Random random);
 
 private:
 
@@ -43,5 +61,9 @@ private:
 
 	int m_establishYear;
 	Country* m_targetCountry;
+
+	Random m_random;
+
+	std::vector<PartyMember> m_members;
 
 };

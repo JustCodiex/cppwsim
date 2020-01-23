@@ -8,6 +8,7 @@ LegislativeSeat::LegislativeSeat() {
 
 void LegislativeSeat::SetOwner(Politician* pPolitician, TimeDate date) {
 	m_politician = pPolitician;
+	m_politician->SetSeat(this);
 	m_electDate = date;
 }
 

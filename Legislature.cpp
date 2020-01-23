@@ -2,6 +2,8 @@
 #include "Country.h"
 #include "Ballot.h"
 #include "World.h"
+#include "History.h"
+#include "Newspaper.h"
 #include <iostream>
 
 Legislature::Legislature() {
@@ -168,6 +170,9 @@ void Legislature::ElectChamber(LegislativeChamber* pChamber, World* pWorld) {
 	}
 
 	// Hold the election
-	pChamber->HoldElection(seats, m_targetCountry);
+	LegislativeChamber::LegislatureElectionResult electionResult = pChamber->HoldElection(seats, m_targetCountry, pWorld->GetDate());
+	pWorld->GetHistory()->AddEvent(pWorld->GetDate(), m_targetCountry, EVENT_TYPE::ELECTION_LEGISLATURE, (void*)&electionResult);
+
+	m_targetCountry->GetNewspaper()->LegislatureElectionResults(pWorld->GetDate(), electionResult);
 
 }

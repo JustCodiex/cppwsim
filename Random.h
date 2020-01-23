@@ -21,6 +21,7 @@ public:
 
 	int NextInt(int minInclusive, int maxExclusive);
 	float NextFloat(float max);
+	float NextFloat(float min, float max);
 
 	float NextPercentage();
 

@@ -34,6 +34,12 @@
     <Filter Include="Source Files\util">
       <UniqueIdentifier>{133d2c4f-aeaf-4201-b84b-857a25d7052a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\geography\demographics">
+      <UniqueIdentifier>{41a1fbad-36c3-4d16-9c0a-c3567e7accfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\geography\demographics">
+      <UniqueIdentifier>{980d30a2-96ec-4532-8a88-e0b97457f1b0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -105,10 +111,25 @@
     <ClCompile Include="LegislativeSeat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Politician.cpp">
+    <ClCompile Include="ElectoralDistrict.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ElectoralDistrict.cpp">
+    <ClCompile Include="Politician.cpp">
+      <Filter>Source Files\people</Filter>
+    </ClCompile>
+    <ClCompile Include="Election.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CountryProfile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SocialClass.cpp">
+      <Filter>Source Files\geography\demographics</Filter>
+    </ClCompile>
+    <ClCompile Include="History.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Newspaper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -191,10 +212,28 @@
     <ClInclude Include="LegislativeSeat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Politician.h">
+    <ClInclude Include="ElectoralDistrict.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ElectoralDistrict.h">
+    <ClInclude Include="Politician.h">
+      <Filter>Header Files\people</Filter>
+    </ClInclude>
+    <ClInclude Include="Election.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CountryProfile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SocialClass.h">
+      <Filter>Header Files\geography\demographics</Filter>
+    </ClInclude>
+    <ClInclude Include="FixedChart.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="History.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Newspaper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

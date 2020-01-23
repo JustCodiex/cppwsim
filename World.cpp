@@ -5,6 +5,7 @@
 World::World(std::string worldname) {
 	
 	m_worldName = worldname;
+	m_worldHistory = new History;
 
 }
 
@@ -49,6 +50,17 @@ void World::UpdateWorld(TimeDate date) {
 
 		country->UpdateCountry(this);
 
+	}
+
+	int lastSaveDate = m_lastDate.getTotalDays();
+
+	if (lastSaveDate == 1) {
+		m_lastDate = m_currentDate;
+	} else {
+		if (m_currentDate.getTotalDays() - lastSaveDate > TimeDate::Decade.getTotalDays()) {
+			m_worldHistory->LogDecade(m_lastDate.year, m_currentDate.year);
+			m_lastDate = m_currentDate;
+		}
 	}
 
 }

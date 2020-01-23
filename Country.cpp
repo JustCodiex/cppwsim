@@ -2,6 +2,7 @@
 #include "World.h"
 #include "Person.h"
 #include "RoyalFamily.h"
+#include "Newspaper.h"
 
 Country::Country(std::string name) {
 
@@ -22,6 +23,9 @@ void Country::GenerateCountry(Random random) {
 
 	// Generate political parties
 	GeneratePoliticalParties(random);
+
+	// Finally, we can generate the country profile
+	GenerateCountryProfile(random);
 
 }
 
@@ -106,11 +110,42 @@ void Country::GeneratePoliticalParties(Random random) {
 
 	for (int i = 0; i < politicalPartyList; i++) {
 
-		PoliticalParty party = PoliticalParty();
-		party.CreateParty(1800, this, random);
+		Party party;
+		party.party = new PoliticalParty();
+		party.party->CreateParty(1800, this, random);
+
+		party.level = ElectionLevel::National;
 
 		m_parties.push_back(party);
 
+	}
+
+}
+
+void Country::GenerateCountryProfile(Random random) {
+
+	// Generate countrys political stance
+	m_countryProfile.countryCollectivismModifier = (random.NextPercentage() * 0.5f) - 0.25f;
+	m_countryProfile.countryLibertarianModifier = (random.NextPercentage() * 0.5f) - 0.25f;
+
+	// Generate country's political apathy
+	m_countryProfile.countryPoliticalApathy = random.NextFloat(0.4f);
+
+	// Generate voting stances (if it makes sense)
+	if (m_countryGovernment.GetGovernmentType() == GovernmentType::AbsoluteMonarchism) {
+		m_countryProfile.voting_female_suffrage = false;
+		m_countryProfile.voting_require_business = true;
+		m_countryProfile.voting_require_land = true;
+		m_countryProfile.voting_require_land_and_business = true;
+	} else {
+		m_countryProfile.voting_female_suffrage = random.NextBool(0.02f);
+		m_countryProfile.voting_require_land_and_business = random.NextBool(0.7f);
+		if (!m_countryProfile.voting_require_land_and_business) {
+			m_countryProfile.voting_require_business = random.NextBool(0.8f);
+			m_countryProfile.voting_require_land = random.NextBool(0.9f);
+		} else {
+			m_countryProfile.voting_require_business = m_countryProfile.voting_require_land = true;
+		}
 	}
 
 }
@@ -186,4 +221,13 @@ std::vector<City*> Country::GetCities() {
 
 	return citylist;
 
+}
+
+bool Country::HasParty(std::string partyname) {
+	for (auto party : m_parties) {
+		if (party.party->GetName() == partyname) {
+			return true;
+		}
+	}
+	return false;
 }

@@ -14,6 +14,9 @@
 #include "TimeDate.h"
 #include "StringUtilities.h"
 
+TimeDate TimeDate::Decade = TimeDate(10, 1, 1);
+TimeDate TimeDate::Century = TimeDate(100, 1, 1);
+
 void printLegChamber(LegislativeChamber* pChamber) {
 	std::cout << "\t\t" << pChamber->GetName() << ": " << pChamber->GetSeatCount() << " seats, " << (int)pChamber->GetTermLimit() << " year term. " << std::endl;
 	if (pChamber->IsElectableChamber()) {
@@ -49,11 +52,11 @@ int main() {
 				printLegChamber(legislature->GetChamber(true));
 			}
 		}
-		std::cout << "\tParties: " << std::endl;
-		std::vector<PoliticalParty> parties = country->GetPartyList();
+		std::cout << "\tNational Parties: " << std::endl;
+		std::vector<Country::Party> parties = country->GetPartyList();
 		for (int i = 0; i < parties.size(); i++) {
-			std::cout << "\t\t" << parties[i].GetName() << " (" << parties[i].GetShort() << "), " << GetIdeologyName(parties[i].GetIdeology()->GetIdeology());
-			std::cout << ", established in " << parties[i].GetYear() << std::endl;
+			std::cout << "\t\t" << parties[i].party->GetName() << " (" << parties[i].party->GetShort() << "), " << GetIdeologyName(parties[i].party->GetIdeology()->GetIdeology());
+			std::cout << ", established in " << parties[i].party->GetYear() << std::endl;
 		}
 	}
 

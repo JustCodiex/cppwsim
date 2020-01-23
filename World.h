@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "Random.h"
+#include "History.h"
 #include "TimeDate.h"
 #include "WorldEconomy.h"
 
@@ -27,12 +28,17 @@ public:
 
 	TimeDate GetDate() { return m_currentDate; }
 
+	History* GetHistory() { return m_worldHistory; }
+
 private:
 
 
 	TimeDate m_currentDate;
+	TimeDate m_lastDate;
 
 	WorldEconomy m_worldEconomy;
+
+	History* m_worldHistory;
 
 	std::vector<Country*> m_countries;
 	std::string m_worldName;
