@@ -9,32 +9,40 @@ PoliticalParty::PoliticalParty() {
 	m_ideology = Ideology(POLITICAL_IDEOLOGY::ID_AGRAGIANISM);
 	m_establishYear = 1800;
 	m_targetCountry = 0;
+	m_breakoutFrom = 0;
 	m_random = Random();
 
 }
 
-void PoliticalParty::CreateParty(int establishYear, Country* pCountry, Random random) {
+void PoliticalParty::CreateParty(int establishYear, POLITICAL_IDEOLOGY ideology, Country* pCountry, Random random) {
 
 	// Assign target country
 	m_targetCountry = pCountry;
 
-	// Get a random, indexed, ideology
-	POLITICAL_IDEOLOGY ideology = GetRandomIdeology(establishYear, random);
-
 	// Create the ideology
 	m_ideology = Ideology(ideology);
 
-	// Generate some stances
-	m_ideology.RegenerateStancesFromIndexedIdeology(random);
-
 	// Get party name
 	m_name = FindPartyName(pCountry, random);
+
+	// Generate some stances
+	m_ideology.RegenerateStancesFromIndexedIdeology(random);
 
 	// Get establishment year
 	m_establishYear = establishYear - random.NextInt(0, 31);
 
 	// Convert the name to a short variant
 	ConvertNameToShort();
+
+}
+
+void PoliticalParty::CreateParty(int establishYear, Country* pCountry, Random random) {
+
+	// Get a random, indexed, ideology
+	POLITICAL_IDEOLOGY ideology = GetRandomIdeology(establishYear, random);
+
+	// Call the updated CreateParty method
+	this->CreateParty(establishYear, ideology, pCountry, random);
 
 }
 
@@ -50,7 +58,9 @@ std::string PoliticalParty::FindPartyName(Country* pCountry, Random random) {
 	while (result == "" || (hasPartyName = pCountry->HasParty(result))) {
 
 		// Has party name => can we modify it?
-		if (hasPartyName) {
+		if (hasPartyName && random.NextBool(0.1f)) {
+
+			auto breakFrom = pCountry->GetPartyByName(result);
 
 			if (random.NextBool(0.5f)) {
 
@@ -68,6 +78,10 @@ std::string PoliticalParty::FindPartyName(Country* pCountry, Random random) {
 					result = result + " Breakouts";
 				}
 
+			}
+
+			if (breakFrom != NULL) {
+				this->SetBreakout(breakFrom);
 			}
 
 		} else {

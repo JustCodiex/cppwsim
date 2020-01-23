@@ -6,40 +6,44 @@
 
 ElectoralDistrict::ElectoralDistrict(ElectionLevel lvl) {
 	m_electionLevel = lvl;
+	m_voters = 0;
 }
 
-void ElectoralDistrict::SetDistrict(City* pCity, float fSizePercentage) {
+void ElectoralDistrict::SetDistrict(City* pCity, float fSizePercentage, CountryProfile* pProfile) {
 	ElectoralCity city;
 	city.city = pCity;
 	city.partition = fSizePercentage;
 	m_cities.push_back(city);
+	UpdateVoterCount(pProfile);
 }
 
-unsigned int ElectoralDistrict::GetVoterCount(CountryProfile* pProfile) {
-	unsigned int voters = 0;
+void ElectoralDistrict::UpdateVoterCount(CountryProfile* pProfile) {
+	m_voters = 0;
 	for (auto city : m_cities) {
-		voters += (unsigned int)(city.city->GetVoterCount(pProfile) * city.partition);
+		m_voters += (unsigned int)(city.city->GetVoterCount(pProfile) * city.partition);
 	}
-	return voters;
 }
 
-ElectoralDistrict* ElectoralDistrict::Split() {
+ElectoralDistrict* ElectoralDistrict::Split(CountryProfile* pProfile) {
 
 	ElectoralDistrict* pNewDistrict = new ElectoralDistrict(m_electionLevel);
 	
 	if (this->m_cities.size() == 1) {
-		pNewDistrict->SetDistrict(m_cities[0].city, m_cities[0].partition / 2.0f);
+		pNewDistrict->SetDistrict(m_cities[0].city, m_cities[0].partition / 2.0f, pProfile);
 		m_cities[0].partition = m_cities[0].partition / 2.0f;
 	} else {
 		pNewDistrict->m_cities.push_back(m_cities[0]);
 		m_cities.erase(m_cities.begin());
 	}
 
+	this->UpdateVoterCount(pProfile);
+	pNewDistrict->UpdateVoterCount(pProfile);
+
 	return pNewDistrict;
 
 }
 
-ElectoralDistrict* ElectoralDistrict::MergeAndDelete(ElectoralDistrict* pSmall, ElectoralDistrict* pAlmostSmall) {
+ElectoralDistrict* ElectoralDistrict::MergeAndDelete(ElectoralDistrict* pSmall, ElectoralDistrict* pAlmostSmall, CountryProfile* pProfile) {
 
 	ElectoralDistrict* pMergedDistrict = new ElectoralDistrict(pSmall->m_electionLevel);
 	
@@ -51,8 +55,7 @@ ElectoralDistrict* ElectoralDistrict::MergeAndDelete(ElectoralDistrict* pSmall, 
 		pMergedDistrict->m_cities.push_back(smallCity);
 	}
 
-	delete pSmall;
-	delete pAlmostSmall;
+	pMergedDistrict->UpdateVoterCount(pProfile);
 
 	return pMergedDistrict;
 
@@ -101,8 +104,7 @@ ElectoralDistrictResult ElectoralDistrict::CastVotes(Ballot* pBallot, Country* p
 	results.totalVotes = 0;
 
 	if (m_electionLevel == ElectionLevel::National) {
-
-		unsigned int qualifiedVoters = this->GetVoterCount(pCountry->GetProfile());
+;
 		Election::ElectionResult result = Election::National(pBallot, this, pCountry);
 
 		for (auto votes : result.votes) {
@@ -110,7 +112,7 @@ ElectoralDistrictResult ElectoralDistrict::CastVotes(Ballot* pBallot, Country* p
 			results.totalVotes += results.votes[votes.first];
 		}
 
-		results.turnout = (results.totalVotes / (float)qualifiedVoters);
+		results.turnout = (results.totalVotes / (float)m_voters);
 
 		for (auto votes : result.votes) {
 			results.voteshare[votes.first] = results.votes[votes.first] / (float)results.totalVotes;

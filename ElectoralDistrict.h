@@ -40,21 +40,27 @@ public:
 
 	ElectoralDistrict(ElectionLevel lvl);
 
-	void SetDistrict(City* pCity, float fSizePercentage);
+	void SetDistrict(City* pCity, float fSizePercentage, CountryProfile* pProfile);
 
-	unsigned int GetVoterCount(CountryProfile* pProfile);
+	unsigned int GetVoterCount() { return m_voters; }
 
 	Ballot* CreateBallot(Country* pCountry);
 
 	ElectoralDistrictResult CastVotes(Ballot* pBallot, Country* pCountry);
 
-	ElectoralDistrict* Split();
+	ElectoralDistrict* Split(CountryProfile* pProfile);
 
 	std::vector< ElectoralCity> GetCities() { return m_cities; }
 
-	static ElectoralDistrict* MergeAndDelete(ElectoralDistrict* pSmall, ElectoralDistrict* pAlmostSmall);
+	static ElectoralDistrict* MergeAndDelete(ElectoralDistrict* pSmall, ElectoralDistrict* pAlmostSmall, CountryProfile* pProfile);
 	
 private:
+
+	void UpdateVoterCount(CountryProfile* pProfile);
+
+private:
+
+	unsigned int m_voters;
 
 	ElectionLevel m_electionLevel;
 	std::vector< ElectoralCity> m_cities;

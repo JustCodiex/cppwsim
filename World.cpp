@@ -58,7 +58,7 @@ void World::UpdateWorld(TimeDate date) {
 		m_lastDate = m_currentDate;
 	} else {
 		if (m_currentDate.getTotalDays() - lastSaveDate > TimeDate::Decade.getTotalDays()) {
-			m_worldHistory->LogDecade(m_lastDate.year, m_currentDate.year);
+			m_worldHistory->LogDecade(m_worldName, m_lastDate.year, m_currentDate.year);
 			m_lastDate = m_currentDate;
 		}
 	}

@@ -24,6 +24,7 @@ public:
 		std::map<PoliticalParty*, int> gains;
 		std::map<PoliticalParty*, int> seats;
 		std::map<PoliticalParty*, float> voteShare;
+		std::string chamberName;
 	};
 
 public:

@@ -30,6 +30,8 @@ public:
 
 	void RecalculateElectionDistricts();
 
+	std::string GetName() { return m_name; }
+
 private:
 
 	void UpdateChamber(LegislativeChamber* pChamber, World* pWorld);
@@ -39,6 +41,7 @@ private:
 private:
 
 	bool m_isBicameral;
+	std::string m_name;
 	LegislativeChamber* m_chambers[2];
 
 	Country* m_targetCountry;

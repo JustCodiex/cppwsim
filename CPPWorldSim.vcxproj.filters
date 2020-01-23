@@ -236,5 +236,11 @@
     <ClInclude Include="Newspaper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="name_chambers.h">
+      <Filter>Header Files\names</Filter>
+    </ClInclude>
+    <ClInclude Include="name_legislatures.h">
+      <Filter>Header Files\names</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

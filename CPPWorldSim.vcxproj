@@ -200,7 +200,9 @@
     <ClInclude Include="Legislature.h" />
     <ClInclude Include="names_party.h" />
     <ClInclude Include="names_people.h" />
+    <ClInclude Include="name_chambers.h" />
     <ClInclude Include="name_countries.h" />
+    <ClInclude Include="name_legislatures.h" />
     <ClInclude Include="Newspaper.h" />
     <ClInclude Include="Organization.h" />
     <ClInclude Include="Person.h" />

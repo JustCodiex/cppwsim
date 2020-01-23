@@ -106,15 +106,22 @@ void Country::GeneratePoliticalParties(Random random) {
 
 	m_useInitialPartyIndex = random.NextBool(0.5f);
 
-	int politicalPartyList = random.NextInt(1, 4);
+	int politicalPartyList = random.NextInt(2, 5);
+
+	std::vector<POLITICAL_IDEOLOGY> ideologies;
+	while(ideologies.size() < politicalPartyList) {
+		POLITICAL_IDEOLOGY ideology = GetRandomIdeology(1800, random);
+		if (std::find(ideologies.begin(), ideologies.end(), ideology) == ideologies.end() || ideologies.size() >= 3) {
+			ideologies.push_back(ideology);
+		}
+	}
 
 	for (int i = 0; i < politicalPartyList; i++) {
 
 		Party party;
 		party.party = new PoliticalParty();
-		party.party->CreateParty(1800, this, random);
-
 		party.level = ElectionLevel::National;
+		party.party->CreateParty(1800, ideologies[i], this, random);
 
 		m_parties.push_back(party);
 
@@ -230,4 +237,13 @@ bool Country::HasParty(std::string partyname) {
 		}
 	}
 	return false;
+}
+
+PoliticalParty* Country::GetPartyByName(std::string partyname) {
+	for (auto party : m_parties) {
+		if (party.party->GetName() == partyname) {
+			return party.party;
+		}
+	}
+	return NULL;
 }

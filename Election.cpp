@@ -129,7 +129,7 @@ namespace Election {
 	ElectionResult National(Ballot* pBallot, ElectoralDistrict* pDistrict, Country* pCountry) {
 
 		ElectionResult results;
-		unsigned int popSize = (unsigned int)(pDistrict->GetVoterCount(pCountry->GetProfile()) /* (1.0f - pCountry->GetProfile()->countryPoliticalApathy)*/);
+		unsigned int popSize = (unsigned int)(pDistrict->GetVoterCount() * (1.0f - pCountry->GetProfile()->countryPoliticalApathy));
 
 		std::map<Politician*, float> scores;
 		float scoreSum = 0.0f;

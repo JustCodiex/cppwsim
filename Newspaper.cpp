@@ -1,4 +1,5 @@
 #include "Newspaper.h"
+#include <iostream>
 
 Newspaper::Newspaper() {
 

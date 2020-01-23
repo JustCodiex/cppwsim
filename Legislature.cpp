@@ -4,6 +4,8 @@
 #include "World.h"
 #include "History.h"
 #include "Newspaper.h"
+#include "name_legislatures.h"
+#include "name_chambers.h"
 #include <iostream>
 
 Legislature::Legislature() {
@@ -26,6 +28,8 @@ void Legislature::GenerateLegislature(Country* pCountry, Random random) {
 	m_isBicameral = random.NextBool(0.2f);
 	int chamberCount = (m_isBicameral) ? 2 : 1;
 
+	m_name = GetRandomLegislatureName(random);
+
 	std::vector<Weight< ElectoralSystem>> systemChances = {
 		Weight(45.0f, ElectoralSystem::ES_FIRST_PAST_THE_POST),
 		Weight(35.0f, ElectoralSystem::ES_PROPORTIONAL),
@@ -35,6 +39,7 @@ void Legislature::GenerateLegislature(Country* pCountry, Random random) {
 	for (int i = 0; i < chamberCount; i++) {
 
 		m_chambers[i] = new LegislativeChamber;
+		m_chambers[i]->SetName((m_isBicameral) ? GetChamberName(random, i == 0) : this->m_name);
 		m_chambers[i]->SetElectoralSystem(random.Select(systemChances));
 
 		unsigned short maxSeats = 0;

@@ -81,7 +81,7 @@ void LegislativeChamber::CalculateElectoralDistricts(Country* pCountry) {
 
 		// Create new district
 		ElectoralDistrict* pDistrict = new ElectoralDistrict(ElectionLevel::National);
-		pDistrict->SetDistrict(cities[i], 1.0f);
+		pDistrict->SetDistrict(cities[i], 1.0f, pCountry->GetProfile());
 
 		// Add district
 		m_electoralDistricts.push_back(pDistrict);
@@ -100,8 +100,8 @@ void LegislativeChamber::CalculateElectoralDistricts(Country* pCountry) {
 			// For all city districts
 			for (size_t i = 1; i < m_electoralDistricts.size(); i++) {
 
-				unsigned int thisPop = m_electoralDistricts[i]->GetVoterCount(pCountry->GetProfile());
-				unsigned int largestPop = m_electoralDistricts[largest]->GetVoterCount(pCountry->GetProfile());
+				unsigned int thisPop = m_electoralDistricts[i]->GetVoterCount();
+				unsigned int largestPop = m_electoralDistricts[largest]->GetVoterCount();
 
 				// Is this city larger than found largest?
 				if (thisPop > largestPop) {
@@ -110,7 +110,7 @@ void LegislativeChamber::CalculateElectoralDistricts(Country* pCountry) {
 			}
 
 			// Splt largest district
-			ElectoralDistrict* pNewDistrict = m_electoralDistricts[largest]->Split();
+			ElectoralDistrict* pNewDistrict = m_electoralDistricts[largest]->Split(pCountry->GetProfile());
 
 			// Add new district
 			m_electoralDistricts.push_back(pNewDistrict);
@@ -126,18 +126,18 @@ void LegislativeChamber::CalculateElectoralDistricts(Country* pCountry) {
 			size_t smallest = 0;
 
 			// Index of next-smallest city
-			size_t nextSmallest = 0;
+			size_t nextSmallest = 1;
 
 			// For all cities
 			for (size_t i = 0; i < m_electoralDistricts.size(); i++) {
 
 				// Get voters in district
-				unsigned int voters = m_electoralDistricts[i]->GetVoterCount(pCountry->GetProfile());
+				unsigned int voters = m_electoralDistricts[i]->GetVoterCount();
 
 				// If v[smallest] < v[i] < v[nextSmallest] then update nextsmallest
-				if (voters > m_electoralDistricts[smallest]->GetVoterCount(pCountry->GetProfile()) && voters < m_electoralDistricts[nextSmallest]->GetVoterCount(pCountry->GetProfile())) {
+				if (voters > m_electoralDistricts[smallest]->GetVoterCount() && voters < m_electoralDistricts[nextSmallest]->GetVoterCount()) {
 					nextSmallest = i;
-				} else if (voters < m_electoralDistricts[smallest]->GetVoterCount(pCountry->GetProfile())) { // else if smaller than smallest
+				} else if (voters < m_electoralDistricts[smallest]->GetVoterCount()) { // else if smaller than smallest
 
 					// Update next smallest
 					nextSmallest = smallest;
@@ -154,7 +154,7 @@ void LegislativeChamber::CalculateElectoralDistricts(Country* pCountry) {
 			ElectoralDistrict* pNextSmallestDistrict = m_electoralDistricts[nextSmallest];
 
 			// Merge districts
-			ElectoralDistrict* pNewDistrict = ElectoralDistrict::MergeAndDelete(pSmallestDistrict, pNextSmallestDistrict);
+			ElectoralDistrict* pNewDistrict = ElectoralDistrict::MergeAndDelete(pSmallestDistrict, pNextSmallestDistrict, pCountry->GetProfile());
 
 			// Remove smallest from electoral list
 			m_electoralDistricts.erase(m_electoralDistricts.begin() + smallest);
@@ -164,6 +164,14 @@ void LegislativeChamber::CalculateElectoralDistricts(Country* pCountry) {
 				m_electoralDistricts.erase(m_electoralDistricts.begin() + (nextSmallest - (size_t)1));
 			} else {
 				m_electoralDistricts.erase(m_electoralDistricts.begin() + nextSmallest);
+			}
+
+			if (pSmallestDistrict) {
+				delete pSmallestDistrict;
+			}
+
+			if (pNextSmallestDistrict) {
+				delete pNextSmallestDistrict;
 			}
 
 			// Add merged districts
@@ -178,6 +186,7 @@ void LegislativeChamber::CalculateElectoralDistricts(Country* pCountry) {
 LegislativeChamber::LegislatureElectionResult LegislativeChamber::HoldElection(std::vector<int> seats, Country* pCountry, TimeDate electionDate) {
 
 	LegislatureElectionResult result;
+	result.chamberName = this->m_chamberName;
 	result.isMidTerms = m_hasMidTerms;
 	result.totalVotes = 0;
 	result.turnout = 0.0f;

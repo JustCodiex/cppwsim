@@ -18,13 +18,13 @@ const std::string reformist_party_names[] = {
 	GetIdeologyName(POLITICAL_IDEOLOGY::ID_REFORMIST),
 	"National Reformers", "Reformists", "Reformers", "Reform Party", "Party of Reforms", "Renewal Party", "Alliance for Reform",
 	"Alliance of Reforms", "Alliance for Reforms", "Constitutionalists", "Constitutional Alliance", "Republicans", "Constitutional Party",
-	"constitutionalist Party", "Republican Party",
+	"constitutionalist Party", "Republican Party", "Republican", "Reformist",
 };
 
 const std::string radicalist_party_names[] = {
 	GetIdeologyName(POLITICAL_IDEOLOGY::ID_RADICALISM),
 	"Radicalist Party", "Preservation Party", "Radicals", "Radicalists", "Radical Party", "Radical Alliance", "Radical Front",
-	"Radical Centralist Party", "Alliance of Radicals"
+	"Radical Centralist Party", "Alliance of Radicals", "Radicalist Front",
 };
 
 const std::string GetPartyName(POLITICAL_IDEOLOGY ideology, Random random) {

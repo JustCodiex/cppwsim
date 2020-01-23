@@ -32,6 +32,7 @@ public:
 	PoliticalParty();
 
 	void CreateParty(int establishYear, Country* pCountry, Random random);
+	void CreateParty(int establishYear, POLITICAL_IDEOLOGY ideology, Country* pCountry, Random random);
 
 	std::string GetName() { return m_name; }
 	std::string GetShort() { return m_short; }
@@ -42,6 +43,9 @@ public:
 	int GetYear() { return m_establishYear; }
 
 	Politician* GetCandidate(int electionLvl, City* pCity);
+
+	void SetBreakout(PoliticalParty* pParty) { m_breakoutFrom = pParty; }
+	bool IsBreakoutParty() { return m_breakoutFrom != 0; }
 
 private:
 
@@ -63,6 +67,8 @@ private:
 	Country* m_targetCountry;
 
 	Random m_random;
+
+	PoliticalParty* m_breakoutFrom;
 
 	std::vector<PartyMember> m_members;
 

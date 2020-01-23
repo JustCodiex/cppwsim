@@ -105,7 +105,9 @@ const std::string GetIdeologyName(POLITICAL_IDEOLOGY name);
 
 POLITICAL_IDEOLOGY GetRandomIdeology1800(Random random) {
     POLITICAL_IDEOLOGY pickable[] = { POLITICAL_IDEOLOGY::ID_REACTIONARY, POLITICAL_IDEOLOGY::ID_REFORMIST, POLITICAL_IDEOLOGY::ID_RADICALISM };
-    return pickable[random.NextInt(0, lengthof(pickable, POLITICAL_IDEOLOGY))];
+    int options = lengthof(pickable, POLITICAL_IDEOLOGY);
+    int rand = random.NextInt(0, options);
+    return pickable[rand];
 }
 
 POLITICAL_IDEOLOGY GetRandomIdeology1850(Random random) {
