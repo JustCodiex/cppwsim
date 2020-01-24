@@ -450,24 +450,28 @@ LegislativeChamber::LegislatureElectionResult LegislativeChamber::HoldMixedElect
 	// Collect votes from the districts
 	std::vector<ElectoralDistrictResult> districtVotes = CollectVotesFromDistricts(seats, pCountry);
 
-	// Keep track of district indices
-	int districtIndex = 0;
+	if (fppSeats.size() > 0) { // The first past the post part
 
-	// For all district seats
-	for (auto fpp : fppSeats) {
+		// Keep track of district indices
+		int districtIndex = 0;
 
-		// Elect the seat
-		ElectSeat(fpp, districtVotes[districtIndex], result, electionDate);
+		// For all district seats
+		for (auto fpp : fppSeats) {
 
-		// Go to next district
-		districtIndex++;
+			// Elect the seat
+			ElectSeat(fpp, districtVotes[districtIndex], result, electionDate);
+
+			// Go to next district
+			districtIndex++;
+
+		}
 
 	}
 
-	{ // The proportional part
+	if (propSeats.size() > 0) { // The proportional part
 
 		// Keep track of votes for each party
-		std::map<Politician*, int> voteShare = Proportional_Base(districtVotes, result, divBy, false);
+		std::map<Politician*, int> voteShare = Proportional_Base(districtVotes, result, divBy, true);
 
 		if (m_proportionalMethod == ProportionalMethod::PM_DHONDT) {
 			Proportional_DHondtMethod(result.totalVotes, propSeats, voteShare, result, electionDate);
@@ -613,7 +617,7 @@ void LegislativeChamber::Proportional_ImperialMethod(unsigned int totalVotes, st
 			}
 		}
 
-		if (largest == NULL) {
+		if (largest != NULL) {
 
 			electedCandidates.push_back(largest);
 

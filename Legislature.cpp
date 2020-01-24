@@ -78,7 +78,7 @@ void Legislature::GenerateLegislature(Country* pCountry, Random random) {
 		}
 
 		if (chamberCount > 1) {
-			m_chambers[i]->SetMidtermsEnabled(random.NextBool(0.5f));
+			m_chambers[i]->SetMidtermsEnabled((electSys != ElectoralSystem::ES_FPP_P_MIX && electSys != ElectoralSystem::ES_PROPORTIONAL) ? random.NextBool(0.5f) : false);
 			m_chambers[i]->SetTermLimit(random.NextInt(1, 5));
 		} else {
 			m_chambers[i]->SetTermLimit(random.NextInt(2, 8));
