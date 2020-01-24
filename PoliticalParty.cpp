@@ -3,6 +3,8 @@
 #include "Politician.h"
 #include "Country.h"
 
+#include <sstream>
+
 PoliticalParty::PoliticalParty() {
 	
 	m_colour = PartyColour::BLACK;
@@ -32,7 +34,7 @@ void PoliticalParty::CreateParty(int establishYear, POLITICAL_IDEOLOGY ideology,
 	m_establishYear = establishYear - random.NextInt(0, 31);
 
 	// Convert the name to a short variant
-	ConvertNameToShort();
+	ConvertNameToShort(pCountry);
 
 }
 
@@ -98,7 +100,7 @@ std::string PoliticalParty::FindPartyName(Country* pCountry, Random random) {
 
 }
 
-void PoliticalParty::ConvertNameToShort() {
+void PoliticalParty::ConvertNameToShort(Country* pCountry) {
 
 	// Use initial party index over shortenings (AKA use party letters)
 	if (m_targetCountry->m_useInitialPartyIndex) {
@@ -114,7 +116,36 @@ void PoliticalParty::ConvertNameToShort() {
 
 	} else {
 
+		// Split the string
+		std::vector<std::string> words = split_string(m_name, ' ');
 
+		// Single word
+		if (words.size() == 1) {
+
+			// Are there more than 3 letters
+			if (words[0].size() >= 3) {
+				m_short = to_upper(words[0].substr(0, 3));
+			} else {
+				m_short = to_upper(words[0]);
+			}
+
+		} else if (words.size() == 2) { // Two words
+
+			// Combine the first two letters of first word and last letter of second word
+			m_short = to_upper(words[0].substr(0, 2) + words[1].substr(0, 1));
+
+		} else if (words.size() >= 3) { // Three or more words
+
+			// Add first letter of first three words
+			std::stringstream ss;
+			ss << words[0][0];
+			ss << words[1][0];
+			ss << words[2][0];
+
+			// Get the uppercase of the three letters
+			m_short = to_upper(ss.str());
+
+		}
 
 	}
 

@@ -35,9 +35,11 @@ void History::CreateLegislatureElectionEvent(Event& event, void* dat) {
 		msg = "Elections to the " + results->chamberName + ".\n";
 	}
 
+	msg += "\t" + std::to_string(results->seatUpForGrabs) + " seats up for grabs of " + std::to_string(results->seatTotal) + " seats (" + std::to_string(results->seatMajority) + " for majority).\n";
+
 	for (auto seat : results->seats) {
 
-		msg += "\t" + seat.first->GetName() + ": " + std::to_string(seat.second) + " seats (";
+		msg += "\t" + seat.first->GetName() + ", " + seat.first->GetShort() + ": " + std::to_string(seat.second) + " seats (";
 
 		if (results->gains[seat.first] >= 0) {
 			msg += "+" + std::to_string(results->gains[seat.first]) + ")";

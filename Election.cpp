@@ -116,11 +116,15 @@ namespace Election {
 
 	}
 
-	float scoreNationalCandidate(Politician* pPolitician) {
+	float scoreNationalCandidate(Politician* pPolitician, ElectoralDistrict* pDistrict) {
 
 		float score = 0.0f;
 
-
+		if (!pDistrict->GetSeat()->IsVacant()) {
+			if (pDistrict->GetSeat()->GetPolitician() == pPolitician) {
+				score += 0.25f;
+			}
+		}
 
 		return fminf(fmaxf(score, 0.0f), 10.0f);
 
@@ -142,7 +146,7 @@ namespace Election {
 				nationalPartyScore = scoreNationalParty(candidate->GetParty(), pDistrict, pCountry) * candidate->GetPartyLoyalty();
 			}
 
-			float nationalCandidateScore = scoreNationalCandidate(candidate);
+			float nationalCandidateScore = scoreNationalCandidate(candidate, pDistrict);
 
 			scores[candidate] = (nationalPartyScore + nationalCandidateScore);
 			scoreSum += scores[candidate];

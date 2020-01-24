@@ -6,6 +6,7 @@ class City;
 class Ballot;
 class Country;
 class Politician;
+class LegislativeSeat;
 
 struct CountryProfile;
 
@@ -18,9 +19,9 @@ enum class ElectionLevel {
 
 struct ElectoralDistrictResult {
 	std::map< Politician*, int> votes;
-	std::map< Politician*, float> voteshare;
+	std::map< Politician*, double> voteshare;
 	unsigned int totalVotes;
-	float turnout;
+	double turnout;
 };
 
 class ElectoralDistrict {
@@ -42,6 +43,10 @@ public:
 
 	void SetDistrict(City* pCity, float fSizePercentage, CountryProfile* pProfile);
 
+	void SetSeat(LegislativeSeat* pSeat) { m_seat = pSeat; }
+
+	LegislativeSeat* GetSeat() { return m_seat; }
+
 	unsigned int GetVoterCount() { return m_voters; }
 
 	Ballot* CreateBallot(Country* pCountry);
@@ -61,6 +66,8 @@ private:
 private:
 
 	unsigned int m_voters;
+
+	LegislativeSeat* m_seat;
 
 	ElectionLevel m_electionLevel;
 	std::vector< ElectoralCity> m_cities;

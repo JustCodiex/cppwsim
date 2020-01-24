@@ -239,6 +239,15 @@ bool Country::HasParty(std::string partyname) {
 	return false;
 }
 
+bool Country::hasPartyWithShort(std::string partyshort) {
+	for (auto party : m_parties) {
+		if (party.party->GetShort() == partyshort) {
+			return true;
+		}
+	}
+	return false;
+}
+
 PoliticalParty* Country::GetPartyByName(std::string partyname) {
 	for (auto party : m_parties) {
 		if (party.party->GetName() == partyname) {

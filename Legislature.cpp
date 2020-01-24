@@ -31,16 +31,19 @@ void Legislature::GenerateLegislature(Country* pCountry, Random random) {
 	m_name = GetRandomLegislatureName(random);
 
 	std::vector<Weight< ElectoralSystem>> systemChances = {
-		Weight(45.0f, ElectoralSystem::ES_FIRST_PAST_THE_POST),
-		Weight(35.0f, ElectoralSystem::ES_PROPORTIONAL),
-		Weight(20.0f, ElectoralSystem::ES_TWO_ROUND_SYSTEM),
+		Weight(55.0f, ElectoralSystem::ES_FIRST_PAST_THE_POST),
+		Weight(5.0f, ElectoralSystem::ES_PROPORTIONAL),
+		Weight(25.0f, ElectoralSystem::ES_TWO_ROUND_SYSTEM),
+		Weight(20.0f, ElectoralSystem::ES_FPP_P_MIX),
 	};
 
 	for (int i = 0; i < chamberCount; i++) {
 
 		m_chambers[i] = new LegislativeChamber;
 		m_chambers[i]->SetName((m_isBicameral) ? GetChamberName(random, i == 0) : this->m_name);
-		m_chambers[i]->SetElectoralSystem(random.Select(systemChances));
+
+		ElectoralSystem electSys = random.Select(systemChances);
+		m_chambers[i]->SetElectoralSystem(electSys);
 
 		unsigned short maxSeats = 0;
 		unsigned short minSeats = 0;
@@ -87,6 +90,19 @@ void Legislature::GenerateLegislature(Country* pCountry, Random random) {
 			m_chambers[i]->SetSeatCount((unsigned short)random.NextInt(minSeats, maxSeats + 1));
 		} else {
 			m_chambers[i]->SetSeatCount(m_chambers[i]->EachStateRepresentativeCount() * (unsigned short)pCountry->GetStateCount());
+		}
+
+		if (electSys == ElectoralSystem::ES_PROPORTIONAL) {
+			ProportionalMethod pMeth[] = { ProportionalMethod::PM_DHONDT, ProportionalMethod::PM_IMPERIALY };
+			m_chambers[i]->SetProportionalSystem(pMeth[random.NextInt(0, sizeof(pMeth) / sizeof(ProportionalMethod))]);
+			m_chambers[i]->SetProportionalSeats(m_chambers[i]->GetSeatCount());
+		} else if (electSys == ElectoralSystem::ES_FPP_P_MIX) {
+			ProportionalMethod pMeth[] = { ProportionalMethod::PM_DHONDT, ProportionalMethod::PM_IMPERIALY };
+			m_chambers[i]->SetProportionalSystem(pMeth[random.NextInt(0, sizeof(pMeth) / sizeof(ProportionalMethod))]);
+			m_chambers[i]->SetProportionalSeats((unsigned short)(m_chambers[i]->GetSeatCount() * random.NextFloat(0.5f)));
+		} else {
+			m_chambers[i]->SetProportionalSystem(ProportionalMethod::PM_NONE);
+			m_chambers[i]->SetProportionalSeats(0);
 		}
 
 	}

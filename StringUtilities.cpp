@@ -44,3 +44,46 @@ std::string get_n_suffix(int n) {
 		return "th";
 	}
 }
+
+std::vector<std::string> split_string(std::string str, char character) {
+
+	std::vector<std::string> strings;
+
+	size_t index;
+	while ((index = str.find_first_of(character)) != std::string::npos) {
+		std::string sub = str.substr(0, index);
+		str = str.substr(index + 1);
+		strings.push_back(sub);
+	}
+
+	if (str.size() > 0) {
+		strings.push_back(str);
+	}
+
+	return strings;
+
+}
+
+std::string to_upper(std::string str) {
+
+	std::string s = "";
+
+	for (size_t i = 0; i < str.size(); i++) {
+		s += (char)toupper(str[i]);
+	}
+
+	return s;
+
+}
+
+std::string to_lower(std::string str) {
+
+	std::string s = "";
+
+	for (size_t i = 0; i < str.size(); i++) {
+		s += (char)tolower(str[i]);
+	}
+
+	return s;
+
+}

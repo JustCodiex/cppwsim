@@ -16,8 +16,12 @@ public:
 
 	TimeDate GetElectDate() { return m_electDate; }
 
+	void SetProportional(bool isTrue) { m_isProportionalSeat = isTrue; }
+	bool IsProportionalSeat() { return m_isProportionalSeat; }
+
 private:
 
+	bool m_isProportionalSeat;
 	Politician* m_politician;
 	TimeDate m_electDate;
 	

@@ -7,6 +7,7 @@
 ElectoralDistrict::ElectoralDistrict(ElectionLevel lvl) {
 	m_electionLevel = lvl;
 	m_voters = 0;
+	m_seat = 0;
 }
 
 void ElectoralDistrict::SetDistrict(City* pCity, float fSizePercentage, CountryProfile* pProfile) {
@@ -112,10 +113,10 @@ ElectoralDistrictResult ElectoralDistrict::CastVotes(Ballot* pBallot, Country* p
 			results.totalVotes += results.votes[votes.first];
 		}
 
-		results.turnout = (results.totalVotes / (float)m_voters);
+		results.turnout = (results.totalVotes / (double)m_voters);
 
 		for (auto votes : result.votes) {
-			results.voteshare[votes.first] = results.votes[votes.first] / (float)results.totalVotes;
+			results.voteshare[votes.first] = results.votes[votes.first] / (double)results.totalVotes;
 		}
 
 	}

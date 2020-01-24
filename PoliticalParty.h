@@ -52,7 +52,7 @@ private:
 	Politician* FindCandidate(int electionLvl, City* pCity, Country* pCountry);
 	Politician* NewCandidate(int electionLvl, City* pCity, Country* pCountry);
 
-	void ConvertNameToShort();
+	void ConvertNameToShort(Country* pCountry);
 	std::string FindPartyName(Country* pCountry, Random random);
 
 private:

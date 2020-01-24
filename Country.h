@@ -70,6 +70,7 @@ public:
 
 	std::vector<Party> GetPartyList() { return m_parties; }
 	bool HasParty(std::string partyname);
+	bool hasPartyWithShort(std::string partyshort);
 	PoliticalParty* GetPartyByName(std::string partyname);
 
 private:
