@@ -193,3 +193,35 @@ Politician* PoliticalParty::GetCandidate(int electionLvl, City* pCity) {
 	return NewCandidate(electionLvl, pCity, m_targetCountry);
 
 }
+
+std::vector<Politician*> PoliticalParty::GetMinisterialCandidates() {
+
+	std::vector<Politician*> candidates;
+	std::vector<PolicyArea> policyAreasToCover;
+
+	for (int i = 0; i < (int)PolicyArea::_COUNT_; i++)
+		policyAreasToCover.push_back((PolicyArea)i);
+
+	for (auto member : m_members) {
+
+		auto found = std::find(policyAreasToCover.begin(), policyAreasToCover.end(), member.pMember->GetSpeciality());
+
+		if (found != policyAreasToCover.end()) {
+			candidates.push_back(member.pMember);
+			policyAreasToCover.erase(found);
+		}
+
+	}
+
+	for (PolicyArea a : policyAreasToCover) {
+
+		Politician* candidate = this->NewCandidate(NULL, NULL, NULL);
+		candidate->SetSpeciality(a);
+
+		candidates.push_back(candidate);
+
+	}
+
+	return candidates;
+
+}

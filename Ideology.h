@@ -107,6 +107,13 @@ public:
 	const float GetLibertarianStance() { return m_libStance; }
 	const float GetCollectiveStance() { return m_collectiveStance; }
 
+	// Checks if ideology is compatible (can work with) with other ideology
+	bool IsCompatible(Ideology* pIdeology);
+
+private:
+
+	bool IsCombination(POLITICAL_IDEOLOGY first, POLITICAL_IDEOLOGY second, POLITICAL_IDEOLOGY third, POLITICAL_IDEOLOGY fourth);
+
 private:
 
 	POLITICAL_IDEOLOGY m_indexedIdeology;

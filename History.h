@@ -6,6 +6,9 @@ class Country;
 
 enum class EVENT_TYPE {
 	ELECTION_LEGISLATURE,
+	ELECTION_LEGISLATURE_GOVERNMENT, // A government is formed based on legislature results
+	APPOINT_GOVERNMENT, // A government is appointed
+	ELECTED_GOVERNMENT, // A government is elected (democracies)
 };
 
 class History {
@@ -30,6 +33,8 @@ public:
 private:
 
 	void CreateLegislatureElectionEvent(Event& event, void* dat);
+
+	void CreateGovernmentFormEvent(Event& event, void* dat, Country* pCountry);
 
 private:
 

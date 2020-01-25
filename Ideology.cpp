@@ -41,6 +41,27 @@ void Ideology::UpdateIndexedIdeology() {
 
 }
 
+bool Ideology::IsCompatible(Ideology* pIdeology) {
+
+    if (this->m_indexedIdeology == pIdeology->m_indexedIdeology) {
+        return true;
+    }
+
+    if (IsCombination(this->m_indexedIdeology, pIdeology->m_indexedIdeology, POLITICAL_IDEOLOGY::ID_RADICALISM, POLITICAL_IDEOLOGY::ID_REACTIONARY)) {
+        return true;
+    } else if (IsCombination(this->m_indexedIdeology, pIdeology->m_indexedIdeology, POLITICAL_IDEOLOGY::ID_RADICALISM, POLITICAL_IDEOLOGY::ID_REFORMIST)) {
+        return true;
+    } // other combinations
+
+    return false;
+
+}
+
+bool Ideology::IsCombination(POLITICAL_IDEOLOGY first, POLITICAL_IDEOLOGY second, POLITICAL_IDEOLOGY third, POLITICAL_IDEOLOGY fourth) {
+    return (first == third && second == fourth) || (first == fourth && second == third);
+}
+
+
 #pragma region Static Ideology Functions
 
 const std::string GetIdeologyName(POLITICAL_IDEOLOGY name) {

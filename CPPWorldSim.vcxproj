@@ -195,6 +195,7 @@
     <ClInclude Include="History.h" />
     <ClInclude Include="Ideology.h" />
     <ClInclude Include="LegislativeChamber.h" />
+    <ClInclude Include="LegislativeCoalition.h" />
     <ClInclude Include="LegislativeCommittee.h" />
     <ClInclude Include="LegislativeSeat.h" />
     <ClInclude Include="Legislature.h" />
@@ -206,6 +207,7 @@
     <ClInclude Include="Newspaper.h" />
     <ClInclude Include="Organization.h" />
     <ClInclude Include="Person.h" />
+    <ClInclude Include="PolicyArea.h" />
     <ClInclude Include="PoliticalParty.h" />
     <ClInclude Include="Politician.h" />
     <ClInclude Include="Random.h" />

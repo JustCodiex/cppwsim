@@ -38,6 +38,8 @@ private:
 
 	void ElectChamber(LegislativeChamber* pChamber, World* pWorld);
 
+	void GenerateChamberPowers(Country* pCountry, Random random);
+
 private:
 
 	bool m_isBicameral;

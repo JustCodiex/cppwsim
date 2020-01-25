@@ -107,6 +107,202 @@ void Legislature::GenerateLegislature(Country* pCountry, Random random) {
 
 	}
 
+	GenerateChamberPowers(pCountry, random);
+
+}
+
+void Legislature::GenerateChamberPowers(Country* pCountry, Random random) {
+
+	// If bicameral
+	if (m_isBicameral) {
+
+		LegislativeChamber::ChamberPowers firstChamber; // First, lower chamber
+		LegislativeChamber::ChamberPowers secondChamber; // second, upper chamber
+
+		// Democracies elect their government as well
+		if (pCountry->GetGovernment()->GetGovernmentType() == GovernmentType::Democracy) {
+			
+			// Government electability powers
+			firstChamber.canElectGovernment = secondChamber.canElectGovernment = false; // Democracies elect their government, not the legislature
+			
+			// Government removal powers (eg. remove ministers, head of gov, head of state)
+			firstChamber.canRemoveGovernment = random.NextBool(0.15f);
+			secondChamber.canRemoveGovernment = (firstChamber.canRemoveGovernment) ? false : true;
+
+			// Appointmental approvement (eg. approve ministers, judges etc.)
+			firstChamber.canApproveAppointments = random.NextBool(0.15f);
+			secondChamber.canApproveAppointments = (firstChamber.canApproveAppointments) ? false : true;
+
+			// Law proposal powers
+			firstChamber.canProposeLaws = random.NextBool(0.75f);
+			secondChamber.canProposeLaws = (firstChamber.canProposeLaws) ? random.NextBool(0.25f) : random.NextBool(0.75f);
+
+			// Law repeal powers
+			firstChamber.canRepealLaws = random.NextBool(0.75f);
+			secondChamber.canRepealLaws = (firstChamber.canRepealLaws) ? random.NextBool(0.25f) : random.NextBool(0.75f);
+
+			// Law rejection powers
+			firstChamber.canRejectLaws = secondChamber.canRejectLaws = true;
+
+			// Law approval powers
+			firstChamber.canApproveLaws = true;
+			secondChamber.canApproveLaws = true;
+
+		} else {
+
+			bool isConsultingLegislature = random.NextBool(0.6f);
+
+			if (isConsultingLegislature) {
+
+				// Government electability powers
+				firstChamber.canElectGovernment = secondChamber.canElectGovernment = false;
+
+				// Government removal powers (eg. remove ministers, head of gov, head of state)
+				firstChamber.canRemoveGovernment = false;
+				secondChamber.canRemoveGovernment = false;
+
+				// Appointmental approvement (eg. approve ministers, judges etc.)
+				firstChamber.canApproveAppointments = false;
+				secondChamber.canApproveAppointments = random.NextBool(0.5f);
+
+				// Law proposal powers
+				firstChamber.canProposeLaws = false;
+				secondChamber.canProposeLaws = random.NextBool(0.15f);
+
+				// Law repeal powers
+				firstChamber.canRepealLaws = false;
+				secondChamber.canRepealLaws = false;
+
+				// Law rejection powers
+				firstChamber.canRejectLaws = secondChamber.canRejectLaws = false;
+
+				// Law approval powers
+				firstChamber.canApproveLaws = true;
+				secondChamber.canApproveLaws = true;
+
+			} else {
+
+				// Government electability powers
+				firstChamber.canElectGovernment = random.NextBool(0.25f);
+				secondChamber.canElectGovernment = false;
+
+				// Government removal powers (eg. remove ministers, head of gov, head of state)
+				firstChamber.canRemoveGovernment = firstChamber.canElectGovernment;
+				secondChamber.canRemoveGovernment = false;
+
+				// Appointmental approvement (eg. approve ministers, judges etc.)
+				firstChamber.canApproveAppointments = firstChamber.canElectGovernment;
+				secondChamber.canApproveAppointments = (firstChamber.canApproveAppointments) ? false : true;
+
+				// Law proposal powers
+				firstChamber.canProposeLaws = random.NextBool(0.75f);
+				secondChamber.canProposeLaws = (firstChamber.canProposeLaws) ? random.NextBool(0.25f) : random.NextBool(0.75f);
+
+				// Law repeal powers
+				firstChamber.canRepealLaws = random.NextBool(0.75f);
+				secondChamber.canRepealLaws = (firstChamber.canRepealLaws) ? random.NextBool(0.25f) : random.NextBool(0.75f);
+
+				// Law rejection powers
+				firstChamber.canRejectLaws = secondChamber.canRejectLaws = true;
+
+				// Law approval powers
+				firstChamber.canApproveLaws = true;
+				secondChamber.canApproveLaws = true;
+
+			}
+
+		}
+
+		// Assign chabmer powers
+		m_chambers[0]->SetPowers(firstChamber);
+		m_chambers[1]->SetPowers(secondChamber);
+
+	} else {
+
+		LegislativeChamber::ChamberPowers chamber;
+
+		// Democracies elect their government as well
+		if (pCountry->GetGovernment()->GetGovernmentType() == GovernmentType::Democracy) {
+
+			// Government electability powers
+			chamber.canElectGovernment = false;
+
+			// Government removal powers (eg. remove ministers, head of gov, head of state)
+			chamber.canRemoveGovernment = random.NextBool(0.15f);
+
+			// Appointmental approvement (eg. approve ministers, judges etc.)
+			chamber.canApproveAppointments = random.NextBool(0.15f);
+
+			// Law proposal powers
+			chamber.canProposeLaws = random.NextBool(0.75f);
+
+			// Law repeal powers
+			chamber.canRepealLaws = random.NextBool(0.75f);
+
+			// Law rejection powers
+			chamber.canRejectLaws = true;
+
+			// Law approval powers
+			chamber.canApproveLaws = true;
+
+		} else {
+
+			bool isConsultingLegislature = random.NextBool(0.6f);
+
+			if (isConsultingLegislature) {
+
+				// Government electability powers
+				chamber.canElectGovernment = false;
+
+				// Government removal powers (eg. remove ministers, head of gov, head of state)
+				chamber.canRemoveGovernment = false;
+
+				// Appointmental approvement (eg. approve ministers, judges etc.)
+				chamber.canApproveAppointments = false;
+
+				// Law proposal powers
+				chamber.canProposeLaws = false;
+
+				// Law repeal powers
+				chamber.canRepealLaws = false;
+
+				// Law rejection powers
+				chamber.canRejectLaws = false;
+
+				// Law approval powers
+				chamber.canApproveLaws = true;
+
+			} else {
+
+				// Government electability powers
+				chamber.canElectGovernment = random.NextBool(0.15f);
+
+				// Government removal powers (eg. remove ministers, head of gov, head of state)
+				chamber.canRemoveGovernment = random.NextBool(0.15f);
+
+				// Appointmental approvement (eg. approve ministers, judges etc.)
+				chamber.canApproveAppointments = random.NextBool(0.15f);
+
+				// Law proposal powers
+				chamber.canProposeLaws = random.NextBool(0.75f);
+
+				// Law repeal powers
+				chamber.canRepealLaws = chamber.canProposeLaws;
+
+				// Law rejection powers
+				chamber.canRejectLaws = random.NextBool(0.75f);
+
+				// Law approval powers
+				chamber.canApproveLaws = true;
+
+			}
+
+		}
+
+		m_chambers[0]->SetPowers(chamber);
+
+	}
+
 }
 
 void Legislature::RecalculateElectionDistricts() {
@@ -194,6 +390,21 @@ void Legislature::ElectChamber(LegislativeChamber* pChamber, World* pWorld) {
 	LegislativeChamber::LegislatureElectionResult electionResult = pChamber->HoldElection(seats, m_targetCountry, pWorld->GetDate());
 	pWorld->GetHistory()->AddEvent(pWorld->GetDate(), m_targetCountry, EVENT_TYPE::ELECTION_LEGISLATURE, (void*)&electionResult);
 
+	// Push national news
 	m_targetCountry->GetNewspaper()->LegislatureElectionResults(pWorld->GetDate(), electionResult);
+
+	// Get the chamber powers
+	LegislativeChamber::ChamberPowers* powers = pChamber->GetPowers();
+
+	// Does the chamber elect a government?
+	if (powers->canElectGovernment) {
+
+		// Create new government from chamber election results
+		m_targetCountry->GetGovernment()->NewGovernment(pChamber);
+
+		// Add event of government forming
+		pWorld->GetHistory()->AddEvent(pWorld->GetDate(), m_targetCountry, EVENT_TYPE::ELECTION_LEGISLATURE_GOVERNMENT, m_targetCountry->GetGovernment());
+
+	}
 
 }

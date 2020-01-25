@@ -242,5 +242,11 @@
     <ClInclude Include="name_legislatures.h">
       <Filter>Header Files\names</Filter>
     </ClInclude>
+    <ClInclude Include="LegislativeCoalition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PolicyArea.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -212,27 +212,36 @@ void LegislativeChamber::CalculateElectoralDistricts(Country* pCountry) {
 
 LegislativeChamber::LegislatureElectionResult LegislativeChamber::HoldElection(std::vector<int> seats, Country* pCountry, TimeDate electionDate) {
 
+	// The results of the election
+	LegislatureElectionResult result;
+
 	if (m_electoralSystem == ElectoralSystem::ES_FIRST_PAST_THE_POST) {
 
 		// Hold a First Past the Post election
-		return HoldFirstPastThePostElection(seats, pCountry, electionDate);
+		result = HoldFirstPastThePostElection(seats, pCountry, electionDate);
 
 	} else if (m_electoralSystem == ElectoralSystem::ES_PROPORTIONAL) {
 		
 		// Hold a Proportional Election
-		return HoldProportionalElection(seats, pCountry, electionDate);
+		result = HoldProportionalElection(seats, pCountry, electionDate);
 
 	} else if (m_electoralSystem == ElectoralSystem::ES_TWO_ROUND_SYSTEM) {
 		
 		// Hold a Two Round Election
-		return HoldTwoRoundSystemElection(seats, pCountry, electionDate);
+		result = HoldTwoRoundSystemElection(seats, pCountry, electionDate);
 
 	} else {
 
 		// Hold a Mixed Election
-		return HoldMixedElection(seats, pCountry, electionDate);
+		result = HoldMixedElection(seats, pCountry, electionDate);
 
 	}
+
+	// Lets try and build some coalitions
+	FindCoalitions();
+
+	// Return results
+	return result;
 
 }
 
@@ -246,6 +255,7 @@ LegislativeChamber::LegislatureElectionResult LegislativeChamber::NewEmptyResult
 	result.seatTotal = m_seatCount;
 	result.seatUpForGrabs = (int)seats.size();
 	result.seatMajority = m_seatMajority;
+	result.runoffs = -1;
 
 	for (auto party : pCountry->GetPartyList()) {
 		result.gains[party.party] = 0;
@@ -349,6 +359,7 @@ LegislativeChamber::LegislatureElectionResult LegislativeChamber::HoldTwoRoundSy
 
 	// Get a new empty result
 	LegislatureElectionResult result = NewEmptyResults(seats, pCountry);
+	result.runoffs = 0;
 
 	// Divide by counter
 	double divBy = 0;
@@ -367,51 +378,90 @@ LegislativeChamber::LegislatureElectionResult LegislativeChamber::HoldTwoRoundSy
 
 		// No competition, just assign
 		if (districtResult.votes.size() == 1) {
+			
+			// Increment the total vote count
+			result.totalVotes += districtResult.totalVotes;
+			result.turnout += districtResult.turnout;
+
+			// Elect the seat
 			ElectSeat(seats[seatIndex], (*districtResult.votes.begin()).first, result, electionDate);
+
 		} else {
 
-			Politician* best = NULL;
-			Politician* secondBest = NULL;
+			Politician* best = NULL; // Candidate with most votes
+			Politician* secondBest = NULL; // Candidate with second most votes
 
+			// For all candidates in district
 			for (auto candidate : districtResult.votes) {
+
+				// If candidate got more than half of the votes => no runoff, just assign
 				if (candidate.second >= noRunoffVotes) {
+					
+					// Assign best to second best to candidate and break
 					best = secondBest = candidate.first;
 					break;
+
 				} else {
+
+					// If best is NULL or this candidate scores better than current best
 					if (best == NULL || candidate.second > districtResult.votes[best]) {
 						best = candidate.first;
 					}
+
+					// If secondbest is NULL or this candidate scores worse than best but better than current second best
 					if (secondBest == NULL || (candidate.second < districtResult.votes[best] && candidate.second > districtResult.votes[secondBest])) {
 						secondBest = candidate.first;
 					}
+
 				}
 			}
 
+			// Is best and second best the same => Elect the candidate, no runoff
 			if (best == secondBest) {
 
+				// Increment the total vote count
+				result.totalVotes += districtResult.totalVotes;
+				result.turnout += districtResult.turnout;
+
+				// Elect seat
 				ElectSeat(seats[seatIndex], best, result, electionDate);
 
-			} else {
+			} else { // Else runoff between the two
 
+				// Increment runoff counter
+				result.runoffs++;
+
+				// New ballot with only the two best candidates
 				Ballot* runoffBallot = new Ballot;
 				runoffBallot->AddCandidate(best);
 				runoffBallot->AddCandidate(secondBest);
 
+				// Get runoff election results using new ballot
 				ElectoralDistrictResult runoffResult = m_electoralDistricts[seatIndex]->CastVotes(runoffBallot, pCountry);
 
+				// Increment the total vote count
+				result.totalVotes += runoffResult.totalVotes;
+				result.turnout += runoffResult.turnout;
+
+				// If best > secondbest, elect best, otherwise elect secondbest
 				if (runoffResult.votes[best] > runoffResult.votes[secondBest]) {
 					ElectSeat(seats[seatIndex], best, result, electionDate);
 				} else {
 					ElectSeat(seats[seatIndex], secondBest, result, electionDate);
 				}
 
+				// Delete the runoff Ballot, no longer needed
 				delete runoffBallot;
 
 			}
 
 		}
 
+		// Increment seat/district index
 		seatIndex++;
+
+		// Increment div by
+		divBy++;
 
 	}
 
@@ -728,5 +778,125 @@ void LegislativeChamber::ElectSeat(int seatIndex, Politician* pPolitician, Legis
 		m_seats[seatIndex]->SetOwner(pPolitician, electionDate);
 
 	}
+
+}
+
+void LegislativeChamber::FindCoalitions() {
+
+	// Clear any pre-existing coalitions
+	m_legislativeCoalitions.clear();
+
+	// Store the seat count for all parties
+	std::map<PoliticalParty*, int> partySeats;
+
+	// For each seat in chamber
+	for (size_t i = 0; i < m_seatCount; i++) {
+
+		// Make sure seat is not vacant and is valid
+		if (m_seats[i] && !m_seats[i]->IsVacant()) {
+
+			// Get a reference to the party of the seat owner
+			PoliticalParty* party = m_seats[i]->GetPolitician()->GetParty();
+
+			// Can we find the party in our map?
+			if (partySeats.find(party) == partySeats.end()) {
+				partySeats[party] = 1;
+			} else {
+				partySeats[party]++;
+			}
+
+		}
+
+	}
+
+	// For each party in chamber
+	for (auto party : partySeats) {
+
+		// Simmple coalition with party only
+		LegislativeCoalition simpleCoalition;
+		simpleCoalition.seats = party.second;
+		simpleCoalition.leader = party.first;
+		simpleCoalition.seatMajority = simpleCoalition.seats - m_seatMajority;
+		simpleCoalition.type = (simpleCoalition.seats >= m_seatMajority) ? CoalitionType::Majority : CoalitionType::Opposition;
+		simpleCoalition.name = party.first->GetName();
+		simpleCoalition.conflictingPartners = 0;
+		simpleCoalition.stability = 1.0f;
+
+		// Add coalition to legislative coalitions
+		m_legislativeCoalitions.push_back(simpleCoalition);
+
+		// Copy coalition into the additive coalition
+		LegislativeCoalition formerCoalition = LegislativeCoalition(&simpleCoalition);
+		formerCoalition.name = formerCoalition.leader->GetShort();
+
+		// For all other parties in chambe
+		for (auto otherParties : partySeats) {
+
+			// Make sure we're not working with ourselves
+			if (otherParties.first != party.first) {
+
+				// Make sure we're compatible with other party
+				if (party.first->GetIdeology()->IsCompatible(otherParties.first->GetIdeology())) {
+
+					// Make sure other party is compatible with the rest of the coalition
+					bool canWorkWithOtherCoalitionPartners = true;
+					for (auto partner : formerCoalition.partners) {
+						if (!otherParties.first->GetIdeology()->IsCompatible(partner->GetIdeology())) {
+							canWorkWithOtherCoalitionPartners = false;
+							break;
+						}
+					}
+
+					// Add party to coalition
+					LegislativeCoalition col = LegislativeCoalition(&formerCoalition);
+					col.partners.push_back(otherParties.first);
+					col.seats += otherParties.second;
+					col.seatsSupplied += otherParties.second;
+					col.seatMajority = col.seats - m_seatMajority;
+					col.name += otherParties.first->GetShort();
+					col.type = (col.seats >= m_seatMajority) ? CoalitionType::Minority : CoalitionType::Opposition;
+
+					// Is this coalition sorta unstable with unstable partners?
+					if (!canWorkWithOtherCoalitionPartners) {
+						col.conflictingPartners++;
+						col.stability = 1.0f - (col.conflictingPartners / (float)col.partners.size());
+					}
+					// Add coalition option
+					m_legislativeCoalitions.push_back(col);
+
+					// Update former coalition to reflect new coalition possibility
+					formerCoalition = col;
+
+
+				}
+
+			}
+
+		}
+
+	}
+
+}
+
+unsigned short LegislativeChamber::GetPartySeats(PoliticalParty* party) {
+
+	unsigned short count = 0;
+
+	// For each seat in chamber
+	for (size_t i = 0; i < m_seatCount; i++) {
+
+		// Make sure seat is not vacant and is valid
+		if (m_seats[i] && !m_seats[i]->IsVacant()) {
+
+			// Is party we're looking for?
+			if (m_seats[i]->GetPolitician()->GetParty() == party) {
+				count++;
+			}
+
+		}
+
+	}
+
+	return count;
 
 }

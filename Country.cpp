@@ -63,17 +63,22 @@ void Country::GenerateGovernment(Random random) {
 		Weight(10.0f, GovernmentType::Democracy),
 	};
 
+	m_countryGovernment.SetCountry(this);
 	m_countryGovernment.SetGovernmentType(random.Select(govTypeChances));
 
 	if (m_countryGovernment.GetGovernmentType() == GovernmentType::AbsoluteMonarchism) {
 
 		GenerateRoyalFamily(random);
 
+		m_countryGovernment.AppointGovernment();
+
 	} else if (m_countryGovernment.GetGovernmentType() == GovernmentType::ConstitutionalMonarchism) {
 
 		GenerateRoyalFamily(random);
 
 		GenerateLegislature(random);
+
+		m_countryGovernment.AppointGovernment();
 
 	} else {
 
@@ -172,6 +177,7 @@ void Country::UpdateEconomy(World* pWorld) {
 
 
 }
+
 void Country::UpdateLegislature(World* pWorld) {
 
 	if (m_countryLegislature) {

@@ -1,5 +1,6 @@
 #pragma once
 #include "Person.h"
+#include "PolicyArea.h"
 
 class PoliticalParty;
 class LegislativeSeat;
@@ -29,8 +30,12 @@ public:
 
 	void SetSeat(LegislativeSeat* pSeat) { m_seat = pSeat; }
 
+	void SetSpeciality(PolicyArea area) { m_speciality = area; }
+	PolicyArea GetSpeciality() { return m_speciality; }
+
 private:
 
+	PolicyArea m_speciality;
 	LegislativeSeat* m_seat;
 	PoliticalParty* m_party;
 	float m_loyalty;

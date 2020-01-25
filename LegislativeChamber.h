@@ -3,6 +3,7 @@
 #include <map>
 #include "TimeDate.h"
 #include "LegislativeSeat.h"
+#include "LegislativeCoalition.h"
 #include "ElectoralDistrict.h"
 
 enum class ElectoralSystem {
@@ -37,12 +38,24 @@ public:
 		int seatUpForGrabs;
 		int seatMajority;
 		int seatTotal;
+		int runoffs;
 		LegislatureElectionResult() {
 			isMidTerms = false;
 			turnout = 0;
 			totalVotes = 0;
 			seatMajority = seatTotal = seatUpForGrabs = 0;
+			runoffs = -1;
 		}
+	};
+
+	struct ChamberPowers {
+		bool canRemoveGovernment;
+		bool canRepealLaws;
+		bool canElectGovernment;
+		bool canProposeLaws;
+		bool canRejectLaws;
+		bool canApproveLaws; // Other chamber sends law for approval only (still becomes law) or government sends law for advisory vote
+		bool canApproveAppointments;
 	};
 
 public:
@@ -78,7 +91,12 @@ public:
 	char GetTermLimit() { return m_termLimit; }
 	unsigned short GetSeatCount() { return m_seatCount; }
 
+	unsigned short GetPartySeats(PoliticalParty* party);
+
 	std::string GetName() { return m_chamberName; }
+
+	void SetPowers(ChamberPowers powers) { m_chamberPowers = powers; }
+	ChamberPowers* GetPowers() { return &m_chamberPowers; }
 
 	ElectoralSystem GetElectoralSystem() { return m_electoralSystem; }
 
@@ -87,6 +105,8 @@ public:
 	LegislatureElectionResult HoldElection(std::vector<int> seats, Country* pCountry, TimeDate electionDate);
 
 	LegislativeSeat* GetSeat(int seatIndex) { return m_seats[seatIndex]; }
+
+	std::vector<LegislativeCoalition> GetCoalitions() { return m_legislativeCoalitions; }
 
 private:
 
@@ -109,6 +129,8 @@ private:
 	void ElectSeat(int seatIndex, ElectoralDistrictResult& voteResults, LegislatureElectionResult& chamberResults, TimeDate electionDate);
 	void ElectSeat(int seatIndex, Politician* pPolitician, LegislatureElectionResult& chamberResults, TimeDate electionDate);
 
+	void FindCoalitions();
+
 private:
 
 	char m_termLimit;
@@ -125,6 +147,7 @@ private:
 	TimeDate m_nextElection;
 
 	std::string m_chamberName;
+	ChamberPowers m_chamberPowers;
 
 	LegislativeSeat* m_seats[MAX_SEATS_IN_LEGISLATIVE_CHAMBER];
 
@@ -133,5 +156,6 @@ private:
 	int m_proportionalSeats;
 
 	std::vector<ElectoralDistrict*> m_electoralDistricts;
+	std::vector<LegislativeCoalition> m_legislativeCoalitions;
 
 };

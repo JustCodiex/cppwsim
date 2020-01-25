@@ -47,6 +47,8 @@ public:
 	void SetBreakout(PoliticalParty* pParty) { m_breakoutFrom = pParty; }
 	bool IsBreakoutParty() { return m_breakoutFrom != 0; }
 
+	std::vector<Politician*> GetMinisterialCandidates();
+
 private:
 
 	Politician* FindCandidate(int electionLvl, City* pCity, Country* pCountry);
