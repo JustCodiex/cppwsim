@@ -173,6 +173,7 @@
     <ClCompile Include="Politician.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Region.cpp" />
+    <ClCompile Include="Royal.cpp" />
     <ClCompile Include="RoyalFamily.cpp" />
     <ClCompile Include="SocialClass.cpp" />
     <ClCompile Include="State.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="Politician.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Region.h" />
+    <ClInclude Include="Royal.h" />
     <ClInclude Include="RoyalFamily.h" />
     <ClInclude Include="SocialClass.h" />
     <ClInclude Include="State.h" />

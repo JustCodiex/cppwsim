@@ -18,7 +18,7 @@ TimeDate TimeDate::Decade = TimeDate(10, 1, 1);
 TimeDate TimeDate::Century = TimeDate(100, 1, 1);
 
 void printLegChamber(LegislativeChamber* pChamber) {
-	std::cout << "\t\t" << pChamber->GetName() << ": " << pChamber->GetSeatCount() << " seats, " << (int)pChamber->GetTermLimit() << " year term. " << std::endl;
+	std::cout << "\t\t" << pChamber->GetName() << ": " << pChamber->GetSeatCount() << " seats, " << (int)pChamber->GetTermLength() << " year term. " << std::endl;
 	if (pChamber->IsElectableChamber()) {
 		std::cout << "\t\t\tLast election: " << pChamber->GetLastElectionDate().toString() << std::endl;
 		std::cout << "\t\t\tNext election: " << pChamber->GetNextElectionDate().toString() << std::endl;

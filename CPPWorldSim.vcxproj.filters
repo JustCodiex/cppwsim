@@ -40,6 +40,18 @@
     <Filter Include="Source Files\geography\demographics">
       <UniqueIdentifier>{980d30a2-96ec-4532-8a88-e0b97457f1b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\legislature">
+      <UniqueIdentifier>{c296d98f-b9fb-4909-86b9-826308781ba5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\elections">
+      <UniqueIdentifier>{9cb7412b-6fe0-4565-a0cc-79fc31d3dbe6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\legislature">
+      <UniqueIdentifier>{62679f0a-0988-45e0-9860-3286794788e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\election">
+      <UniqueIdentifier>{cc0f7bd2-2075-464c-ae1a-e000b1030056}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -72,9 +84,6 @@
     <ClCompile Include="RoyalFamily.cpp">
       <Filter>Source Files\people</Filter>
     </ClCompile>
-    <ClCompile Include="Legislature.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="City.cpp">
       <Filter>Source Files\geography</Filter>
     </ClCompile>
@@ -99,26 +108,8 @@
     <ClCompile Include="Ideology.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Ballot.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LegislativeChamber.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LegislativeCommittee.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LegislativeSeat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ElectoralDistrict.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Politician.cpp">
       <Filter>Source Files\people</Filter>
-    </ClCompile>
-    <ClCompile Include="Election.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CountryProfile.cpp">
       <Filter>Source Files</Filter>
@@ -131,6 +122,30 @@
     </ClCompile>
     <ClCompile Include="Newspaper.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Legislature.cpp">
+      <Filter>Source Files\legislature</Filter>
+    </ClCompile>
+    <ClCompile Include="LegislativeChamber.cpp">
+      <Filter>Source Files\legislature</Filter>
+    </ClCompile>
+    <ClCompile Include="LegislativeCommittee.cpp">
+      <Filter>Source Files\legislature</Filter>
+    </ClCompile>
+    <ClCompile Include="LegislativeSeat.cpp">
+      <Filter>Source Files\legislature</Filter>
+    </ClCompile>
+    <ClCompile Include="Ballot.cpp">
+      <Filter>Source Files\election</Filter>
+    </ClCompile>
+    <ClCompile Include="Election.cpp">
+      <Filter>Source Files\election</Filter>
+    </ClCompile>
+    <ClCompile Include="ElectoralDistrict.cpp">
+      <Filter>Source Files\election</Filter>
+    </ClCompile>
+    <ClCompile Include="Royal.cpp">
+      <Filter>Source Files\people</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -170,9 +185,6 @@
     <ClInclude Include="RoyalFamily.h">
       <Filter>Header Files\people</Filter>
     </ClInclude>
-    <ClInclude Include="Legislature.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="City.h">
       <Filter>Header Files\geography</Filter>
     </ClInclude>
@@ -200,26 +212,8 @@
     <ClInclude Include="Ideology.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Ballot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LegislativeChamber.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LegislativeCommittee.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LegislativeSeat.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ElectoralDistrict.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Politician.h">
       <Filter>Header Files\people</Filter>
-    </ClInclude>
-    <ClInclude Include="Election.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CountryProfile.h">
       <Filter>Header Files</Filter>
@@ -242,11 +236,35 @@
     <ClInclude Include="name_legislatures.h">
       <Filter>Header Files\names</Filter>
     </ClInclude>
-    <ClInclude Include="LegislativeCoalition.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PolicyArea.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Royal.h">
+      <Filter>Header Files\people</Filter>
+    </ClInclude>
+    <ClInclude Include="Legislature.h">
+      <Filter>Header Files\legislature</Filter>
+    </ClInclude>
+    <ClInclude Include="LegislativeChamber.h">
+      <Filter>Header Files\legislature</Filter>
+    </ClInclude>
+    <ClInclude Include="LegislativeCoalition.h">
+      <Filter>Header Files\legislature</Filter>
+    </ClInclude>
+    <ClInclude Include="LegislativeCommittee.h">
+      <Filter>Header Files\legislature</Filter>
+    </ClInclude>
+    <ClInclude Include="LegislativeSeat.h">
+      <Filter>Header Files\legislature</Filter>
+    </ClInclude>
+    <ClInclude Include="Election.h">
+      <Filter>Header Files\elections</Filter>
+    </ClInclude>
+    <ClInclude Include="ElectoralDistrict.h">
+      <Filter>Header Files\elections</Filter>
+    </ClInclude>
+    <ClInclude Include="Ballot.h">
+      <Filter>Header Files\elections</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -11,6 +11,9 @@ World::World(std::string worldname) {
 
 void World::Generate(Random random) {
 
+	// Assign the random generator
+	m_worldRandom = random;
+
 	// Get a random amount of countries
 	int countryCount = random.NextInt(3, 7);
 

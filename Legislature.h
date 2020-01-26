@@ -32,6 +32,8 @@ public:
 
 	std::string GetName() { return m_name; }
 
+	bool HasPowerToElectGovernment();
+
 private:
 
 	void UpdateChamber(LegislativeChamber* pChamber, World* pWorld);

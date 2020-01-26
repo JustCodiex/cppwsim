@@ -64,7 +64,7 @@ public:
 
 	void SetName(std::string name) { m_chamberName = name; }
 	void SetElectable(bool electable) { m_isElectable = electable; }
-	void SetTermLimit(int term) { m_termLimit = term; }
+	void SetTermLimit(int term) { m_termLength = term; }
 	void SetMidtermsEnabled(bool enabled) { m_hasMidTerms = enabled; }
 
 	void SetSeatCount(unsigned short seats);
@@ -82,15 +82,16 @@ public:
 
 	void CalculateNextElectionDateAndSetLast(TimeDate last) {
 		m_lastElection = last;
-		m_nextElection = last.addYears(m_termLimit);
+		m_nextElection = last.addYears(m_termLength);
 	}
 
 	TimeDate GetLastElectionDate() { return m_lastElection; }
 	TimeDate GetNextElectionDate() { return m_nextElection; }
 
-	char GetTermLimit() { return m_termLimit; }
-	unsigned short GetSeatCount() { return m_seatCount; }
+	char GetTermLength() { return m_termLength; }
 
+	unsigned short GetSeatCount() { return m_seatCount; }
+	unsigned short GetSeatForMajority() { return m_seatMajority; }
 	unsigned short GetPartySeats(PoliticalParty* party);
 
 	std::string GetName() { return m_chamberName; }
@@ -107,6 +108,12 @@ public:
 	LegislativeSeat* GetSeat(int seatIndex) { return m_seats[seatIndex]; }
 
 	std::vector<LegislativeCoalition> GetCoalitions() { return m_legislativeCoalitions; }
+
+	bool CanCommandMajority(PoliticalParty* pParty, int& majority);
+
+	PoliticalParty* GetLargestParty();
+
+	PoliticalParty* GetBiggestCoalitionLeader();
 
 private:
 
@@ -133,7 +140,7 @@ private:
 
 private:
 
-	char m_termLimit;
+	char m_termLength;
 	bool m_hasMidTerms;
 
 	unsigned short m_seatMajority;

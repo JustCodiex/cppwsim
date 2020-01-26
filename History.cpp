@@ -72,8 +72,8 @@ void History::CreateGovernmentFormEvent(Event& event, void* dat, Country* pCount
 
 	if (event.type == EVENT_TYPE::APPOINT_GOVERNMENT) {
 
-		ss << "New government appointed by " << pCountry->GetHeadOfState()->GetFullName() << ".\n";
-		ss << "\tThe government will be lead by: " + gov->GetHeadOfGovernment()->GetFullName() << ", representing the '" << gov->GetHeadOfGovernment()->GetParty() << "' party.\n";
+		ss << "A government has been appointed by " << pCountry->GetHeadOfState()->GetFullName() << ".\n";
+		ss << "\tThe government will be lead by: " + gov->GetHeadOfGovernment()->GetFullName() << ", representing the '" << gov->GetHeadOfGovernment()->GetParty() << "'.\n";
 		ss << "\tThe new government consists of " << gov->GetMinistryCount() << " ministries.";
 
 	} else if (event.type == EVENT_TYPE::ELECTED_GOVERNMENT) {

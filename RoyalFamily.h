@@ -1,5 +1,5 @@
 #pragma once
-#include "Person.h"
+#include "Royal.h"
 #include <vector>
 
 class RoyalFamily {
@@ -7,8 +7,8 @@ class RoyalFamily {
 public:
 
 	struct RoyalCouple {
-		Person* l;
-		Person* r;
+		Royal* l;
+		Royal* r;
 		std::vector<RoyalCouple> children;
 		RoyalCouple() {
 			l = r = 0;
@@ -21,7 +21,9 @@ public:
 
 	void CreateFamily(Random random);
 
-	Person* GetHeadOfFamily() { return (m_rootCouple.l != 0) ? m_rootCouple.l : m_rootCouple.r; }
+	Royal* GetHeadOfFamily() { return (m_rootCouple.l != 0) ? m_rootCouple.l : m_rootCouple.r; }
+
+	void UpdateRoyalFamily();
 
 private:
 

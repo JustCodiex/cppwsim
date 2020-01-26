@@ -30,6 +30,8 @@ public:
 
 	History* GetHistory() { return m_worldHistory; }
 
+	Random GetRandom() { return m_worldRandom; }
+
 private:
 
 
@@ -37,6 +39,8 @@ private:
 	TimeDate m_lastDate;
 
 	WorldEconomy m_worldEconomy;
+
+	Random m_worldRandom;
 
 	History* m_worldHistory;
 

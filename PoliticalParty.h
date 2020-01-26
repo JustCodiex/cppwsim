@@ -49,6 +49,8 @@ public:
 
 	std::vector<Politician*> GetMinisterialCandidates();
 
+	void AddMember(Politician* pPolitician);
+
 private:
 
 	Politician* FindCandidate(int electionLvl, City* pCity, Country* pCountry);

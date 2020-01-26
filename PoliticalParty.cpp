@@ -225,3 +225,15 @@ std::vector<Politician*> PoliticalParty::GetMinisterialCandidates() {
 	return candidates;
 
 }
+
+void PoliticalParty::AddMember(Politician* pPolitician) {
+	
+	PartyMember member;
+	member.electionLvl = (int)ElectionLevel::National;
+	member.pCity = 0;
+	member.pCountry = 0;
+	member.pMember = pPolitician;
+
+	m_members.push_back(member);
+
+}

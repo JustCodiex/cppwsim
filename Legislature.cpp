@@ -84,7 +84,7 @@ void Legislature::GenerateLegislature(Country* pCountry, Random random) {
 			m_chambers[i]->SetTermLimit(random.NextInt(2, 8));
 		}
 
-		m_chambers[i]->CalculateNextElectionDateAndSetLast(TimeDate::randomDate(1800 - m_chambers[i]->GetTermLimit(), 1800, random));
+		m_chambers[i]->CalculateNextElectionDateAndSetLast(TimeDate::randomDate(1800 - m_chambers[i]->GetTermLength(), 1800, random));
 
 		if (i == 0 || !m_chambers[i]->EachStateGetsRepresentatives()) {
 			m_chambers[i]->SetSeatCount((unsigned short)random.NextInt(minSeats, maxSeats + 1));
@@ -363,7 +363,7 @@ void Legislature::ElectChamber(LegislativeChamber* pChamber, World* pWorld) {
 			if (pSeat) {
 
 				// Are we supposed to elect this seat?
-				if (pWorld->GetDate().isLaterOrSameThan(pSeat->GetElectDate().addYears(pChamber->GetTermLimit()))) {
+				if (pWorld->GetDate().isLaterOrSameThan(pSeat->GetElectDate().addYears(pChamber->GetTermLength()))) {
 
 					// Add seat
 					seats.push_back(i);
@@ -400,11 +400,19 @@ void Legislature::ElectChamber(LegislativeChamber* pChamber, World* pWorld) {
 	if (powers->canElectGovernment) {
 
 		// Create new government from chamber election results
-		m_targetCountry->GetGovernment()->NewGovernment(pChamber);
+		m_targetCountry->GetGovernment()->NewGovernment(pChamber, pWorld->GetDate());
 
 		// Add event of government forming
 		pWorld->GetHistory()->AddEvent(pWorld->GetDate(), m_targetCountry, EVENT_TYPE::ELECTION_LEGISLATURE_GOVERNMENT, m_targetCountry->GetGovernment());
 
 	}
 
+}
+
+bool Legislature::HasPowerToElectGovernment() {
+	if (m_isBicameral) {
+		return m_chambers[0]->GetPowers()->canElectGovernment || m_chambers[1]->GetPowers()->canElectGovernment;
+	} else {
+		return m_chambers[0]->GetPowers()->canElectGovernment;
+	}
 }

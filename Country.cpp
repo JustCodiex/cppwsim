@@ -18,11 +18,11 @@ void Country::GenerateCountry(Random random) {
 	// Generate the geography of the country
 	GenerateGeography(random);
 
-	// Generate the government
-	GenerateGovernment(random);
-
 	// Generate political parties
 	GeneratePoliticalParties(random);
+
+	// Generate the government
+	GenerateGovernment(random);
 
 	// Finally, we can generate the country profile
 	GenerateCountryProfile(random);
@@ -58,7 +58,7 @@ void Country::GenerateGeography(Random random) {
 void Country::GenerateGovernment(Random random) {
 
 	std::vector<Weight< GovernmentType>> govTypeChances = {
-		Weight(30.0f, GovernmentType::ConstitutionalMonarchism),
+		Weight(40.0f, GovernmentType::ConstitutionalMonarchism),
 		Weight(50.0f, GovernmentType::AbsoluteMonarchism),
 		Weight(10.0f, GovernmentType::Democracy),
 	};
@@ -70,7 +70,8 @@ void Country::GenerateGovernment(Random random) {
 
 		GenerateRoyalFamily(random);
 
-		m_countryGovernment.AppointGovernment();
+		m_countryGovernment.SetTermLength(random.NextInt(3, 11));
+		m_countryGovernment.AppointGovernment(random, TimeDate::randomDate(1800 - random.NextInt(1, 6), 1800, random));
 
 	} else if (m_countryGovernment.GetGovernmentType() == GovernmentType::ConstitutionalMonarchism) {
 
@@ -78,13 +79,32 @@ void Country::GenerateGovernment(Random random) {
 
 		GenerateLegislature(random);
 
-		m_countryGovernment.AppointGovernment();
+		if (m_countryLegislature->HasPowerToElectGovernment()) {
+			// no government for now
+		} else {
+			m_countryGovernment.SetTermLength(m_countryLegislature->GetChamber(true)->GetTermLength());
+			m_countryGovernment.AppointGovernment(random, TimeDate::randomDate(1800 - m_countryLegislature->GetChamber(true)->GetTermLength(), 1800, random));
+		}
 
 	} else {
 
 		m_headOfState = new Person(random);
 
 		GenerateLegislature(random);
+
+		if (m_countryLegislature->GetChamber(true)->HasMidterms()) {
+			m_countryGovernment.SetTermLength(m_countryLegislature->GetChamber(true)->GetTermLength());
+		} else {
+			m_countryGovernment.SetTermLength(random.NextInt(3, 11));
+		}
+
+		std::vector<Weight<GovernmentElectoralSystem>> govElectoralSystems = {
+			Weight(30.0f, GovernmentElectoralSystem::WinnerTakesAll),
+			Weight(50.0f, GovernmentElectoralSystem::TwoRoundSystem),
+			Weight(20.0f, GovernmentElectoralSystem::ElectoralCollege),
+		};
+
+		m_countryGovernment.SetElectionSystem(random.Select(govElectoralSystems));
 
 	}
 
@@ -170,6 +190,9 @@ void Country::UpdateCountry(World* pWorld) {
 	// Call legislature update
 	this->UpdateLegislature(pWorld);
 
+	// Call government update
+	this->UpdateGovernment(pWorld);
+
 }
 
 void Country::UpdateEconomy(World* pWorld) {
@@ -182,6 +205,53 @@ void Country::UpdateLegislature(World* pWorld) {
 
 	if (m_countryLegislature) {
 		m_countryLegislature->UpdateLegislature(pWorld);
+	}
+
+}
+
+void Country::UpdateGovernment(World* pWorld) {
+	
+	// Is government elected or appointed?
+	if (!m_countryLegislature->GetChamber(true)->GetPowers()->canElectGovernment) {
+
+		// Do we have a next elect/appoint date
+		if (m_countryGovernment.GetNextFormDate().isLaterOrSameThan(pWorld->GetDate())) {
+
+			// Get government type
+			if (m_countryGovernment.GetGovernmentType() == GovernmentType::Democracy) {
+			
+				// We democratically elect a president
+				m_countryGovernment.ElectGovernment(pWorld->GetDate());
+			
+				// Assign head of state as well
+				m_headOfState = m_countryGovernment.GetHeadOfGovernment();
+
+			} else {
+				
+				// Appoint the government
+				m_countryGovernment.AppointGovernment(pWorld->GetRandom(), pWorld->GetDate());
+
+				// Add this event to history
+				pWorld->GetHistory()->AddEvent(pWorld->GetDate(), this, EVENT_TYPE::APPOINT_GOVERNMENT, this->GetGovernment());
+
+			}
+
+		}
+
+	}
+
+	// Do usual government stuff
+
+}
+
+void Country::UpdateRoyalFamily(World* pWorld) {
+
+	// Make sure we actually have a royal family
+	if (m_royals) {
+
+		// Update the family
+		m_royals->UpdateRoyalFamily();
+
 	}
 
 }

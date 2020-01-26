@@ -10,7 +10,7 @@ LegislativeChamber::LegislativeChamber(){
 	m_hasMidTerms = false;
 	m_isElectable = false;
 	m_seatCount = 0;
-	m_termLimit = 0;
+	m_termLength = 0;
 	
 	// Set all seats to NULL
 	memset(m_seats, 0, sizeof(m_seats));
@@ -867,7 +867,6 @@ void LegislativeChamber::FindCoalitions() {
 					// Update former coalition to reflect new coalition possibility
 					formerCoalition = col;
 
-
 				}
 
 			}
@@ -898,5 +897,67 @@ unsigned short LegislativeChamber::GetPartySeats(PoliticalParty* party) {
 	}
 
 	return count;
+
+}
+
+bool LegislativeChamber::CanCommandMajority(PoliticalParty* pParty, int& majority) {
+
+	for (LegislativeCoalition coalition : m_legislativeCoalitions) {
+
+		if (coalition.type != CoalitionType::Opposition) {
+			if (coalition.leader == pParty || std::find(coalition.partners.begin(), coalition.partners.end(), pParty) != coalition.partners.end()) {
+				majority = coalition.seatMajority;
+				return true;
+			}
+		} 
+
+	}
+
+	return false;
+
+}
+
+PoliticalParty* LegislativeChamber::GetLargestParty() {
+	
+	std::map<PoliticalParty*, unsigned short> partySeats;
+
+	// For each seat in chamber
+	for (size_t i = 0; i < m_seatCount; i++) {
+
+		// Make sure seat is not vacant and is valid
+		if (m_seats[i] && !m_seats[i]->IsVacant()) {
+
+			// Is party we're looking for?
+			if (m_seats[i]->GetPolitician()->GetParty() != NULL) {
+				partySeats[m_seats[i]->GetPolitician()->GetParty()]++;
+			}
+
+		}
+
+	}
+
+	PoliticalParty* largestParty = NULL;
+
+	for (auto party : partySeats) {
+		if (largestParty == NULL || party.second > partySeats[party.first]) {
+			largestParty = party.first;
+		}
+	}
+
+	return largestParty;
+
+}
+
+PoliticalParty* LegislativeChamber::GetBiggestCoalitionLeader() {
+
+	LegislativeCoalition coalition;
+
+	for (auto col : m_legislativeCoalitions) {
+		if (col.seats > coalition.seats) {
+			coalition = col;
+		}
+	}
+
+	return coalition.leader;
 
 }
