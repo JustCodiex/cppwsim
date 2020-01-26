@@ -13,11 +13,15 @@ enum class ElectoralSystem {
 	ES_FPP_P_MIX,
 };
 
+const std::string ElectoralSystemNames[] = { "First Past the Post", "Proportional", "Two-Round", "FPP and Proportional" };
+
 enum class ProportionalMethod {
 	PM_NONE,
 	PM_DHONDT, // https://en.wikipedia.org/wiki/D%27Hondt_method
 	PM_IMPERIALY, // https://en.wikipedia.org/wiki/Imperiali_quota
 };
+
+const std::string ProportionalMethodNames[] = { "", "D'Hondt", "Imperiali Quota" };
 
 class Country;
 
@@ -31,6 +35,8 @@ public:
 		bool isMidTerms;
 		double turnout;
 		unsigned int totalVotes;
+		ElectoralSystem electoralMethod;
+		ProportionalMethod proportionalMethod;
 		std::map<PoliticalParty*, int> gains;
 		std::map<PoliticalParty*, int> seats;
 		std::map<PoliticalParty*, double> voteShare;
@@ -45,6 +51,8 @@ public:
 			totalVotes = 0;
 			seatMajority = seatTotal = seatUpForGrabs = 0;
 			runoffs = -1;
+			electoralMethod = ElectoralSystem::ES_FIRST_PAST_THE_POST;
+			proportionalMethod = ProportionalMethod::PM_NONE;
 		}
 	};
 

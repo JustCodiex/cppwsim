@@ -224,7 +224,26 @@ void Government::AppointGovernment(Random random, TimeDate date) {
             PolicyArea area = (PolicyArea)i;
 
             if (i <= (int)PolicyArea::Justice) { // We need at least the first four ministries
+                
+                // Try and appoint a minister
                 AppointNewMinister(random, area, monarch, true);
+
+                // If we failed, we forcefully appoint the ministry
+                if (m_govMinistries.find(area) == m_govMinistries.end()) {
+
+                    // Generate new minister
+                    Politician* minister = new Politician(Sex::Male, random);
+                    minister->SetSpeciality(area);
+
+                    // Renew the ministry
+                    GovernmentMinistry ministry = GovernmentMinistry();
+                    ministry.SetMinister(minister);
+
+                    // Add ministry
+                    m_govMinistries[area] = ministry;
+
+                }
+
             } else {
 
                 // Should we make this ministry?
@@ -251,7 +270,7 @@ void Government::AppointNewMinister(Random random, PolicyArea area, Royal* royal
 
     // Clear the ministry if we can
     if (m_govMinistries.find(area) != m_govMinistries.end()) {
-        this->RemoveMinistry(&m_govMinistries[area]);
+        this->RemoveMinistry(area, &m_govMinistries[area]);
     }
 
     // The best political party
@@ -348,12 +367,16 @@ void Government::AppointNewMinister(Random random, PolicyArea area, Royal* royal
 
 }
 
-void Government::RemoveMinistry(GovernmentMinistry* ministry) {
+void Government::RemoveMinistry(PolicyArea area, GovernmentMinistry* ministry) {
 
+    // Delete the minister if he's not someone we should be keeping track of
     Politician* minister = ministry->GetMinister();
     if (minister->GetParty() == NULL) {
         delete minister;
     }
+
+    // Get rid of the ministry
+    m_govMinistries.erase(area);
 
 }
 

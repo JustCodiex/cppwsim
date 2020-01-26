@@ -256,6 +256,8 @@ LegislativeChamber::LegislatureElectionResult LegislativeChamber::NewEmptyResult
 	result.seatUpForGrabs = (int)seats.size();
 	result.seatMajority = m_seatMajority;
 	result.runoffs = -1;
+	result.electoralMethod = this->m_electoralSystem;
+	result.proportionalMethod = this->m_proportionalMethod;
 
 	for (auto party : pCountry->GetPartyList()) {
 		result.gains[party.party] = 0;

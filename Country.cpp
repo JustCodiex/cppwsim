@@ -215,7 +215,7 @@ void Country::UpdateGovernment(World* pWorld) {
 	if (m_countryLegislature && !m_countryLegislature->GetChamber(true)->GetPowers()->canElectGovernment) {
 
 		// Do we have a next elect/appoint date
-		if (m_countryGovernment.GetNextFormDate().isLaterOrSameThan(pWorld->GetDate())) {
+		if (pWorld->GetDate().isLaterOrSameThan(m_countryGovernment.GetNextFormDate())) {
 
 			// Get government type
 			if (m_countryGovernment.GetGovernmentType() == GovernmentType::Democracy) {

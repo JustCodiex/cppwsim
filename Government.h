@@ -53,7 +53,7 @@ public:
 	void SetTermLength(char lim) { m_govTerm = lim; }
 	int GetTermLength() { return m_govTerm; }
 
-	TimeDate GetNextFormDate() { return m_govFormDate; }
+	TimeDate GetNextFormDate() { return m_govNextFormDate; }
 
 	LegislativeCoalition* GetCoalition() { return &m_govCoalition; }
 
@@ -65,7 +65,7 @@ private:
 	void GetGovernmentRating();
 
 	void AppointNewMinister(Random random, PolicyArea area, Royal* royal, bool considerParliament);
-	void RemoveMinistry(GovernmentMinistry* ministry);
+	void RemoveMinistry(PolicyArea area, GovernmentMinistry* ministry);
 
 private:
 

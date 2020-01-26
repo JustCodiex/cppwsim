@@ -405,6 +405,24 @@ void Legislature::ElectChamber(LegislativeChamber* pChamber, World* pWorld) {
 		// Add event of government forming
 		pWorld->GetHistory()->AddEvent(pWorld->GetDate(), m_targetCountry, EVENT_TYPE::ELECTION_LEGISLATURE_GOVERNMENT, m_targetCountry->GetGovernment());
 
+	} else {
+
+		// Is the government a constitutional monarch AND is the chamber the first chamber
+		if (m_targetCountry->GetGovernment()->GetGovernmentType() == GovernmentType::ConstitutionalMonarchism && m_chambers[0] == pChamber) {
+
+			// A non-monarchist party has the majority
+			if (pChamber->GetBiggestCoalitionLeader()->GetIdeology()->GetLibertarianStance() <= 0.0f) {
+
+				// Appoint a new (hopefully more friendly) government
+				m_targetCountry->GetGovernment()->AppointGovernment(pWorld->GetRandom(), pWorld->GetDate());
+
+				// Add event to history
+				pWorld->GetHistory()->AddEvent(pWorld->GetDate(), m_targetCountry, EVENT_TYPE::APPOINT_GOVERNMENT, m_targetCountry->GetGovernment());
+
+			}
+
+		}
+
 	}
 
 }

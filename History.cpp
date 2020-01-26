@@ -38,10 +38,17 @@ void History::CreateLegislatureElectionEvent(Event& event, void* dat) {
 		ss << "Elections to the " << results->chamberName << ".\n";
 	}
 
-	ss << "\t" << results->seatUpForGrabs << " seats up for grabs of " << results->seatTotal << " seats (" << results->seatMajority << " for majority).\n";
+	ss << "\t" << results->seatUpForGrabs << " seats up for grabs of " << results->seatTotal << " seats (" << results->seatMajority << " for majority).";
+	ss << " Using the " << ElectoralSystemNames[(int)results->electoralMethod];
+
+	if (results->electoralMethod == ElectoralSystem::ES_PROPORTIONAL) {
+		ss << " (" << ProportionalMethodNames[(int)results->proportionalMethod] << ")";
+	}
+
+	ss << " system.\n";
 
 	if (results->runoffs != -1) {
-		ss << "\tA total of " << results->runoffs << " runoff-elections took place.\n";
+		ss << "\tA total of " << results->runoffs << " runoff-elections took place during this election.\n";
 	}
 
 	for (auto seat : results->seats) {
@@ -72,8 +79,19 @@ void History::CreateGovernmentFormEvent(Event& event, void* dat, Country* pCount
 
 	if (event.type == EVENT_TYPE::APPOINT_GOVERNMENT) {
 
+		// Get the head of government
+		Politician* primeminister = gov->GetHeadOfGovernment();
+
 		ss << "A government has been appointed by " << pCountry->GetHeadOfState()->GetFullName() << ".\n";
-		ss << "\tThe government will be lead by: " + gov->GetHeadOfGovernment()->GetFullName() << ", representing the '" << gov->GetHeadOfGovernment()->GetParty() << "'.\n";
+		ss << "\tThe government will be lead by: " + primeminister->GetFullName();
+	
+		// Make sure the PM has a party to represent
+		if (primeminister->GetParty() != NULL) {
+			ss << ", representing the '" << primeminister->GetParty()->GetName() << "'.\n";
+		} else {
+			ss << " (NI).\n";
+		}
+
 		ss << "\tThe new government consists of " << gov->GetMinistryCount() << " ministries.";
 
 	} else if (event.type == EVENT_TYPE::ELECTED_GOVERNMENT) {
