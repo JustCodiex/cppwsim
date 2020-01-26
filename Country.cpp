@@ -212,7 +212,7 @@ void Country::UpdateLegislature(World* pWorld) {
 void Country::UpdateGovernment(World* pWorld) {
 	
 	// Is government elected or appointed?
-	if (!m_countryLegislature->GetChamber(true)->GetPowers()->canElectGovernment) {
+	if (m_countryLegislature && !m_countryLegislature->GetChamber(true)->GetPowers()->canElectGovernment) {
 
 		// Do we have a next elect/appoint date
 		if (m_countryGovernment.GetNextFormDate().isLaterOrSameThan(pWorld->GetDate())) {
