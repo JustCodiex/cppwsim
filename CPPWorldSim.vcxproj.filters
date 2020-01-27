@@ -147,6 +147,9 @@
     <ClCompile Include="Royal.cpp">
       <Filter>Source Files\people</Filter>
     </ClCompile>
+    <ClCompile Include="ElectoralMap.cpp">
+      <Filter>Source Files\election</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.h">
@@ -264,6 +267,9 @@
       <Filter>Header Files\elections</Filter>
     </ClInclude>
     <ClInclude Include="Ballot.h">
+      <Filter>Header Files\elections</Filter>
+    </ClInclude>
+    <ClInclude Include="ElectoralMap.h">
       <Filter>Header Files\elections</Filter>
     </ClInclude>
   </ItemGroup>

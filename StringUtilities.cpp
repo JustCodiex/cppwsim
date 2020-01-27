@@ -31,6 +31,19 @@ std::string to_quantity(unsigned int quantity) {
 
 }
 
+std::string to_string(double n, int decimals) {
+
+	std::ostringstream os;
+
+	os << std::fixed;
+	os << std::setprecision(decimals);
+
+	os << n;
+	
+	return os.str();
+
+}
+
 std::string get_n_suffix(int n) {
 	std::string s = std::to_string(n);
 	char last = s.at(s.length() - 1);

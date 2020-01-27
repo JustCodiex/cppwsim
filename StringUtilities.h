@@ -5,6 +5,9 @@
 // Return the quantified number in string format
 std::string to_quantity(unsigned int quantity);
 
+// Return the number in a string format with decimals
+std::string to_string(double n, int decimals);
+
 // Return suffix to number
 std::string get_n_suffix(int n);
 

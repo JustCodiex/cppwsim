@@ -5,6 +5,16 @@
 class PoliticalParty;
 class LegislativeSeat;
 
+enum class PoliticalTitle {
+	None,
+	MP,
+	Lord,
+	Secretary,
+	Minister,
+	PrimeMinister,
+	President,
+};
+
 class Politician : public Person {
 
 public:
@@ -33,11 +43,18 @@ public:
 	void SetSpeciality(PolicyArea area) { m_speciality = area; }
 	PolicyArea GetSpeciality() { return m_speciality; }
 
+	std::string GetTitle() override;
+
+	void UpdateTitle(PoliticalTitle title);
+	void SetTitle(PoliticalTitle title) { m_title = title; }
+	PoliticalTitle GetEnumeratedTitle() { return m_title; }
+
 private:
 
 	PolicyArea m_speciality;
 	LegislativeSeat* m_seat;
 	PoliticalParty* m_party;
+	PoliticalTitle m_title;
 	float m_loyalty;
 
 };

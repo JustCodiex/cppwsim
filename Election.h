@@ -11,10 +11,6 @@ class ElectoralDistrict;
 
 namespace Election {
 
-	struct ElectionResult {
-		std::map<Politician*, unsigned int> votes;
-	};
-
-	ElectionResult National(Ballot* pBallot, ElectoralDistrict* pDistrict, Country* pCountry);
+	std::map<Politician*, unsigned int> National(Ballot* pBallot, ElectoralDistrict* pDistrict, Country* pCountry);
 
 }

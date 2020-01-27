@@ -88,7 +88,11 @@ void Country::GenerateGovernment(Random random) {
 
 	} else {
 
-		m_headOfState = new Person(random);
+		Politician* pPresident = new Politician(Sex::Male, random);
+		pPresident->SetSpeciality(PolicyArea::State);
+		pPresident->SetTitle(PoliticalTitle::President);
+
+		m_headOfState = pPresident;
 
 		GenerateLegislature(random);
 

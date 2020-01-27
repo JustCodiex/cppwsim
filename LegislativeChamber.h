@@ -2,9 +2,9 @@
 #include <vector>
 #include <map>
 #include "TimeDate.h"
+#include "ElectoralMap.h"
 #include "LegislativeSeat.h"
 #include "LegislativeCoalition.h"
-#include "ElectoralDistrict.h"
 
 enum class ElectoralSystem {
 	ES_FIRST_PAST_THE_POST, // Winner-Takes-All
@@ -109,8 +109,6 @@ public:
 
 	ElectoralSystem GetElectoralSystem() { return m_electoralSystem; }
 
-	void CalculateElectoralDistricts(Country* pCountry);
-
 	LegislatureElectionResult HoldElection(std::vector<int> seats, Country* pCountry, TimeDate electionDate);
 
 	LegislativeSeat* GetSeat(int seatIndex) { return m_seats[seatIndex]; }
@@ -123,9 +121,9 @@ public:
 
 	PoliticalParty* GetBiggestCoalitionLeader();
 
-private:
+	void CalculateElectoralDistricts(Country* pCountry);
 
-	void ClearElectoralDistricts();
+private:
 
 	LegislatureElectionResult HoldFirstPastThePostElection(std::vector<int> seats, Country* pCountry, TimeDate electionDate);
 	LegislatureElectionResult HoldProportionalElection(std::vector<int> seats, Country* pCountry, TimeDate electionDate);
@@ -170,7 +168,7 @@ private:
 	ProportionalMethod m_proportionalMethod;
 	int m_proportionalSeats;
 
-	std::vector<ElectoralDistrict*> m_electoralDistricts;
+	ElectoralMap* m_electoralMap;
 	std::vector<LegislativeCoalition> m_legislativeCoalitions;
 
 };

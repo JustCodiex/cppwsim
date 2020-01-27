@@ -130,10 +130,10 @@ namespace Election {
 
 	}
 
-	ElectionResult National(Ballot* pBallot, ElectoralDistrict* pDistrict, Country* pCountry) {
+	std::map<Politician*, unsigned int> National(Ballot* pBallot, ElectoralDistrict* pDistrict, Country* pCountry) {
 
-		ElectionResult results;
-		unsigned int popSize = (unsigned int)(pDistrict->GetVoterCount() * (1.0f - pCountry->GetProfile()->countryPoliticalApathy));
+		std::map<Politician*, unsigned int> results;
+		unsigned int popSize = (unsigned int)(pDistrict->GetVoterCount() * (0.97f - pCountry->GetProfile()->countryPoliticalApathy));
 
 		std::map<Politician*, float> scores;
 		float scoreSum = 0.0f;
@@ -162,7 +162,7 @@ namespace Election {
 		}
 
 		for (auto vote : pseudoVoteScore) {
-			results.votes[vote.first] = (int)((vote.second / (double)totalPseudoVotes) * popSize);
+			results[vote.first] = (int)((vote.second / (double)totalPseudoVotes) * popSize);
 		}
 
 		return results;

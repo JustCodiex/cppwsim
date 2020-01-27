@@ -1,6 +1,15 @@
 #pragma once
 #include "Person.h"
 
+enum class RoyalTitle {
+	King,
+	Queen,
+	CrownPrince,
+	CrownPrincess,
+	Prince,
+	Princess,
+};
+
 class Royal : public Person {
 
 public:
@@ -13,8 +22,14 @@ public:
 
 	float GetPopularity() { return m_popularity; }
 
+	std::string GetTitle() override;
+
+	void SetRoyalTitle(RoyalTitle title) { m_royalTitle = title; }
+	RoyalTitle GetRoyalTitle() { return m_royalTitle; }
+
 private:
 
 	float m_popularity;
+	RoyalTitle m_royalTitle;
 
 };

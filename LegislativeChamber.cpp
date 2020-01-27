@@ -61,155 +61,6 @@ void LegislativeChamber::SetStateData(bool eachState, char seats) {
 	m_eachStateSeatCount = seats;
 }
 
-void LegislativeChamber::ClearElectoralDistricts() {
-
-	// Loop through all the districts
-	for (size_t i = 0; i < m_electoralDistricts.size(); i++) {
-
-		// Make sure it's valid
-		if (m_electoralDistricts[i]) {
-			
-			// Delete it from memory
-			delete m_electoralDistricts[i];
-
-		}
-
-	}
-
-	// Clear
-	m_electoralDistricts.clear();
-
-}
-
-void LegislativeChamber::CalculateElectoralDistricts(Country* pCountry) {
-
-	// Clear district
-	this->ClearElectoralDistricts();
-
-	// District count is the same as seat count (1:1 ratio)
-	int districtCount;
-
-	if (m_electoralSystem == ElectoralSystem::ES_FPP_P_MIX) {
-		districtCount = 0;
-		for (unsigned short i = 0; i < m_seatCount; i++) {
-			if (!m_seats[i]->IsProportionalSeat()) {
-				districtCount++;
-			}
-		}
-	} else {
-		districtCount = m_seatCount;
-	}
-
-	// Get cities
-	std::vector<City*> cities = pCountry->GetCities();
-
-	// For all cities in country
-	for (size_t i = 0; i < cities.size(); i++) {
-
-		// Create new district
-		ElectoralDistrict* pDistrict = new ElectoralDistrict(ElectionLevel::National);
-		pDistrict->SetDistrict(cities[i], 1.0f, pCountry->GetProfile());
-
-		// Add district
-		m_electoralDistricts.push_back(pDistrict);
-
-	}
-
-	// Handle cases where there are more or less seats than cities
-	if (cities.size() < districtCount) { // We split large cities
-
-		// As long as we have less than the districts we need
-		while (m_electoralDistricts.size() < districtCount) {
-
-			// Index of largest city
-			int largest = 0;
-
-			// For all city districts
-			for (size_t i = 1; i < m_electoralDistricts.size(); i++) {
-
-				unsigned int thisPop = m_electoralDistricts[i]->GetVoterCount();
-				unsigned int largestPop = m_electoralDistricts[largest]->GetVoterCount();
-
-				// Is this city larger than found largest?
-				if (thisPop > largestPop) {
-					largest = (int)i; // Update
-				}
-			}
-
-			// Splt largest district
-			ElectoralDistrict* pNewDistrict = m_electoralDistricts[largest]->Split(pCountry->GetProfile());
-
-			// Add new district
-			m_electoralDistricts.push_back(pNewDistrict);
-
-		}
-
-	} else if (cities.size() > districtCount) { // We merge small cities
-
-		// As long as we have more districts than we need
-		while (m_electoralDistricts.size() > districtCount) {
-			
-			// Index of smallest city
-			size_t smallest = 0;
-
-			// Index of next-smallest city
-			size_t nextSmallest = 1;
-
-			// For all cities
-			for (size_t i = 0; i < m_electoralDistricts.size(); i++) {
-
-				// Get voters in district
-				unsigned int voters = m_electoralDistricts[i]->GetVoterCount();
-
-				// If v[smallest] < v[i] < v[nextSmallest] then update nextsmallest
-				if (voters > m_electoralDistricts[smallest]->GetVoterCount() && voters < m_electoralDistricts[nextSmallest]->GetVoterCount()) {
-					nextSmallest = i;
-				} else if (voters < m_electoralDistricts[smallest]->GetVoterCount()) { // else if smaller than smallest
-
-					// Update next smallest
-					nextSmallest = smallest;
-
-					// Udpate smallest
-					smallest = i;
-
-				}
-
-			}
-
-			// Get pointers
-			ElectoralDistrict* pSmallestDistrict = m_electoralDistricts[smallest];
-			ElectoralDistrict* pNextSmallestDistrict = m_electoralDistricts[nextSmallest];
-
-			// Merge districts
-			ElectoralDistrict* pNewDistrict = ElectoralDistrict::MergeAndDelete(pSmallestDistrict, pNextSmallestDistrict, pCountry->GetProfile());
-
-			// Remove smallest from electoral list
-			m_electoralDistricts.erase(m_electoralDistricts.begin() + smallest);
-
-			// Remove next smallest (and we might have to subtract index by one if greater than smallest.
-			if (nextSmallest > smallest) {
-				m_electoralDistricts.erase(m_electoralDistricts.begin() + (nextSmallest - (size_t)1));
-			} else {
-				m_electoralDistricts.erase(m_electoralDistricts.begin() + nextSmallest);
-			}
-
-			if (pSmallestDistrict) {
-				delete pSmallestDistrict;
-			}
-
-			if (pNextSmallestDistrict) {
-				delete pNextSmallestDistrict;
-			}
-
-			// Add merged districts
-			m_electoralDistricts.push_back(pNewDistrict);
-
-		}
-
-	}
-
-}
-
 LegislativeChamber::LegislatureElectionResult LegislativeChamber::HoldElection(std::vector<int> seats, Country* pCountry, TimeDate electionDate) {
 
 	// The results of the election
@@ -280,7 +131,7 @@ void LegislativeChamber::FinalizeResults(LegislatureElectionResult& result, doub
 
 	// For all parties in result, calculate average share of vote
 	for (auto partyResult : result.voteShare) {
-		result.voteShare[partyResult.first] = result.voteShare[partyResult.first] / divBy;
+		result.voteShare[partyResult.first] = result.voteShare[partyResult.first] / (double)result.totalVotes;
 	}
 
 	// For all seats in chamber
@@ -289,6 +140,41 @@ void LegislativeChamber::FinalizeResults(LegislatureElectionResult& result, doub
 			result.seats[m_seats[i]->GetPolitician()->GetParty()]++;
 		}
 	}
+
+}
+
+void LegislativeChamber::CalculateElectoralDistricts(Country* pCountry) {
+
+	// District count is the same as seat count (1:1 ratio)
+	unsigned short districtCount = 0;
+
+	if (m_electoralSystem == ElectoralSystem::ES_FPP_P_MIX) {
+		districtCount = 0;
+		for (unsigned short i = 0; i < m_seatCount; i++) {
+			if (!m_seats[i]->IsProportionalSeat()) {
+				districtCount++;
+			}
+		}
+	} else {
+		districtCount = m_seatCount;
+	}
+
+	// Does the electoral map already exist?
+	if (m_electoralMap != NULL) {
+		
+		// Clear districts
+		m_electoralMap->ClearElectoralDistricts();
+
+		// Delete from memory
+		delete m_electoralMap;
+		
+		// Point to 0 (NULL)
+		m_electoralMap = 0;
+
+	}
+
+	m_electoralMap = new ElectoralMap(ElectionLevel::National);
+	m_electoralMap->CreateNationalElectoralDistrict(pCountry, districtCount);
 
 }
 
@@ -312,6 +198,11 @@ LegislativeChamber::LegislatureElectionResult LegislativeChamber::HoldFirstPastT
 		// Update chamber results
 		result.turnout += results.turnout;
 		result.totalVotes += results.totalVotes;
+
+		// Add votes to total vote count
+		for (auto share : results.votes) {
+			result.voteShare[share.first->GetParty()] += (double)share.second;
+		}
 
 		// Elect the seat
 		ElectSeat(seats[i], results, result, electionDate);
@@ -339,6 +230,14 @@ LegislativeChamber::LegislatureElectionResult LegislativeChamber::HoldProportion
 
 	// Collect votes from the districts
 	std::vector<ElectoralDistrictResult> districtVotes = CollectVotesFromDistricts(seats, pCountry);
+
+	// Update vote share
+	for (auto distrct : districtVotes) {
+		for (auto partyVotes : distrct.votes) {
+			result.voteShare[partyVotes.first->GetParty()] += (double)partyVotes.second;
+		}
+		divBy++;
+	}
 
 	// Keep track of votes for each party
 	std::map<Politician*, int> voteShare = Proportional_Base(districtVotes, result, divBy, true);
@@ -376,7 +275,7 @@ LegislativeChamber::LegislatureElectionResult LegislativeChamber::HoldTwoRoundSy
 	for (auto districtResult : districtVotes) {
 
 		// Calculate min votes to get elected without a runoff
-		int noRunoffVotes = districtResult.totalVotes / 2;
+		unsigned int noRunoffVotes = districtResult.totalVotes / 2;
 
 		// No competition, just assign
 		if (districtResult.votes.size() == 1) {
@@ -384,6 +283,11 @@ LegislativeChamber::LegislatureElectionResult LegislativeChamber::HoldTwoRoundSy
 			// Increment the total vote count
 			result.totalVotes += districtResult.totalVotes;
 			result.turnout += districtResult.turnout;
+
+			// Update vote share
+			for (auto partyVotes : districtResult.votes) {
+				result.voteShare[partyVotes.first->GetParty()] += (double)partyVotes.second;
+			}
 
 			// Elect the seat
 			ElectSeat(seats[seatIndex], (*districtResult.votes.begin()).first, result, electionDate);
@@ -416,6 +320,10 @@ LegislativeChamber::LegislatureElectionResult LegislativeChamber::HoldTwoRoundSy
 					}
 
 				}
+
+				// Update vote count
+				result.voteShare[candidate.first->GetParty()] += (double)candidate.second;
+
 			}
 
 			// Is best and second best the same => Elect the candidate, no runoff
@@ -439,7 +347,7 @@ LegislativeChamber::LegislatureElectionResult LegislativeChamber::HoldTwoRoundSy
 				runoffBallot->AddCandidate(secondBest);
 
 				// Get runoff election results using new ballot
-				ElectoralDistrictResult runoffResult = m_electoralDistricts[seatIndex]->CastVotes(runoffBallot, pCountry);
+				ElectoralDistrictResult runoffResult = m_electoralMap->GetElectoralDistrictByIndex(seatIndex)->CastVotes(runoffBallot, pCountry);
 
 				// Increment the total vote count
 				result.totalVotes += runoffResult.totalVotes;
@@ -501,6 +409,14 @@ LegislativeChamber::LegislatureElectionResult LegislativeChamber::HoldMixedElect
 
 	// Collect votes from the districts
 	std::vector<ElectoralDistrictResult> districtVotes = CollectVotesFromDistricts(seats, pCountry);
+
+	// Update vote share
+	for (auto distrct : districtVotes) {
+		for (auto partyVotes : distrct.votes) {
+			result.voteShare[partyVotes.first->GetParty()] += (double)partyVotes.second;
+		}
+		divBy++;
+	}
 
 	if (fppSeats.size() > 0) { // The first past the post part
 
@@ -600,7 +516,7 @@ void LegislativeChamber::Proportional_DHondtMethod(unsigned int totalVotes, std:
 
 	while (remainingSeats > 0) {
 	
-		std::map<PoliticalParty*, int> partyQuotas;
+		std::map<PoliticalParty*, unsigned int> partyQuotas;
 
 		for (auto votes : partyVotes) {
 			partyQuotas[votes.first] = votes.second / (partySeats[votes.first] + 1);
@@ -690,7 +606,7 @@ void LegislativeChamber::Proportional_ImperialMethod(unsigned int totalVotes, st
 
 			attemps++;
 
-			if (attemps > remainingSeats + 40 && quota > 0) { // This is a modified version of the Imperial method => Because we keep reducing the quota
+			if (attemps > remainingSeats + 40 && quota > 0) { // This is a modified version of the Imperiali method => Because we keep reducing the quota
 				quota /= 2;
 				attemps = 0;
 			}
@@ -715,10 +631,10 @@ std::vector<ElectoralDistrictResult> LegislativeChamber::CollectVotesFromDistric
 	std::vector<ElectoralDistrictResult> results;
 
 	// Loop through all the seats up for graps (and make sure the seat is available)
-	for (size_t i = 0; i < seats.size() && seats[i] < m_electoralDistricts.size(); i++) {
+	for (size_t i = 0; i < seats.size() && seats[i] < m_electoralMap->GetElectoralDistrictCount(); i++) {
 
 		// Get the district
-		ElectoralDistrict* pElectoralDistrict = m_electoralDistricts[seats[i]];
+		ElectoralDistrict* pElectoralDistrict = m_electoralMap->GetElectoralDistrictByIndex((unsigned int)i);
 
 		// Verify it
 		if (pElectoralDistrict) {
@@ -753,8 +669,6 @@ void LegislativeChamber::ElectSeat(int seatIndex, ElectoralDistrictResult& voteR
 
 	for (auto result : voteResults.votes) {
 		
-		chamberResults.voteShare[result.first->GetParty()] += voteResults.voteshare[result.first];
-
 		if (pol == NULL || result.second > voteResults.votes[result.first]) {
 			pol = result.first;
 		}

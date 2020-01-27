@@ -39,7 +39,7 @@ int main() {
 	
 	for (size_t i = 0; i < worldCountries.size(); i++) {
 		Country* country = worldCountries[i];
-		std::cout << "[" << (i + 1) << "] " << country->GetName() << " (Head of State: " << country->GetHeadOfState()->GetFullName() << ")" << std::endl;
+		std::cout << "[" << (i + 1) << "] " << country->GetName() << " (Head of State: " << country->GetHeadOfState()->GetTitle() << ")" << std::endl;
 		std::cout << "\tPopulation: " << to_quantity(country->GetPopulationSize()) << std::endl;
 		std::cout << "\tGovernment: " << getGovTypeName(country->GetGovernment()->GetGovernmentType()) << std::endl;
 		Legislature* legislature = country->GetLegislature();
@@ -65,16 +65,24 @@ int main() {
 
 	TimeDate date = TimeDate(1800, 1, 1);
 
+	bool realtime = true; // Disale this and the simulation goes A LOT faster
+
 	while (!date.isDate(2100, 1, 1)) {
 
-		std::cout << "World Simulator (C++)" << std::endl;
-		std::cout << "Date: " << date.toString() << std::endl;
+		if (realtime) {
+
+			std::cout << "World Simulator (C++)" << std::endl;
+			std::cout << "Date: " << date.toString() << std::endl;
+		}
 
 		pWorld->UpdateWorld(date);
 
 		// Print additional data here
 
-		system("cls");
+		if (realtime) {
+			system("cls");
+		}
+		
 		date = date.nextDay();
 
 	}

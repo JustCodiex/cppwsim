@@ -106,16 +106,16 @@ ElectoralDistrictResult ElectoralDistrict::CastVotes(Ballot* pBallot, Country* p
 
 	if (m_electionLevel == ElectionLevel::National) {
 ;
-		Election::ElectionResult result = Election::National(pBallot, this, pCountry);
+		std::map<Politician*, unsigned int> result = Election::National(pBallot, this, pCountry);
 
-		for (auto votes : result.votes) {
+		for (auto votes : result) {
 			results.votes[votes.first] = votes.second;
 			results.totalVotes += results.votes[votes.first];
 		}
 
 		results.turnout = (results.totalVotes / (double)m_voters);
 
-		for (auto votes : result.votes) {
+		for (auto votes : result) {
 			results.voteshare[votes.first] = results.votes[votes.first] / (double)results.totalVotes;
 		}
 

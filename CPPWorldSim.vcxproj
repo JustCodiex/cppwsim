@@ -157,6 +157,7 @@
     <ClCompile Include="CountryProfile.cpp" />
     <ClCompile Include="Election.cpp" />
     <ClCompile Include="ElectoralDistrict.cpp" />
+    <ClCompile Include="ElectoralMap.cpp" />
     <ClCompile Include="Government.cpp" />
     <ClCompile Include="GovernmentMinistry.cpp" />
     <ClCompile Include="History.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="CountryProfile.h" />
     <ClInclude Include="Election.h" />
     <ClInclude Include="ElectoralDistrict.h" />
+    <ClInclude Include="ElectoralMap.h" />
     <ClInclude Include="FixedChart.h" />
     <ClInclude Include="Government.h" />
     <ClInclude Include="GovernmentMinistry.h" />

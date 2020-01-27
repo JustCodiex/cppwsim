@@ -18,7 +18,7 @@ enum class ElectionLevel {
 };
 
 struct ElectoralDistrictResult {
-	std::map< Politician*, int> votes;
+	std::map< Politician*, unsigned int> votes;
 	std::map< Politician*, double> voteshare;
 	unsigned int totalVotes;
 	double turnout;

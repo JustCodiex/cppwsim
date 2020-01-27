@@ -40,6 +40,8 @@ public:
 
 	Birthday GetBirthday() { return m_birthday; }
 
+	virtual std::string GetTitle() { return GetFullName(); }
+
 private:
 
 	Sex m_sex;

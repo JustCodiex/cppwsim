@@ -299,6 +299,7 @@ void Government::AppointNewMinister(Random random, PolicyArea area, Royal* royal
             Politician* minister = new Politician(Sex::Male, random);
             minister->SetSpeciality(area);
             minister->SetParty(bestParty, 0.75f);
+            minister->SetTitle(PoliticalTitle::Lord);
 
             // Add minister to party
             bestParty->AddMember(minister);
@@ -318,11 +319,11 @@ void Government::AppointNewMinister(Random random, PolicyArea area, Royal* royal
             // Make sure it's valid
             if (pParty) {
 
-
                 // Generate new minister
                 Politician* minister = new Politician(Sex::Male, random);
                 minister->SetSpeciality(area);
                 minister->SetParty(pParty, 0.25f); // We pick someone who's less loyal to the party
+                minister->SetTitle((area == PolicyArea::State) ? PoliticalTitle::PrimeMinister : PoliticalTitle::Minister);
 
                 // Add minister to party
                 pParty->AddMember(minister);
@@ -334,6 +335,11 @@ void Government::AppointNewMinister(Random random, PolicyArea area, Royal* royal
                 // Add ministry
                 m_govMinistries[area] = ministry;
 
+                // Decrease political apathy (yay, voting works)
+                if (m_targetCountry->GetProfile()->countryPoliticalApathy > 0.05f) {
+                    m_targetCountry->GetProfile()->countryPoliticalApathy -= random.NextFloat(0.001f, 0.035f);
+                }
+
 
             } // else, we dont make this ministry....
 
@@ -343,6 +349,7 @@ void Government::AppointNewMinister(Random random, PolicyArea area, Royal* royal
 
         // Generate new minister
         Politician* minister = new Politician(Sex::Male, random);
+        minister->SetTitle(PoliticalTitle::Lord);
         minister->SetSpeciality(area);
 
         // Is this minsiter part of the most supporting political party?
@@ -353,6 +360,13 @@ void Government::AppointNewMinister(Random random, PolicyArea area, Royal* royal
 
             // Add minister to party
             bestParty->AddMember(minister);
+
+            // Make sure we dont get any funny results from overflowing
+            if (m_targetCountry->GetProfile()->countryPoliticalApathy <= 0.9f) {
+
+                // We add to political apathy whenever something like this happens
+                m_targetCountry->GetProfile()->countryPoliticalApathy += random.NextFloat(0.001f, 0.035f);
+            }
 
         }
 

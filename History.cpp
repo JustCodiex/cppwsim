@@ -1,5 +1,6 @@
 #include "History.h"
 #include "Country.h"
+#include "StringUtilities.h"
 #include "LegislativeChamber.h"
 #include <fstream>
 #include <ostream>
@@ -61,11 +62,11 @@ void History::CreateLegislatureElectionEvent(Event& event, void* dat) {
 			ss << results->gains[seat.first] <<  ")";
 		}
 
-		ss << " and gained " << (results->voteShare[seat.first] * 100.0f) << "% of the vote\n";
+		ss << " and gained " << to_string(results->voteShare[seat.first] * 100.0f, 2) << "% of the vote\n";
 
 	}
 
-	ss << "\nA total of " << results->totalVotes << " votes were cast with a turnout of " << (results->turnout * 100.0f) << "%";
+	ss << "\nA total of " << results->totalVotes << " votes were cast with a turnout of " << to_string(results->turnout * 100.0f, 2) << "%";
 
 	event.message = ss.str();
 
@@ -82,8 +83,8 @@ void History::CreateGovernmentFormEvent(Event& event, void* dat, Country* pCount
 		// Get the head of government
 		Politician* primeminister = gov->GetHeadOfGovernment();
 
-		ss << "A government has been appointed by " << pCountry->GetHeadOfState()->GetFullName() << ".\n";
-		ss << "\tThe government will be lead by: " + primeminister->GetFullName();
+		ss << "A government has been appointed by " << pCountry->GetHeadOfState()->GetTitle() << ".\n";
+		ss << "\tThe government will be lead by: " + primeminister->GetTitle();
 	
 		// Make sure the PM has a party to represent
 		if (primeminister->GetParty() != NULL) {
@@ -103,7 +104,7 @@ void History::CreateGovernmentFormEvent(Event& event, void* dat, Country* pCount
 		LegislativeCoalition* legCol = gov->GetCoalition();
 		std::string govType = (legCol->type == CoalitionType::Majority) ? "majority" : "minority";
 
-		ss << "Following recent elections a new " << govType << " government has been formed by " << gov->GetHeadOfGovernment()->GetFullName() << ".\n";
+		ss << "Following recent elections a new " << govType << " government has been formed by " << gov->GetHeadOfGovernment()->GetTitle() << ".\n";
 		ss << "\tThe new government consists of " << gov->GetMinistryCount() << " ministries.\n";
 
 		ss << "\tThe government is lead by the '" << legCol->leader->GetName() << "' party.\n";
