@@ -44,7 +44,7 @@ ElectoralDistrict* ElectoralDistrict::Split(CountryProfile* pProfile) {
 
 }
 
-ElectoralDistrict* ElectoralDistrict::MergeAndDelete(ElectoralDistrict* pSmall, ElectoralDistrict* pAlmostSmall, CountryProfile* pProfile) {
+ElectoralDistrict* ElectoralDistrict::Merge(ElectoralDistrict* pSmall, ElectoralDistrict* pAlmostSmall, CountryProfile* pProfile) {
 
 	ElectoralDistrict* pMergedDistrict = new ElectoralDistrict(pSmall->m_electionLevel);
 	

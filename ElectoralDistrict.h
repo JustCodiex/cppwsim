@@ -57,7 +57,7 @@ public:
 
 	std::vector< ElectoralCity> GetCities() { return m_cities; }
 
-	static ElectoralDistrict* MergeAndDelete(ElectoralDistrict* pSmall, ElectoralDistrict* pAlmostSmall, CountryProfile* pProfile);
+	static ElectoralDistrict* Merge(ElectoralDistrict* pSmall, ElectoralDistrict* pAlmostSmall, CountryProfile* pProfile);
 	
 private:
 

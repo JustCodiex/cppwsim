@@ -2,6 +2,9 @@
 #include "LegislativeChamber.h"
 #include "Country.h"
 #include "RoyalFamily.h"
+#include "ElectoralMap.h"
+#include "Ballot.h"
+#include "PresidentialElection.h"
 
 std::string const getGovTypeName(GovernmentType type) {
 	switch (type) {
@@ -25,6 +28,7 @@ Government::Government() {
     m_targetCountry = 0;
     m_govTerm = 0;
     m_govSupport = 0.0f;
+    m_electionMap = 0;
 	m_govType = GovernmentType::Anarchism;
     m_electionSystem = GovernmentElectoralSystem::ElectoralCollege;
 
@@ -396,9 +400,24 @@ void Government::RemoveMinistry(PolicyArea area, GovernmentMinistry* ministry) {
 
 void Government::ElectGovernment(TimeDate date) {
     
-    // Update dates
-    m_govFormDate = date;
-    m_govNextFormDate = date.addYears(m_govTerm);
+    // Make sure we have an election map
+    if (!m_electionMap) {
+        this->GenerateElectionMap(Random());
+    }
+
+    // Get president
+    PresidentialElectionResults result = PresidentialElection::ElectPresident(m_targetCountry, m_electionMap, (int)m_electionSystem);
+
+    // Make sure president is valid
+    if (result.pWinner) {
+
+
+
+        // Update dates
+        m_govFormDate = date;
+        m_govNextFormDate = date.addYears(m_govTerm);
+
+    }
 
 }
 
@@ -417,6 +436,61 @@ void Government::GetGovernmentRating() {
         }
 
         m_govSupport /= (float)m_govMinistries.size();
+
+    }
+
+}
+
+void Government::GenerateElectionMap(Random random) {
+
+    // If election map exists
+    if (m_electionMap) {
+
+        // clear it
+        m_electionMap->ClearElectoralDistricts();
+
+        // Delete it
+        delete m_electionMap;
+
+        // Point to NULL
+        m_electionMap = 0;
+
+    }
+
+    // Create the electoral map
+    m_electionMap = new ElectoralMap(ElectionLevel::National);
+
+    if (m_electionSystem == GovernmentElectoralSystem::ElectoralCollege) {
+
+        // Get a random amount of electors
+        unsigned short electors = random.NextInt(300, 800);
+
+        // Create a national electoral map for 
+        m_electionMap->CreateNationalElectoralDistrict(m_targetCountry, electors);
+
+    } else if (m_electionSystem == GovernmentElectoralSystem::StateElectoralCollege) {
+        
+        // Amount of electors
+        unsigned short electors  = 0;
+
+        // Elect from states
+        if (m_targetCountry->IsFederation()) {
+
+            electors = m_targetCountry->GetStateCount() * random.NextInt(1, 33);
+
+        } else { // Elect from regions
+
+            electors = m_targetCountry->GetRegionCount() * random.NextInt(1, 33);
+
+        }
+
+        // Create electoral map
+        m_electionMap->CreateNationalElectoralCollege(m_targetCountry, electors, !m_targetCountry->IsFederation(), random.NextBool(0.5f));
+
+    } else {
+
+        // Generate a simple electoral map
+        m_electionMap->CreateNationalElectoralDistrict(m_targetCountry, (unsigned short)m_targetCountry->GetCityCount());
 
     }
 

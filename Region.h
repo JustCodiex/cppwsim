@@ -1,10 +1,10 @@
 #pragma once
 #include <vector>
-#include "City.h"
 #include "Random.h"
 #include "Legislature.h"
+#include "CountryAdministrationLevel.h"
 
-class Region {
+class Region : public CountryAdministrationLevel {
 
 public:
 
@@ -12,10 +12,12 @@ public:
 
 	void Generate(bool isPartOfFederation, Random random);
 
-	unsigned int GetPopulationSize();
+	unsigned int GetPopulationSize() override;
 	int GetCityCount();
 
-	std::vector<City*> GetCities() { return m_cities; }
+	std::vector<City*> GetCities() override { return m_cities; }
+
+	int GetAdminLevel() override { return 1; }
 
 private:
 

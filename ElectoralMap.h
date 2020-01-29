@@ -14,10 +14,16 @@ public:
 	void ClearElectoralDistricts();
 
 	void CreateNationalElectoralDistrict(Country* pCountry, unsigned short seats);
+	void CreateNationalElectoralCollege(Country* pCountry, unsigned short electors, bool byRegion, bool favourSmall);
 
 	ElectoralDistrict* GetElectoralDistrictByIndex(unsigned int index) { return m_electoralDistricts[index]; }
 
 	size_t GetElectoralDistrictCount() { return m_electoralDistricts.size(); }
+
+private:
+
+	// The actual algorithm of splitting or merging districts
+	void CreateDistrictsFromCities(Country* pCountry, std::vector<City*> cities, unsigned short targetCount);
 
 private:
 

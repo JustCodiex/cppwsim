@@ -102,13 +102,19 @@ void Country::GenerateGovernment(Random random) {
 			m_countryGovernment.SetTermLength(random.NextInt(3, 11));
 		}
 
+		// List of chances for different Government Electoral Systems
 		std::vector<Weight<GovernmentElectoralSystem>> govElectoralSystems = {
-			Weight(30.0f, GovernmentElectoralSystem::WinnerTakesAll),
-			Weight(50.0f, GovernmentElectoralSystem::TwoRoundSystem),
+			Weight(15.0f, GovernmentElectoralSystem::WinnerTakesAll),
+			Weight(35.0f, GovernmentElectoralSystem::TwoRoundSystem),
+			Weight(30.0f, GovernmentElectoralSystem::StateElectoralCollege),
 			Weight(20.0f, GovernmentElectoralSystem::ElectoralCollege),
 		};
 
+		// Set the election system
 		m_countryGovernment.SetElectionSystem(random.Select(govElectoralSystems));
+
+		// Generate the electoral map
+		m_countryGovernment.GenerateElectionMap(random);
 
 	}
 
@@ -335,4 +341,34 @@ PoliticalParty* Country::GetPartyByName(std::string partyname) {
 		}
 	}
 	return NULL;
+}
+
+int Country::GetRegionCount() {
+
+	int count = 0;
+
+	for (auto state : m_states) {
+		count += (int)state->GetRegions().size();
+	}
+
+	return count;
+
+}
+
+std::vector<Region*> Country::GetRegions() {
+
+	std::vector<Region*> regions;
+
+	for (auto state : m_states) {
+		for (auto reg : state->GetRegions()) {
+			regions.push_back(reg);
+		}
+	}
+
+	return regions;
+
+}
+
+std::vector<State*> Country::GetStates() {
+	return m_states;
 }

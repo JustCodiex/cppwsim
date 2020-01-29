@@ -237,3 +237,25 @@ void PoliticalParty::AddMember(Politician* pPolitician) {
 	m_members.push_back(member);
 
 }
+
+Politician* PoliticalParty::GetPrimeCandidate() {
+	return this->GetCandidateWithspeciality(PolicyArea::State);
+}
+
+Politician* PoliticalParty::GetCandidateWithspeciality(PolicyArea area) {
+
+	for (PartyMember member : m_members) {
+		if (member.pMember->GetSpeciality() == area) {
+			return member.pMember;
+		}
+	}
+
+	Politician* newPrime = new Politician(Random());
+	newPrime->SetParty(this, 1.0f);
+	newPrime->SetSpeciality(area);
+
+	this->AddMember(newPrime);
+
+	return newPrime;
+
+}

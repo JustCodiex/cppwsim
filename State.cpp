@@ -47,3 +47,17 @@ int State::GetCityCount() {
 	}
 	return count;
 }
+
+std::vector<City*> State::GetCities() {
+
+	std::vector<City*> cities;
+
+	for (auto region : m_regions) {
+		for (auto city : region->GetCities()) {
+			cities.push_back(city);
+		}
+	}
+
+	return cities;
+
+}

@@ -4,6 +4,7 @@
 #include <string>
 #include "Random.h"
 #include "Ideology.h"
+#include "PolicyArea.h"
 
 enum class PartyColour {
 	DARK_RED, RED, PINK, PURPLE,
@@ -43,6 +44,8 @@ public:
 	int GetYear() { return m_establishYear; }
 
 	Politician* GetCandidate(int electionLvl, City* pCity);
+	Politician* GetPrimeCandidate();
+	Politician* GetCandidateWithspeciality(PolicyArea area);
 
 	void SetBreakout(PoliticalParty* pParty) { m_breakoutFrom = pParty; }
 	bool IsBreakoutParty() { return m_breakoutFrom != 0; }

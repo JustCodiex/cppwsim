@@ -5,7 +5,7 @@
 #include "Government.h"
 #include "Legislature.h"
 
-class State {
+class State : public CountryAdministrationLevel {
 
 public:
 	
@@ -14,10 +14,14 @@ public:
 
 	void GenerateRegions(Random random);
 
-	unsigned int GetPopulationSize();
+	unsigned int GetPopulationSize() override;
 	int GetCityCount();
 
 	std::vector<Region*> GetRegions() { return m_regions; }
+
+	std::vector<City*> GetCities() override;
+
+	int GetAdminLevel() override { return 1; }
 
 private:
 

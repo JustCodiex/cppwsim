@@ -65,7 +65,7 @@ int main() {
 
 	TimeDate date = TimeDate(1800, 1, 1);
 
-	bool realtime = true; // Disale this and the simulation goes A LOT faster
+	bool realtime = true; // Disable this and the simulation goes A LOT faster
 
 	while (!date.isDate(2100, 1, 1)) {
 

@@ -62,11 +62,14 @@ public:
 	int GetCityCount();
 
 	int GetStateCount() { return (int)m_states.size(); }
+	int GetRegionCount();
 
 	// SLOW
 	City* GetCityByUnsafeIndex(int index);
 
 	std::vector<City*> GetCities();
+	std::vector<Region*> GetRegions();
+	std::vector<State*> GetStates();
 
 	std::vector<Party> GetPartyList() { return m_parties; }
 	bool HasParty(std::string partyname);

@@ -7,6 +7,8 @@
 
 class Country;
 class Royal;
+class Ballot;
+class ElectoralMap;
 class LegislativeChamber;
 
 enum class GovernmentType {
@@ -18,9 +20,10 @@ enum class GovernmentType {
 };
 
 enum class GovernmentElectoralSystem {
-	WinnerTakesAll,
+	WinnerTakesAll, // AKA Popular Vote
 	TwoRoundSystem,
-	ElectoralCollege, // If StateCount > 1 then use states, otherwise use regions
+	ElectoralCollege,
+	StateElectoralCollege, // If StateCount > 1 then use states, otherwise use regions
 };
 
 std::string const getGovTypeName(GovernmentType type);
@@ -60,6 +63,8 @@ public:
 	GovernmentElectoralSystem GetElectionSystem() { return m_electionSystem; }
 	void SetElectionSystem(GovernmentElectoralSystem sys) { m_electionSystem = sys; }
 
+	void GenerateElectionMap(Random random);
+
 private:
 
 	void GetGovernmentRating();
@@ -77,6 +82,8 @@ private:
 	char m_govTerm;
 	TimeDate m_govFormDate;
 	TimeDate m_govNextFormDate;
+
+	ElectoralMap* m_electionMap;
 
 	LegislativeCoalition m_govCoalition;
 	std::map<PolicyArea, GovernmentMinistry> m_govMinistries;
