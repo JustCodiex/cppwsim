@@ -53,7 +53,7 @@ void Region::GenerateCities(Random random) {
 
 unsigned int Region::GetPopulationSize() {
 	unsigned int count = 0;
-	for (City*& city : m_cities) {
+	for (auto city : m_cities) {
 		count += city->GetPopulationSize();
 	}
 	return count;

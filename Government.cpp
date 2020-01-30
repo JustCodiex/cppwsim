@@ -4,7 +4,6 @@
 #include "RoyalFamily.h"
 #include "ElectoralMap.h"
 #include "Ballot.h"
-#include "PresidentialElection.h"
 
 std::string const getGovTypeName(GovernmentType type) {
 	switch (type) {
@@ -398,11 +397,14 @@ void Government::RemoveMinistry(PolicyArea area, GovernmentMinistry* ministry) {
 
 }
 
-void Government::ElectGovernment(TimeDate date) {
+PresidentialElectionResults Government::ElectGovernment(TimeDate date) {
     
+    // Random
+    Random rand;
+
     // Make sure we have an election map
     if (!m_electionMap) {
-        this->GenerateElectionMap(Random());
+        this->GenerateElectionMap(rand);
     }
 
     // Get president
@@ -411,13 +413,46 @@ void Government::ElectGovernment(TimeDate date) {
     // Make sure president is valid
     if (result.pWinner) {
 
+        // Remove all government ministries
+        m_govMinistries.clear();
 
+        for (int a = 0; a < (int)PolicyArea::_COUNT_; a++) {
+
+            if (a == 0) {
+
+                GovernmentMinistry stateMinistry;
+                result.pWinner->SetTitle(PoliticalTitle::President);
+                stateMinistry.SetMinister(result.pWinner);
+
+                m_govMinistries[PolicyArea::State] = stateMinistry;
+
+            } else if (a <= (int)PolicyArea::Justice || rand.NextBool(0.4f)) {
+
+                GovernmentMinistry ministry;
+
+                if (result.pWinner->IsIndependent() || result.pWinner->GetParty()->GetIdeology()->IsCentrist()) {
+
+                    ministry.SetMinister(new Politician(rand));
+
+                } else {
+
+                    ministry.SetMinister(result.pWinner->GetParty()->GetCandidateWithspeciality((PolicyArea)a));
+
+                }
+
+                m_govMinistries[(PolicyArea)a] = ministry;
+
+            }
+
+        }
 
         // Update dates
         m_govFormDate = date;
         m_govNextFormDate = date.addYears(m_govTerm);
 
     }
+
+    return result;
 
 }
 

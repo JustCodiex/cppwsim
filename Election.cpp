@@ -120,9 +120,11 @@ namespace Election {
 
 		float score = 0.0f;
 
-		if (!pDistrict->GetSeat()->IsVacant()) {
-			if (pDistrict->GetSeat()->GetPolitician() == pPolitician) {
-				score += 0.25f;
+		if (pDistrict->GetSeat() != NULL) {
+			if (!pDistrict->GetSeat()->IsVacant()) {
+				if (pDistrict->GetSeat()->GetPolitician() == pPolitician) {
+					score += 0.25f;
+				}
 			}
 		}
 

@@ -33,7 +33,7 @@ void Country::GenerateGeography(Random random) {
 
 	if (random.NextBool(0.33f)) {
 
-		int stateCount = random.NextInt(2, 101);
+		int stateCount = random.NextInt(2, 55);
 
 		for (int i = 0; i < stateCount; i++) {
 
@@ -231,10 +231,13 @@ void Country::UpdateGovernment(World* pWorld) {
 			if (m_countryGovernment.GetGovernmentType() == GovernmentType::Democracy) {
 			
 				// We democratically elect a president
-				m_countryGovernment.ElectGovernment(pWorld->GetDate());
+				PresidentialElectionResults electionResult = m_countryGovernment.ElectGovernment(pWorld->GetDate());
 			
 				// Assign head of state as well
 				m_headOfState = m_countryGovernment.GetHeadOfGovernment();
+
+				// Add this event to history
+				pWorld->GetHistory()->AddEvent(pWorld->GetDate(), this, EVENT_TYPE::ELECTED_GOVERNMENT, &electionResult);
 
 			} else {
 				

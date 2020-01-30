@@ -11,6 +11,8 @@ struct PresidentialElectionResults {
 	Politician* pWinner;
 	double turnout;
 	unsigned int totalVotes;
+	unsigned short electoralCollegeElectors;
+	std::map<Politician*, unsigned short> candidateElectoralVotes;
 	std::map<Politician*, unsigned int> candidateVotes;
 	std::map<Politician*, double> candidateVoteShare;
 };

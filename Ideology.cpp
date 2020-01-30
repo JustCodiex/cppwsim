@@ -61,6 +61,9 @@ bool Ideology::IsCombination(POLITICAL_IDEOLOGY first, POLITICAL_IDEOLOGY second
     return (first == third && second == fourth) || (first == fourth && second == third);
 }
 
+bool Ideology::IsCentrist() {
+    return (m_collectiveStance >= -0.35f && m_collectiveStance <= 0.35f) && (m_libStance >= -0.35f && m_libStance <= 0.35f);
+}
 
 #pragma region Static Ideology Functions
 

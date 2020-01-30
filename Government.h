@@ -4,6 +4,7 @@
 #include "TimeDate.h"
 #include "GovernmentMinistry.h"
 #include "LegislativeCoalition.h"
+#include "PresidentialElection.h"
 
 class Country;
 class Royal;
@@ -44,7 +45,7 @@ public:
 	void AppointGovernment(Random random, TimeDate date);
 
 	// Elect a new government
-	void ElectGovernment(TimeDate date);
+	PresidentialElectionResults ElectGovernment(TimeDate date);
 
 	Country* GetCountry() { return m_targetCountry; }
 	void SetCountry(Country* pCountry) { m_targetCountry = pCountry; }

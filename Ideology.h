@@ -110,6 +110,9 @@ public:
 	// Checks if ideology is compatible (can work with) with other ideology
 	bool IsCompatible(Ideology* pIdeology);
 
+	// Checks if ideology is centristic
+	bool IsCentrist();
+
 private:
 
 	bool IsCombination(POLITICAL_IDEOLOGY first, POLITICAL_IDEOLOGY second, POLITICAL_IDEOLOGY third, POLITICAL_IDEOLOGY fourth);

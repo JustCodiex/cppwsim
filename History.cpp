@@ -66,7 +66,7 @@ void History::CreateLegislatureElectionEvent(Event& event, void* dat) {
 
 	}
 
-	ss << "\nA total of " << results->totalVotes << " votes were cast with a turnout of " << to_string(results->turnout * 100.0f, 2) << "%";
+	ss << "\nA total of " << to_quantity(results->totalVotes) << " votes were cast with a turnout of " << to_string(results->turnout * 100.0f, 2) << "%";
 
 	event.message = ss.str();
 
@@ -74,11 +74,12 @@ void History::CreateLegislatureElectionEvent(Event& event, void* dat) {
 
 void History::CreateGovernmentFormEvent(Event& event, void* dat, Country* pCountry) {
 
-	Government* gov = (Government*)dat;
-
 	std::stringstream ss;
 
 	if (event.type == EVENT_TYPE::APPOINT_GOVERNMENT) {
+
+		// Government
+		Government* gov = (Government*)dat;
 
 		// Get the head of government
 		Politician* primeminister = gov->GetHeadOfGovernment();
@@ -97,9 +98,48 @@ void History::CreateGovernmentFormEvent(Event& event, void* dat, Country* pCount
 
 	} else if (event.type == EVENT_TYPE::ELECTED_GOVERNMENT) {
 
+		// Government
+		Government* gov = pCountry->GetGovernment();
 
+		// Get results
+		PresidentialElectionResults* results = (PresidentialElectionResults*)dat;
+
+		ss << "A new government has been democratically elected.\n";
+
+		if (gov->GetElectionSystem() == GovernmentElectoralSystem::WinnerTakesAll || gov->GetElectionSystem() == GovernmentElectoralSystem::TwoRoundSystem) {
+
+			ss << "Using the " << ((gov->GetElectionSystem() == GovernmentElectoralSystem::TwoRoundSystem) ? "Two-Round" : "Winner Takes All") << " method, ";
+			ss << gov->GetHeadOfGovernment()->GetTitle() << " has been elected with " << to_string(results->candidateVoteShare[results->pWinner] * 100.0, 2) << "% of the vote.\n";
+
+			ss << "\tElection Results:\n";
+
+			for (auto c : results->candidateVoteShare) {
+				ss << "\t\t" << c.first->GetFullName() << " (" << c.first->GetParty()->GetShort() << ") received " << to_string(c.second * 100.0, 2) << "%.\n";
+			}
+
+			ss << "\tVoter turnout: " << to_string(results->turnout * 100.0, 2) << "%.\n";
+
+		} else {
+
+			ss << "Using the Electoral College election system, with " << results->electoralCollegeElectors << " electors, ";
+			ss << gov->GetHeadOfGovernment()->GetTitle() << " has been elected with " << results->candidateElectoralVotes[results->pWinner] << " electoral votes.\n";
+
+			ss << "\tElection Results:\n";
+
+			for (auto c : results->candidateElectoralVotes) {
+				ss << "\t\t" << c.first->GetFullName() << " (" << c.first->GetParty()->GetShort() << ") received " << c.second << " electoral college votes.\n";
+			}
+
+			ss << "\tVoter turnout: " << to_string(results->turnout * 100.0, 2) << "%.\n";
+
+		}
+
+		ss << "\tThe new government consists of " << gov->GetMinistryCount() << " ministries.";
 
 	} else if (event.type == EVENT_TYPE::ELECTION_LEGISLATURE_GOVERNMENT) {
+
+		// Government
+		Government* gov = (Government*)dat;
 
 		LegislativeCoalition* legCol = gov->GetCoalition();
 		std::string govType = (legCol->type == CoalitionType::Majority) ? "majority" : "minority";
