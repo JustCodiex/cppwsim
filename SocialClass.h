@@ -1,5 +1,7 @@
 #pragma once
 
+typedef unsigned long long PopSize;
+
 enum class SOCIAL_CLASS : int {
 	
 	LOWER_CLASS,

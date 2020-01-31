@@ -32,9 +32,9 @@ void State::GenerateRegions(Random random) {
 
 }
 
-unsigned int State::GetPopulationSize() {
-	unsigned int count = 0;
-	for (Region*& region : m_regions) {
+PopSize State::GetPopulationSize() {
+	PopSize count = 0;
+	for (auto region : m_regions) {
 		count += region->GetPopulationSize();
 	}
 	return count;
@@ -42,7 +42,7 @@ unsigned int State::GetPopulationSize() {
 
 int State::GetCityCount() {
 	int count = 0;
-	for (Region*& region : m_regions) {
+	for (auto region : m_regions) {
 		region += region->GetCityCount();
 	}
 	return count;

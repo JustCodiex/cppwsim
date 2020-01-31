@@ -4,6 +4,7 @@
 City::City() {
 	
 	m_population = 0;
+	m_isCoastal = false;
 	m_size = Size::CITYSIZE_SMALL;
 
 }
@@ -47,9 +48,9 @@ void City::GenerateDemographics(Random random) {
 
 }
 
-unsigned int City::GetVoterCount(CountryProfile* pProfile) {
+PopSize City::GetVoterCount(CountryProfile* pProfile) {
 
-	unsigned int votPop = 0;
+	PopSize votPop = 0;
 
 	for (int i = 0; i < (int)SOCIAL_CLASS::CLASS_COUNT; i++) {
 		votPop += this->GetSocialClass((SOCIAL_CLASS)i, pProfile, true);
@@ -59,16 +60,16 @@ unsigned int City::GetVoterCount(CountryProfile* pProfile) {
 
 }
 
-unsigned int City::GetSocialClass(SOCIAL_CLASS socialClass, CountryProfile* pProfile, bool voters) {
+PopSize City::GetSocialClass(SOCIAL_CLASS socialClass, CountryProfile* pProfile, bool voters) {
 
-	unsigned int pop = (unsigned int)(m_socialClass.At((int)socialClass) * m_population);
+	PopSize pop = (PopSize)((double)m_socialClass.At((int)socialClass) * m_population);
 
 	if (!voters) {
 		return pop;
 	}
 
 	if (!pProfile->voting_female_suffrage) {
-		pop = (unsigned int)(pop * 0.51f);
+		pop = (PopSize)(pop * 0.51);
 	}
 
 	if (pProfile->voting_require_land_and_business && socialClass == SOCIAL_CLASS::UPPER_CLASS) {
@@ -79,8 +80,8 @@ unsigned int City::GetSocialClass(SOCIAL_CLASS socialClass, CountryProfile* pPro
 		} else if (pProfile->voting_require_business && socialClass >= SOCIAL_CLASS::MIDDLE_CLASS) {
 			return pop;
 		} else {
-			if (pProfile->voting_require_business || pProfile->voting_require_land && socialClass >= SOCIAL_CLASS::LOWER_MIDDLE_CLASS) {
-				return (unsigned int)(pop * 0.4f);
+			if ((pProfile->voting_require_business || pProfile->voting_require_land) && socialClass >= SOCIAL_CLASS::LOWER_MIDDLE_CLASS) {
+				return (PopSize)(pop * 0.225);
 			} else if (!pProfile->voting_require_business && !pProfile->voting_require_land) {
 				return pop;
 			}

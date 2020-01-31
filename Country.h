@@ -58,7 +58,7 @@ public:
 	bool IsFederation() { return (int)m_states.size() > 1; }
 	bool IsRepublic() { return m_countryGovernment.GetGovernmentType() == GovernmentType::Democracy; }
 
-	unsigned int GetPopulationSize();
+	PopSize GetPopulationSize();
 	int GetCityCount();
 
 	int GetStateCount() { return (int)m_states.size(); }

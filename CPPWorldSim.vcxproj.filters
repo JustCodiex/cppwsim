@@ -87,9 +87,6 @@
     <ClCompile Include="City.cpp">
       <Filter>Source Files\geography</Filter>
     </ClCompile>
-    <ClCompile Include="CityDistrict.cpp">
-      <Filter>Source Files\geography</Filter>
-    </ClCompile>
     <ClCompile Include="Region.cpp">
       <Filter>Source Files\geography</Filter>
     </ClCompile>
@@ -192,9 +189,6 @@
       <Filter>Header Files\people</Filter>
     </ClInclude>
     <ClInclude Include="City.h">
-      <Filter>Header Files\geography</Filter>
-    </ClInclude>
-    <ClInclude Include="CityDistrict.h">
       <Filter>Header Files\geography</Filter>
     </ClInclude>
     <ClInclude Include="Region.h">

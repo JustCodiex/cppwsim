@@ -132,10 +132,10 @@ namespace Election {
 
 	}
 
-	std::map<Politician*, unsigned int> National(Ballot* pBallot, ElectoralDistrict* pDistrict, Country* pCountry) {
+	std::map<Politician*, PopSize> National(Ballot* pBallot, ElectoralDistrict* pDistrict, Country* pCountry) {
 
-		std::map<Politician*, unsigned int> results;
-		unsigned int popSize = (unsigned int)(pDistrict->GetVoterCount() * (0.97f - pCountry->GetProfile()->countryPoliticalApathy));
+		std::map<Politician*, PopSize> results;
+		PopSize popSize = (PopSize)(pDistrict->GetVoterCount() * (0.97 - pCountry->GetProfile()->countryPoliticalApathy));
 
 		std::map<Politician*, float> scores;
 		float scoreSum = 0.0f;
@@ -155,16 +155,16 @@ namespace Election {
 
 		}
 
-		int totalPseudoVotes = 0;
-		std::map<Politician*, int> pseudoVoteScore;
+		PopSize totalPseudoVotes = 0;
+		std::map<Politician*, PopSize> pseudoVoteScore;
 
 		for (auto voteScore : scores) {
-			pseudoVoteScore[voteScore.first] = (int)(voteScore.second * (scoreSum / (float)pBallot->GetBallotSize()) * popSize);
+			pseudoVoteScore[voteScore.first] = (PopSize)(voteScore.second * (scoreSum / (double)pBallot->GetBallotSize()) * popSize);
 			totalPseudoVotes += pseudoVoteScore[voteScore.first];
 		}
 
 		for (auto vote : pseudoVoteScore) {
-			results[vote.first] = (int)((vote.second / (double)totalPseudoVotes) * popSize);
+			results[vote.first] = (PopSize)((vote.second / (double)totalPseudoVotes) * popSize);
 		}
 
 		return results;

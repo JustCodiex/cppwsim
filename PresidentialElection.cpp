@@ -101,7 +101,7 @@ namespace PresidentialElection {
         PresidentialElectionResults voteResults = VoteOnPresidentFromBallot(pBallot, pCountry, pElectoralMap);
 
         // Votes to beat
-        unsigned int bestVote = voteResults.totalVotes / 2;
+        PopSize bestVote = voteResults.totalVotes / 2;
 
         Politician* bestCandidate = NULL;
         Politician* secondBestCandidate = NULL;

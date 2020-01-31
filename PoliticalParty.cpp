@@ -250,7 +250,7 @@ Politician* PoliticalParty::GetCandidateWithspeciality(PolicyArea area) {
 		}
 	}
 
-	Politician* newPrime = new Politician(Random());
+	Politician* newPrime = new Politician(m_random);
 	newPrime->SetParty(this, 1.0f);
 	newPrime->SetSpeciality(area);
 

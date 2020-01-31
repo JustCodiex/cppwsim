@@ -10,6 +10,8 @@ class LegislativeSeat;
 
 struct CountryProfile;
 
+typedef unsigned long long PopSize;
+
 enum class ElectionLevel {
 	Referendum,
 	Local,
@@ -18,9 +20,9 @@ enum class ElectionLevel {
 };
 
 struct ElectoralDistrictResult {
-	std::map< Politician*, unsigned int> votes;
+	std::map< Politician*, PopSize> votes;
 	std::map< Politician*, double> voteshare;
-	unsigned int totalVotes;
+	PopSize totalVotes;
 	double turnout;
 };
 
@@ -47,7 +49,7 @@ public:
 
 	LegislativeSeat* GetSeat() { return m_seat; }
 
-	unsigned int GetVoterCount() { return m_voters; }
+	PopSize GetVoterCount() { return m_voters; }
 
 	Ballot* CreateBallot(Country* pCountry);
 
@@ -65,7 +67,7 @@ private:
 
 private:
 
-	unsigned int m_voters;
+	PopSize m_voters;
 
 	LegislativeSeat* m_seat;
 

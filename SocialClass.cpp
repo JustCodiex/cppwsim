@@ -2,6 +2,7 @@
 #include <math.h>
 
 const float unit_square_dst = sqrtf(2.0f);
+const float unit_square_dst2 = unit_square_dst * 2.0f;
 
 float SocialClass_BaseCalculator(float lib, float col, bool isCoastal, bool hasUniversity, float libMod, float colMod, float libmin, float libmax, float colmin, float colmax) {
 
@@ -15,7 +16,7 @@ float SocialClass_BaseCalculator(float lib, float col, bool isCoastal, bool hasU
 	float col_max = colmax + colMod; // Maximum collectivist acceptance
 
 	// If liberal stance is within the stance of the social class
-	if (lib_min < lib && lib < lib_max) {
+	if (lib_min <= lib && lib <= lib_max) {
 		
 		// Add a full point to score
 		score++;
@@ -29,7 +30,7 @@ float SocialClass_BaseCalculator(float lib, float col, bool isCoastal, bool hasU
 	}
 
 	// If conservative stance is within stance of the social class
-	if (col_min < col && col < col_max) {
+	if (col_min <= col && col <= col_max) {
 
 		// Add a full point to score
 		score++;
@@ -44,14 +45,14 @@ float SocialClass_BaseCalculator(float lib, float col, bool isCoastal, bool hasU
 
 	float libdist = fabsf(lib - libMod); // Calculate liberal distance to country's core
 	float coldist = fabsf(col - colMod); // Calculate collectivist distance to country's core
-	score += unit_square_dst - sqrtf((libdist * libdist) + (coldist * coldist)); // Add distance modifier to score
+	score += sqrtf((libdist * libdist) + (coldist * coldist)); // Add distance modifier to score
 
-	return score / (2.25f + unit_square_dst);
+	return score / (2.25f + unit_square_dst2);
 
 }
 
 float SocialClass_SmallCity_WorkingClass(float lib, float col, bool isCoastal, bool hasUniversity, float libModifier, float colModifier) {
-	const float libmin = -0.1f;
+	const float libmin = 0.1f;
 	const float libmax = 0.4f;
 	const float colmin = 0.1f;
 	const float colmax = 0.3f;
@@ -59,33 +60,33 @@ float SocialClass_SmallCity_WorkingClass(float lib, float col, bool isCoastal, b
 }
 
 float SocialClass_SmallCity_LowerMiddleClass(float lib, float col, bool isCoastal, bool hasUniversity, float libModifier, float colModifier) {
-	const float libmin = 0.0f;
-	const float libmax = 0.2f;
+	const float libmin = 0.1f;
+	const float libmax = 0.4f;
 	const float colmin = -0.1f;
 	const float colmax = 0.2f;
 	return SocialClass_BaseCalculator(lib, col, isCoastal, hasUniversity, libModifier, colModifier, libmin, libmax, colmin, colmax);
 }
 
 float SocialClass_SmallCity_MiddleClass(float lib, float col, bool isCoastal, bool hasUniversity, float libModifier, float colModifier) {
-	const float libmin = 0.0f;
+	const float libmin = 0.1f;
 	const float libmax = 0.7f;
-	const float colmin = 0.1f;
-	const float colmax = 0.3f;
+	const float colmin = 0.2f;
+	const float colmax = 0.6f;
 	return SocialClass_BaseCalculator(lib, col, isCoastal, hasUniversity, libModifier, colModifier, libmin, libmax, colmin, colmax);
 }
 
 float SocialClass_SmallCity_UpperMiddleClass(float lib, float col, bool isCoastal, bool hasUniversity, float libModifier, float colModifier) {
-	const float libmin = 0.3f;
-	const float libmax = 0.5f;
-	const float colmin = 0.5f;
-	const float colmax = 0.8f;
+	const float libmin = 0.4f;
+	const float libmax = 0.7f;
+	const float colmin = 0.6f;
+	const float colmax = 1.0f;
 	return SocialClass_BaseCalculator(lib, col, isCoastal, hasUniversity, libModifier, colModifier, libmin, libmax, colmin, colmax);
 }
 
 float SocialClass_SmallCity_UpperClass(float lib, float col, bool isCoastal, bool hasUniversity, float libModifier, float colModifier) {
-	const float libmin = -0.2f;
-	const float libmax = 0.2f;
-	const float colmin = 0.8f;
+	const float libmin = 0.1f;
+	const float libmax = 0.4f;
+	const float colmin = 0.75f;
 	const float colmax = 1.0f;
 	return SocialClass_BaseCalculator(lib, col, isCoastal, hasUniversity, libModifier, colModifier, libmin, libmax, colmin, colmax);
 }
@@ -99,10 +100,10 @@ float SocialClass_LargeCity_WorkingClass(float lib, float col, bool isCoastal, b
 }
 
 float SocialClass_LargeCity_LowerMiddleClass(float lib, float col, bool isCoastal, bool hasUniversity, float libModifier, float colModifier) {
-	const float libmin = 0.0f;
+	const float libmin = -0.2f;
 	const float libmax = 0.2f;
-	const float colmin = -0.1f;
-	const float colmax = 0.2f;
+	const float colmin = -0.4f;
+	const float colmax = 0.5f;
 	return SocialClass_BaseCalculator(lib, col, isCoastal, hasUniversity, libModifier, colModifier, libmin, libmax, colmin, colmax);
 }
 
@@ -131,8 +132,8 @@ float SocialClass_LargeCity_UpperClass(float lib, float col, bool isCoastal, boo
 }
 
 float SocialClass_Metropolis_WorkingClass(float lib, float col, bool isCoastal, bool hasUniversity, float libModifier, float colModifier) {
-	const float libmin = -1.0f;
-	const float libmax = 0.4f;
+	const float libmin = -0.4f;
+	const float libmax = 0.6f;
 	const float colmin = -1.0f;
 	const float colmax = -0.6f;
 	return SocialClass_BaseCalculator(lib, col, isCoastal, hasUniversity, libModifier, colModifier, libmin, libmax, colmin, colmax);
@@ -156,16 +157,16 @@ float SocialClass_Metropolis_MiddleClass(float lib, float col, bool isCoastal, b
 
 float SocialClass_Metropolis_UpperMiddleClass(float lib, float col, bool isCoastal, bool hasUniversity, float libModifier, float colModifier) {
 	const float libmin = 0.3f;
-	const float libmax = 0.5f;
-	const float colmin = 0.5f;
-	const float colmax = 0.8f;
+	const float libmax = 0.6f;
+	const float colmin = 0.1f;
+	const float colmax = 0.6f;
 	return SocialClass_BaseCalculator(lib, col, isCoastal, hasUniversity, libModifier, colModifier, libmin, libmax, colmin, colmax);
 }
 
 float SocialClass_Metropolis_UpperClass(float lib, float col, bool isCoastal, bool hasUniversity, float libModifier, float colModifier) {
 	const float libmin = -0.2f;
-	const float libmax = 0.2f;
-	const float colmin = 0.8f;
+	const float libmax = 0.4f;
+	const float colmin = 0.4f;
 	const float colmax = 1.0f;
 	return SocialClass_BaseCalculator(lib, col, isCoastal, hasUniversity, libModifier, colModifier, libmin, libmax, colmin, colmax);
 }

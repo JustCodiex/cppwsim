@@ -3,7 +3,6 @@
 #include "Random.h"
 #include "Legislature.h"
 #include "Government.h"
-#include "CityDistrict.h"
 #include "FixedChart.h"
 #include "SocialClass.h"
 
@@ -23,10 +22,10 @@ public:
 	City();
 	City(Size size, Random random);
 
-	unsigned int GetPopulationSize() { return m_population; }
-	unsigned int GetVoterCount(CountryProfile* pProfile);
+	PopSize GetPopulationSize() { return m_population; }
+	PopSize GetVoterCount(CountryProfile* pProfile);
 
-	unsigned int GetSocialClass(SOCIAL_CLASS socialClass, CountryProfile* pProfile, bool voters = false);
+	PopSize GetSocialClass(SOCIAL_CLASS socialClass, CountryProfile* pProfile, bool voters = false);
 
 	FixedChart GetSocialClassChart() { return m_socialClass; }
 
@@ -47,7 +46,6 @@ private:
 
 	FixedChart m_socialClass;
 
-	std::vector<CityDistrict> m_districts;
-	unsigned int m_population;
+	PopSize m_population;
 
 };

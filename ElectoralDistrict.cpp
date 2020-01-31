@@ -21,7 +21,7 @@ void ElectoralDistrict::SetDistrict(City* pCity, float fSizePercentage, CountryP
 void ElectoralDistrict::UpdateVoterCount(CountryProfile* pProfile) {
 	m_voters = 0;
 	for (auto city : m_cities) {
-		m_voters += (unsigned int)(city.city->GetVoterCount(pProfile) * city.partition);
+		m_voters += (PopSize)(city.city->GetVoterCount(pProfile) * (double)city.partition);
 	}
 }
 
@@ -105,8 +105,8 @@ ElectoralDistrictResult ElectoralDistrict::CastVotes(Ballot* pBallot, Country* p
 	results.totalVotes = 0;
 
 	if (m_electionLevel == ElectionLevel::National) {
-;
-		std::map<Politician*, unsigned int> result = Election::National(pBallot, this, pCountry);
+
+		std::map<Politician*, PopSize> result = Election::National(pBallot, this, pCountry);
 
 		for (auto votes : result) {
 			results.votes[votes.first] = votes.second;

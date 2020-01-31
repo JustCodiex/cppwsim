@@ -23,7 +23,7 @@ void Legislature::GenerateLegislature(Country* pCountry, Random random) {
 
 	m_targetCountry = pCountry;
 
-	unsigned int popSize = pCountry->GetPopulationSize();
+	PopSize popSize = pCountry->GetPopulationSize();
 
 	m_isBicameral = random.NextBool(0.2f);
 	int chamberCount = (m_isBicameral) ? 2 : 1;

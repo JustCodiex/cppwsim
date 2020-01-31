@@ -240,7 +240,7 @@ LegislativeChamber::LegislatureElectionResult LegislativeChamber::HoldProportion
 	}
 
 	// Keep track of votes for each party
-	std::map<Politician*, int> voteShare = Proportional_Base(districtVotes, result, divBy, true);
+	std::map<Politician*, PopSize> voteShare = Proportional_Base(districtVotes, result, divBy, true);
 
 	if (m_proportionalMethod == ProportionalMethod::PM_DHONDT) {
 		Proportional_DHondtMethod(result.totalVotes, seats, voteShare, result, electionDate);
@@ -275,7 +275,7 @@ LegislativeChamber::LegislatureElectionResult LegislativeChamber::HoldTwoRoundSy
 	for (auto districtResult : districtVotes) {
 
 		// Calculate min votes to get elected without a runoff
-		unsigned int noRunoffVotes = districtResult.totalVotes / 2;
+		PopSize noRunoffVotes = districtResult.totalVotes / 2;
 
 		// No competition, just assign
 		if (districtResult.votes.size() == 1) {
@@ -439,7 +439,7 @@ LegislativeChamber::LegislatureElectionResult LegislativeChamber::HoldMixedElect
 	if (propSeats.size() > 0) { // The proportional part
 
 		// Keep track of votes for each party
-		std::map<Politician*, int> voteShare = Proportional_Base(districtVotes, result, divBy, true);
+		std::map<Politician*, PopSize> voteShare = Proportional_Base(districtVotes, result, divBy, true);
 
 		if (m_proportionalMethod == ProportionalMethod::PM_DHONDT) {
 			Proportional_DHondtMethod(result.totalVotes, propSeats, voteShare, result, electionDate);
@@ -457,10 +457,10 @@ LegislativeChamber::LegislatureElectionResult LegislativeChamber::HoldMixedElect
 
 }
 
-std::map<Politician*, int> LegislativeChamber::Proportional_Base(std::vector< ElectoralDistrictResult> districtVotes, LegislatureElectionResult& chamberResults, double& divBy, bool modChamberResults) {
+std::map<Politician*, PopSize> LegislativeChamber::Proportional_Base(std::vector< ElectoralDistrictResult> districtVotes, LegislatureElectionResult& chamberResults, double& divBy, bool modChamberResults) {
 
 	// Keep track of votes for each party
-	std::map<Politician*, int> voteShare;
+	std::map<Politician*, PopSize> voteShare;
 
 	// Loop throgh electoral vote results
 	for (size_t i = 0; i < districtVotes.size(); i++) {
@@ -491,11 +491,11 @@ std::map<Politician*, int> LegislativeChamber::Proportional_Base(std::vector< El
 
 }
 
-void LegislativeChamber::Proportional_DHondtMethod(unsigned int totalVotes, std::vector<int> seats, std::map<Politician*, int> candidateVotes, LegislatureElectionResult& chamberResults, TimeDate electionDate) {
+void LegislativeChamber::Proportional_DHondtMethod(PopSize totalVotes, std::vector<int> seats, std::map<Politician*, PopSize> candidateVotes, LegislatureElectionResult& chamberResults, TimeDate electionDate) {
 
 	int remainingSeats = (int)seats.size();
 
-	std::map<PoliticalParty*, unsigned int> partyVotes;
+	std::map<PoliticalParty*, PopSize> partyVotes;
 	std::map<PoliticalParty*, unsigned short> partySeats;
 	std::map<PoliticalParty*, std::vector<Politician*>> partyCandidates;
 
@@ -516,10 +516,10 @@ void LegislativeChamber::Proportional_DHondtMethod(unsigned int totalVotes, std:
 
 	while (remainingSeats > 0) {
 	
-		std::map<PoliticalParty*, unsigned int> partyQuotas;
+		std::map<PoliticalParty*, PopSize> partyQuotas;
 
 		for (auto votes : partyVotes) {
-			partyQuotas[votes.first] = votes.second / (partySeats[votes.first] + 1);
+			partyQuotas[votes.first] = votes.second / ((PopSize)partySeats[votes.first] + 1);
 		}
 
 		PoliticalParty* largestQuotaParty = NULL;
@@ -531,7 +531,7 @@ void LegislativeChamber::Proportional_DHondtMethod(unsigned int totalVotes, std:
 		}
 
 		partySeats[largestQuotaParty]++;
-		partyVotes[largestQuotaParty] /= partySeats[largestQuotaParty] + 1;
+		partyVotes[largestQuotaParty] /= (PopSize)partySeats[largestQuotaParty] + 1;
 
 		remainingSeats--;
 
@@ -559,13 +559,13 @@ void LegislativeChamber::Proportional_DHondtMethod(unsigned int totalVotes, std:
 
 }
 
-void LegislativeChamber::Proportional_ImperialMethod(unsigned int totalVotes, std::vector<int> seats, std::map<Politician*, int> candidateVotes, LegislatureElectionResult& chamberResults, TimeDate electionDate) {
+void LegislativeChamber::Proportional_ImperialMethod(PopSize totalVotes, std::vector<int> seats, std::map<Politician*, PopSize> candidateVotes, LegislatureElectionResult& chamberResults, TimeDate electionDate) {
 
 	// The remaining amount of seats to allocate
-	int remainingSeats = (int)seats.size();
+	PopSize remainingSeats = (PopSize)seats.size();
 
 	// The quota (min votes needed to win)
-	int quota = totalVotes / (remainingSeats + 2);
+	PopSize quota = totalVotes / (remainingSeats + 2);
 
 	// Attempts at assigning a seat
 	int attemps = 0;
@@ -591,7 +591,7 @@ void LegislativeChamber::Proportional_ImperialMethod(unsigned int totalVotes, st
 
 			remainingSeats--;
 
-			int leftover = candidateVotes[largest] - quota;
+			PopSize leftover = candidateVotes[largest] - quota;
 
 			candidateVotes.erase(candidateVotes.find(largest));
 
@@ -866,14 +866,19 @@ PoliticalParty* LegislativeChamber::GetLargestParty() {
 
 PoliticalParty* LegislativeChamber::GetBiggestCoalitionLeader() {
 
+	// Biggest coalition
 	LegislativeCoalition coalition;
 
 	for (auto col : m_legislativeCoalitions) {
+		
+		// Does the coalition have more seats than current coalition?
 		if (col.seats > coalition.seats) {
-			coalition = col;
+			coalition = col; // Update biggest coalition
 		}
+
 	}
 
+	// Return the leader of the biggest coalition
 	return coalition.leader;
 
 }

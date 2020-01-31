@@ -269,9 +269,9 @@ void Country::UpdateRoyalFamily(World* pWorld) {
 
 }
 
-unsigned int Country::GetPopulationSize() {
-	unsigned int size = 0;
-	for (State*& state : m_states) {
+PopSize Country::GetPopulationSize() {
+	PopSize size = 0;
+	for (auto state : m_states) {
 		size += state->GetPopulationSize();
 	}
 	return size;
@@ -279,7 +279,7 @@ unsigned int Country::GetPopulationSize() {
 
 int Country::GetCityCount() {
 	int count = 0;
-	for (State*& state : m_states) {
+	for (auto state : m_states) {
 		count += state->GetCityCount();
 	}
 	return count;

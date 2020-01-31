@@ -9,8 +9,10 @@ class Politician;
 class PoliticalParty;
 class ElectoralDistrict;
 
+typedef unsigned long long PopSize;
+
 namespace Election {
 
-	std::map<Politician*, unsigned int> National(Ballot* pBallot, ElectoralDistrict* pDistrict, Country* pCountry);
+	std::map<Politician*, PopSize> National(Ballot* pBallot, ElectoralDistrict* pDistrict, Country* pCountry);
 
 }

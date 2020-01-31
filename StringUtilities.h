@@ -5,6 +5,9 @@
 // Return the quantified number in string format
 std::string to_quantity(unsigned int quantity);
 
+// Return the quantified number in string format
+std::string to_quantity(unsigned long long quantity);
+
 // Return the number in a string format with decimals
 std::string to_string(double n, int decimals);
 

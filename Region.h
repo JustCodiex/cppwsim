@@ -12,7 +12,7 @@ public:
 
 	void Generate(bool isPartOfFederation, Random random);
 
-	unsigned int GetPopulationSize() override;
+	PopSize GetPopulationSize() override;
 	int GetCityCount();
 
 	std::vector<City*> GetCities() override { return m_cities; }
@@ -20,6 +20,8 @@ public:
 	int GetAdminLevel() override { return 1; }
 
 private:
+
+	City* NewCity(int size, Random random);
 
 	void GenerateCities(Random random);
 

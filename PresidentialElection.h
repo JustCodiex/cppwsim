@@ -7,14 +7,22 @@ class Country;
 class Politician;
 class ElectoralMap;
 
+typedef unsigned long long PopSize;
+
 struct PresidentialElectionResults {
 	Politician* pWinner;
 	double turnout;
-	unsigned int totalVotes;
+	PopSize totalVotes;
 	unsigned short electoralCollegeElectors;
 	std::map<Politician*, unsigned short> candidateElectoralVotes;
-	std::map<Politician*, unsigned int> candidateVotes;
+	std::map<Politician*, PopSize> candidateVotes;
 	std::map<Politician*, double> candidateVoteShare;
+	PresidentialElectionResults() {
+		pWinner = 0;
+		turnout = 0.0;
+		totalVotes = 0;
+		electoralCollegeElectors = -1;
+	}
 };
 
 namespace PresidentialElection {

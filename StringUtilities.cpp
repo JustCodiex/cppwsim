@@ -3,10 +3,14 @@
 #include <iomanip>
 
 std::string to_quantity(unsigned int quantity) {
-	
+	return to_quantity((unsigned long long)quantity);
+}
+
+std::string to_quantity(unsigned long long quantity) {
+
 	std::stringstream ss;
 	std::ostringstream os;
-	
+
 	os << std::fixed;
 	os << std::setprecision(2);
 

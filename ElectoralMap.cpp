@@ -50,8 +50,8 @@ void ElectoralMap::CreateDistrictsFromCities(Country* pCountry, std::vector<City
 			// For all city districts
 			for (size_t i = 1; i < m_electoralDistricts.size(); i++) {
 
-				unsigned int thisPop = m_electoralDistricts[i]->GetVoterCount(); // Current population we're looking at
-				unsigned int largestPop = m_electoralDistricts[largest]->GetVoterCount(); // Currently largest population
+				PopSize thisPop = m_electoralDistricts[i]->GetVoterCount(); // Current population we're looking at
+				PopSize largestPop = m_electoralDistricts[largest]->GetVoterCount(); // Currently largest population
 
 				// Is this city larger than found largest?
 				if (thisPop > largestPop) {
@@ -82,7 +82,7 @@ void ElectoralMap::CreateDistrictsFromCities(Country* pCountry, std::vector<City
 			for (size_t i = 0; i < m_electoralDistricts.size(); i++) {
 
 				// Get voters in district
-				unsigned int voters = m_electoralDistricts[i]->GetVoterCount();
+				PopSize voters = m_electoralDistricts[i]->GetVoterCount();
 
 				// If v[smallest] < v[i] < v[nextSmallest] then update nextsmallest
 				if (voters > m_electoralDistricts[smallest]->GetVoterCount() && voters < m_electoralDistricts[nextSmallest]->GetVoterCount()) {
@@ -150,7 +150,7 @@ void ElectoralMap::CreateNationalElectoralCollege(Country* pCountry, unsigned sh
 		std::vector<CountryAdministrationLevel*> adminLvls;
 
 		// The total population size
-		unsigned int totalPop = 0;
+		PopSize totalPop = 0;
 
 		// Populate vector
 		if (byRegion) {
@@ -173,7 +173,6 @@ void ElectoralMap::CreateNationalElectoralCollege(Country* pCountry, unsigned sh
 		
 			// Calculate elector count
 			unsigned short count = (unsigned short)(admin->GetPopulationSize() / (double)totalPop);
-
 
 			// Get cities
 			std::vector<City*> cities = admin->GetCities();

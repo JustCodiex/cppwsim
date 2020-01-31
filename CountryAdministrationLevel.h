@@ -11,7 +11,7 @@ public:
 	virtual int GetAdminLevel() = 0;
 
 	// Get the size of the population
-	virtual unsigned int GetPopulationSize() = 0;
+	virtual PopSize GetPopulationSize() = 0;
 
 	// Get the cities under the administration level
 	virtual std::vector<City*> GetCities() = 0;

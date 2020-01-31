@@ -19,21 +19,39 @@ void Region::Generate(bool isPartOfFederation, Random random) {
 
 }
 
+City* Region::NewCity(int size, Random random) {
+
+	// The size of the city
+	City::Size sz = (City::Size)size;
+
+	// Create new city
+	City* pCity = new City(sz, random);
+
+	// Make sure we managed to create it
+	if (!pCity) {
+		throw std::exception("Failed to create city!");
+	}
+
+	// Return city
+	return pCity;
+
+}
+
 void Region::GenerateCities(Random random) {
 
 	int cityCount = random.NextInt(3, 21);
 
-	if (cityCount > 12) { // lots of small cities + (cityCount * 0.2) big cities
+	if (cityCount > 12) { // lots of small cities + (cityCount * 0.4) big cities
 
-		int smallCities = (int)(cityCount * 0.2);
+		int smallCities = (int)(cityCount * 0.6);
 		int bigCities = cityCount - smallCities;
 
 		for (int i = 0; i < smallCities; i++) {
-			m_cities.push_back(new City(City::Size::CITYSIZE_SMALL, random));
+			m_cities.push_back(this->NewCity(0, random));
 		}
 
 		for (int i = 0; i < bigCities; i++) {
-			m_cities.push_back(new City(City::Size::CITYSIZE_LARGE, random));
+			m_cities.push_back(this->NewCity(1, random));
 		}
 
 	} else { // 1 BIG city, the rest is small cities
@@ -41,18 +59,23 @@ void Region::GenerateCities(Random random) {
 		int majorCity = 1;
 		int minorCities = cityCount - 1;
 
+		std::vector<Weight<City::Size>> citySizes = {
+			Weight(0.4f, City::Size::CITYSIZE_LARGE),
+			Weight(0.6f, City::Size::CITYSIZE_SMALL),
+		};
+
 		for (int i = 0; i < minorCities; i++) {
-			m_cities.push_back(new City(City::Size::CITYSIZE_SMALL, random));
+			m_cities.push_back(this->NewCity((int)random.Select(citySizes), random));
 		}
 
-		m_cities.push_back(new City(City::Size::CITYSIZE_METROPOLIS, random));
+		m_cities.push_back(this->NewCity(2, random));
 
 	}
 
 }
 
-unsigned int Region::GetPopulationSize() {
-	unsigned int count = 0;
+PopSize Region::GetPopulationSize() {
+	PopSize count = 0;
 	for (auto city : m_cities) {
 		count += city->GetPopulationSize();
 	}

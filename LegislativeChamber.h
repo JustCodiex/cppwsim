@@ -34,7 +34,7 @@ public:
 	struct LegislatureElectionResult {
 		bool isMidTerms;
 		double turnout;
-		unsigned int totalVotes;
+		PopSize totalVotes;
 		ElectoralSystem electoralMethod;
 		ProportionalMethod proportionalMethod;
 		std::map<PoliticalParty*, int> gains;
@@ -133,9 +133,9 @@ private:
 	LegislatureElectionResult NewEmptyResults(std::vector<int> seats, Country* pCountry);
 	void FinalizeResults(LegislatureElectionResult& results, double divBy);
 
-	std::map<Politician*, int> Proportional_Base(std::vector< ElectoralDistrictResult> districtVotes, LegislatureElectionResult& chamberResults, double& divBy, bool modChamberResults);
-	void Proportional_DHondtMethod(unsigned int totalVotes, std::vector<int> seats, std::map<Politician*, int> candidateVotes, LegislatureElectionResult& chamberResults, TimeDate electionDate);
-	void Proportional_ImperialMethod(unsigned int totalVotes, std::vector<int> seats, std::map<Politician*, int> candidateVotes, LegislatureElectionResult& chamberResults, TimeDate electionDate);
+	std::map<Politician*, PopSize> Proportional_Base(std::vector< ElectoralDistrictResult> districtVotes, LegislatureElectionResult& chamberResults, double& divBy, bool modChamberResults);
+	void Proportional_DHondtMethod(PopSize totalVotes, std::vector<int> seats, std::map<Politician*, PopSize> candidateVotes, LegislatureElectionResult& chamberResults, TimeDate electionDate);
+	void Proportional_ImperialMethod(PopSize totalVotes, std::vector<int> seats, std::map<Politician*, PopSize> candidateVotes, LegislatureElectionResult& chamberResults, TimeDate electionDate);
 
 	std::vector<ElectoralDistrictResult> CollectVotesFromDistricts(std::vector<int> seats, Country* pCountry);
 

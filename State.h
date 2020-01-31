@@ -14,14 +14,14 @@ public:
 
 	void GenerateRegions(Random random);
 
-	unsigned int GetPopulationSize() override;
+	PopSize GetPopulationSize() override;
 	int GetCityCount();
 
 	std::vector<Region*> GetRegions() { return m_regions; }
 
 	std::vector<City*> GetCities() override;
 
-	int GetAdminLevel() override { return 1; }
+	int GetAdminLevel() override { return 2; }
 
 private:
 
