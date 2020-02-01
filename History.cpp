@@ -29,7 +29,7 @@ void History::AddEvent(TimeDate date, Country* pCountry, EVENT_TYPE type, void* 
 
 void History::CreateLegislatureElectionEvent(Event& event, void* dat) {
 
-	auto results = (LegislativeChamber::LegislatureElectionResult*)dat;
+	auto results = (LegislatureElectionResult*)dat;
 
 	std::stringstream ss;
 

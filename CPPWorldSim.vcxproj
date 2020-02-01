@@ -163,6 +163,7 @@
     <ClCompile Include="Ideology.cpp" />
     <ClCompile Include="LegislativeChamber.cpp" />
     <ClCompile Include="LegislativeCommittee.cpp" />
+    <ClCompile Include="LegislativeElection.cpp" />
     <ClCompile Include="LegislativeSeat.cpp" />
     <ClCompile Include="Legislature.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="LegislativeChamber.h" />
     <ClInclude Include="LegislativeCoalition.h" />
     <ClInclude Include="LegislativeCommittee.h" />
+    <ClInclude Include="LegislativeElection.h" />
     <ClInclude Include="LegislativeSeat.h" />
     <ClInclude Include="Legislature.h" />
     <ClInclude Include="names_party.h" />

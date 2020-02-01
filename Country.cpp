@@ -278,11 +278,7 @@ PopSize Country::GetPopulationSize() {
 }
 
 int Country::GetCityCount() {
-	int count = 0;
-	for (auto state : m_states) {
-		count += state->GetCityCount();
-	}
-	return count;
+	return (int)this->GetCities().size();
 }
 
 City* Country::GetCityByUnsafeIndex(int index) {

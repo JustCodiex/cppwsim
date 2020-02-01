@@ -13,7 +13,17 @@ Random::Random(int seed) {
 }
 
 int Random::NextInt(int minInclusive, int maxExclusive) {
-	return (rand() % (maxExclusive - minInclusive)) + minInclusive;
+	
+	if (minInclusive > maxExclusive) {
+		int buffer = minInclusive;
+		minInclusive = maxExclusive;
+		maxExclusive = buffer;
+	} else if (minInclusive == maxExclusive) {
+		return minInclusive;
+	}
+
+	return minInclusive + (int)((maxExclusive - minInclusive) * (rand() / (RAND_MAX + 1.0)));
+	//return (rand() % (maxExclusive - minInclusive)) + minInclusive;
 }
 
 float Random::NextFloat(float max) {

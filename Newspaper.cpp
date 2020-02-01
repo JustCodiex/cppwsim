@@ -5,6 +5,6 @@ Newspaper::Newspaper() {
 
 }
 
-void Newspaper::LegislatureElectionResults(TimeDate date, LegislativeChamber::LegislatureElectionResult results) {
+void Newspaper::LegislatureElectionResults(TimeDate date, LegislatureElectionResult results) {
 
 }

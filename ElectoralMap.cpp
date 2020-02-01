@@ -171,8 +171,11 @@ void ElectoralMap::CreateNationalElectoralCollege(Country* pCountry, unsigned sh
 		// For each administrative level
 		for (auto admin : adminLvls) {
 		
+			// Population size of administration level
+			PopSize adminPop = admin->GetPopulationSize();
+
 			// Calculate elector count
-			unsigned short count = (unsigned short)(admin->GetPopulationSize() / (double)totalPop);
+			unsigned short count = (unsigned short)((adminPop / (double)totalPop) * electors);
 
 			// Get cities
 			std::vector<City*> cities = admin->GetCities();

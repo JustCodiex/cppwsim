@@ -8,7 +8,7 @@ public:
 
 	Newspaper();
 
-	void LegislatureElectionResults(TimeDate date, LegislativeChamber::LegislatureElectionResult results);
+	void LegislatureElectionResults(TimeDate date, LegislatureElectionResult results);
 
 private:
 

@@ -503,7 +503,7 @@ void Government::GenerateElectionMap(Random random) {
         // Create a national electoral map for 
         m_electionMap->CreateNationalElectoralDistrict(m_targetCountry, electors);
 
-    } else if (m_electionSystem == GovernmentElectoralSystem::StateElectoralCollege) {
+    } else if (m_electionSystem == GovernmentElectoralSystem::StateElectoralCollege && (m_targetCountry->GetStateCount() > 1 || m_targetCountry->GetRegionCount() > 1)) {
         
         // Amount of electors
         unsigned short electors  = 0;
@@ -524,8 +524,11 @@ void Government::GenerateElectionMap(Random random) {
 
     } else {
 
+        // City count => Amount of seats in electoral map
+        unsigned short cityCount = (unsigned short)m_targetCountry->GetCities().size();
+
         // Generate a simple electoral map
-        m_electionMap->CreateNationalElectoralDistrict(m_targetCountry, (unsigned short)m_targetCountry->GetCityCount());
+        m_electionMap->CreateNationalElectoralDistrict(m_targetCountry, cityCount);
 
     }
 

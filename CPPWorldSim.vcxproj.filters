@@ -150,6 +150,9 @@
     <ClCompile Include="PresidentialElection.cpp">
       <Filter>Source Files\election</Filter>
     </ClCompile>
+    <ClCompile Include="LegislativeElection.cpp">
+      <Filter>Source Files\election</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.h">
@@ -273,6 +276,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PresidentialElection.h">
+      <Filter>Header Files\elections</Filter>
+    </ClInclude>
+    <ClInclude Include="LegislativeElection.h">
       <Filter>Header Files\elections</Filter>
     </ClInclude>
   </ItemGroup>

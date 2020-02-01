@@ -387,7 +387,7 @@ void Legislature::ElectChamber(LegislativeChamber* pChamber, World* pWorld) {
 	}
 
 	// Hold the election
-	LegislativeChamber::LegislatureElectionResult electionResult = pChamber->HoldElection(seats, m_targetCountry, pWorld->GetDate());
+	LegislatureElectionResult electionResult = pChamber->HoldElection(seats, m_targetCountry, pWorld->GetDate());
 	pWorld->GetHistory()->AddEvent(pWorld->GetDate(), m_targetCountry, EVENT_TYPE::ELECTION_LEGISLATURE, (void*)&electionResult);
 
 	// Push national news

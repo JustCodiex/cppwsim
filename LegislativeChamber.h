@@ -4,24 +4,8 @@
 #include "TimeDate.h"
 #include "ElectoralMap.h"
 #include "LegislativeSeat.h"
+#include "LegislativeElection.h"
 #include "LegislativeCoalition.h"
-
-enum class ElectoralSystem {
-	ES_FIRST_PAST_THE_POST, // Winner-Takes-All
-	ES_PROPORTIONAL,
-	ES_TWO_ROUND_SYSTEM,
-	ES_FPP_P_MIX,
-};
-
-const std::string ElectoralSystemNames[] = { "First Past the Post", "Proportional", "Two-Round", "FPP and Proportional" };
-
-enum class ProportionalMethod {
-	PM_NONE,
-	PM_DHONDT, // https://en.wikipedia.org/wiki/D%27Hondt_method
-	PM_IMPERIALY, // https://en.wikipedia.org/wiki/Imperiali_quota
-};
-
-const std::string ProportionalMethodNames[] = { "", "D'Hondt", "Imperiali Quota" };
 
 class Country;
 
@@ -30,31 +14,6 @@ const int MAX_SEATS_IN_LEGISLATIVE_CHAMBER = 1080;
 class LegislativeChamber {
 
 public:
-
-	struct LegislatureElectionResult {
-		bool isMidTerms;
-		double turnout;
-		PopSize totalVotes;
-		ElectoralSystem electoralMethod;
-		ProportionalMethod proportionalMethod;
-		std::map<PoliticalParty*, int> gains;
-		std::map<PoliticalParty*, int> seats;
-		std::map<PoliticalParty*, double> voteShare;
-		std::string chamberName;
-		int seatUpForGrabs;
-		int seatMajority;
-		int seatTotal;
-		int runoffs;
-		LegislatureElectionResult() {
-			isMidTerms = false;
-			turnout = 0;
-			totalVotes = 0;
-			seatMajority = seatTotal = seatUpForGrabs = 0;
-			runoffs = -1;
-			electoralMethod = ElectoralSystem::ES_FIRST_PAST_THE_POST;
-			proportionalMethod = ProportionalMethod::PM_NONE;
-		}
-	};
 
 	struct ChamberPowers {
 		bool canRemoveGovernment;
@@ -108,6 +67,7 @@ public:
 	ChamberPowers* GetPowers() { return &m_chamberPowers; }
 
 	ElectoralSystem GetElectoralSystem() { return m_electoralSystem; }
+	ProportionalMethod GetElectoralProportionalMethod() { return m_proportionalMethod; }
 
 	LegislatureElectionResult HoldElection(std::vector<int> seats, Country* pCountry, TimeDate electionDate);
 
@@ -123,24 +83,12 @@ public:
 
 	void CalculateElectoralDistricts(Country* pCountry);
 
-private:
-
-	LegislatureElectionResult HoldFirstPastThePostElection(std::vector<int> seats, Country* pCountry, TimeDate electionDate);
-	LegislatureElectionResult HoldProportionalElection(std::vector<int> seats, Country* pCountry, TimeDate electionDate);
-	LegislatureElectionResult HoldTwoRoundSystemElection(std::vector<int> seats, Country* pCountry, TimeDate electionDate);
-	LegislatureElectionResult HoldMixedElection(std::vector<int> seats, Country* pCountry, TimeDate electionDate);
-
-	LegislatureElectionResult NewEmptyResults(std::vector<int> seats, Country* pCountry);
-	void FinalizeResults(LegislatureElectionResult& results, double divBy);
-
-	std::map<Politician*, PopSize> Proportional_Base(std::vector< ElectoralDistrictResult> districtVotes, LegislatureElectionResult& chamberResults, double& divBy, bool modChamberResults);
-	void Proportional_DHondtMethod(PopSize totalVotes, std::vector<int> seats, std::map<Politician*, PopSize> candidateVotes, LegislatureElectionResult& chamberResults, TimeDate electionDate);
-	void Proportional_ImperialMethod(PopSize totalVotes, std::vector<int> seats, std::map<Politician*, PopSize> candidateVotes, LegislatureElectionResult& chamberResults, TimeDate electionDate);
-
-	std::vector<ElectoralDistrictResult> CollectVotesFromDistricts(std::vector<int> seats, Country* pCountry);
-
 	void ElectSeat(int seatIndex, ElectoralDistrictResult& voteResults, LegislatureElectionResult& chamberResults, TimeDate electionDate);
 	void ElectSeat(int seatIndex, Politician* pPolitician, LegislatureElectionResult& chamberResults, TimeDate electionDate);
+
+	ElectoralMap* GetElectoralMap() { return m_electoralMap; }
+
+private:
 
 	void FindCoalitions();
 
