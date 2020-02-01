@@ -1,8 +1,6 @@
 #pragma once
-#include <string>
-#include <vector>
+#include "stdlib.h"
 #include "State.h"
-#include "Random.h"
 #include "Region.h"
 #include "Government.h"
 #include "Legislature.h"

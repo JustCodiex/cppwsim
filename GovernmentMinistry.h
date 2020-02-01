@@ -1,6 +1,5 @@
 #pragma once
-#include <string>
-#include <vector>
+#include "stdlib.h"
 #include "PolicyArea.h"
 #include "Politician.h"
 

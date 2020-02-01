@@ -98,13 +98,15 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeaderFile>stdlib.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <PrecompiledHeaderOutputFile>stdlib.pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,8 +133,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -140,6 +141,9 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeaderFile>stdlib.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <PrecompiledHeaderOutputFile>stdlib.pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -150,7 +154,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ballot.cpp" />
+    <ClCompile Include="Bill.cpp" />
     <ClCompile Include="City.cpp" />
+    <ClCompile Include="Company.cpp" />
     <ClCompile Include="Country.cpp" />
     <ClCompile Include="CountryEconomy.cpp" />
     <ClCompile Include="CountryProfile.cpp" />
@@ -161,6 +167,7 @@
     <ClCompile Include="GovernmentMinistry.cpp" />
     <ClCompile Include="History.cpp" />
     <ClCompile Include="Ideology.cpp" />
+    <ClCompile Include="Law.cpp" />
     <ClCompile Include="LegislativeChamber.cpp" />
     <ClCompile Include="LegislativeCommittee.cpp" />
     <ClCompile Include="LegislativeElection.cpp" />
@@ -185,7 +192,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ballot.h" />
+    <ClInclude Include="Bill.h" />
     <ClInclude Include="City.h" />
+    <ClInclude Include="Company.h" />
     <ClInclude Include="Country.h" />
     <ClInclude Include="CountryAdministrationLevel.h" />
     <ClInclude Include="CountryEconomy.h" />
@@ -198,6 +207,7 @@
     <ClInclude Include="GovernmentMinistry.h" />
     <ClInclude Include="History.h" />
     <ClInclude Include="Ideology.h" />
+    <ClInclude Include="Law.h" />
     <ClInclude Include="LegislativeChamber.h" />
     <ClInclude Include="LegislativeCoalition.h" />
     <ClInclude Include="LegislativeCommittee.h" />
@@ -207,6 +217,7 @@
     <ClInclude Include="names_party.h" />
     <ClInclude Include="names_people.h" />
     <ClInclude Include="name_chambers.h" />
+    <ClInclude Include="name_cities.h" />
     <ClInclude Include="name_countries.h" />
     <ClInclude Include="name_legislatures.h" />
     <ClInclude Include="Newspaper.h" />
@@ -222,6 +233,7 @@
     <ClInclude Include="RoyalFamily.h" />
     <ClInclude Include="SocialClass.h" />
     <ClInclude Include="State.h" />
+    <ClInclude Include="stdlib.h" />
     <ClInclude Include="StringUtilities.h" />
     <ClInclude Include="TimeDate.h" />
     <ClInclude Include="World.h" />

@@ -1,8 +1,5 @@
 #pragma once
-#include <map>
-#include <vector>
-#include <string>
-#include "Random.h"
+#include "stdlib.h"
 #include "Ideology.h"
 #include "PolicyArea.h"
 

@@ -1,6 +1,5 @@
 #pragma once
-#include <vector>
-#include <map>
+#include "stdlib.h"
 
 class City;
 class Ballot;
@@ -8,8 +7,6 @@ class Country;
 class Politician;
 class PoliticalParty;
 class ElectoralDistrict;
-
-typedef unsigned long long PopSize;
 
 namespace Election {
 

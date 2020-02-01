@@ -1,6 +1,5 @@
 #pragma once
-#include <string>
-#include "Random.h"
+#include "stdlib.h"
 
 std::string lower_house_names[] = {
 	"Lower House", "House of Commons", "House of Deputies", "House of Representatives", "House of Delegates", "Chamber of Delegates", 

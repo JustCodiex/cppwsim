@@ -1,6 +1,6 @@
 #pragma once
+#include "stdlib.h"
 #include "Royal.h"
-#include <vector>
 
 class RoyalFamily {
 

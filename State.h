@@ -1,7 +1,6 @@
 #pragma once
-#include <vector>
+#include "stdlib.h"
 #include "Region.h"
-#include "Random.h"
 #include "Government.h"
 #include "Legislature.h"
 

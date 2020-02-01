@@ -1,8 +1,5 @@
 #pragma once
-#include <string>
-#include <vector>
-#include <algorithm>
-#include "Random.h"
+#include "stdlib.h"
 
 const std::vector<std::string> maleNames = {
 	"Henry", "Harry", "James", "John", "Jonas", "Jonathan", "Oswald", "Larry", "Percival", "Rick", "Morty", "Garry", "Allan", "Frederick", "Alex",

@@ -1,6 +1,5 @@
 #pragma once
-#include <vector>
-#include "Random.h"
+#include "stdlib.h"
 #include "Legislature.h"
 #include "CountryAdministrationLevel.h"
 
@@ -21,6 +20,8 @@ public:
 
 	void UpdateEconomy();
 	void UpdateDemographics();
+
+	City* GetCityByName(std::string name);
 
 private:
 

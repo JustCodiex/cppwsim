@@ -1,7 +1,5 @@
 #pragma once
-#include <vector>
-#include <string>
-#include "Random.h"
+#include "stdlib.h"
 
 // List of all political ideologies
 // registered in the project.

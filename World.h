@@ -1,9 +1,6 @@
 #pragma once
-#include <string>
-#include <vector>
-#include "Random.h"
+#include "stdlib.h"
 #include "History.h"
-#include "TimeDate.h"
 #include "WorldEconomy.h"
 
 class Country;

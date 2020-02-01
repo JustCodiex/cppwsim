@@ -101,3 +101,15 @@ void Region::UpdateDemographics() {
 	}
 
 }
+
+City* Region::GetCityByName(std::string name) {
+
+	for (auto city : m_cities) {
+		if (city->GetName() == name) {
+			return city;
+		}
+	}
+
+	return NULL;
+
+}

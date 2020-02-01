@@ -1,6 +1,5 @@
 #pragma once
-#include <string>
-#include "Random.h"
+#include "stdlib.h"
 
 enum class Sex {
 	Female,

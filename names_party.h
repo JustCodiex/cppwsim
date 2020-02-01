@@ -1,6 +1,5 @@
 #pragma once
-#include "Random.h"
-#include <string>
+#include "stdlib.h"
 #include "Ideology.h"
 
 const std::string conservative_party_names[] = { 

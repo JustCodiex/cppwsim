@@ -1,6 +1,5 @@
 #pragma once
-#include <vector>
-#include <map>
+#include "stdlib.h"
 
 class City;
 class Ballot;
@@ -9,8 +8,6 @@ class Politician;
 class LegislativeSeat;
 
 struct CountryProfile;
-
-typedef unsigned long long PopSize;
 
 enum class ElectionLevel {
 	Referendum,

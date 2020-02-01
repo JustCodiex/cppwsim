@@ -1,11 +1,16 @@
 #include "City.h"
+#include "Region.h"
 #include "CountryProfile.h"
+#include "name_cities.h"
 
 City::City() {
 	
+	m_region = 0;
 	m_population = 0;
 	m_isCoastal = false;
 	m_size = Size::CITYSIZE_SMALL;
+	m_cityStats = Statistics();
+	m_name = "Unnamed City";
 
 }
 
@@ -33,6 +38,44 @@ City::City(Size size, Random random) {
 
 	// Gnerate city statistics
 	GenerateStatistics(random);
+
+}
+
+void City::SetRegionAndName(Random random, Region* pRegion) {
+
+	// Assign region
+	m_region = pRegion;
+
+	// While name is unique in region
+	while (true) {
+
+		// Get "random" city name
+		std::string randCityName = nextCityName(random);
+
+		// Try and fetch city by name
+		if (pRegion->GetCityByName(randCityName) == NULL) {
+
+			// No city found, so it's available
+			m_name = randCityName;
+			break;
+
+		} else {
+
+			// Try and put "new" on and see if it's available then
+			randCityName = "New " + randCityName;
+
+			// Make sure it's available
+			if (pRegion->GetCityByName(randCityName) == NULL) {
+
+				// No city found, so it's available
+				m_name = randCityName;
+				break;
+
+			}
+
+		}
+
+	}
 
 }
 
@@ -112,5 +155,11 @@ void City::UpdateDemographics() {
 
 	// Update population size
 	m_population += (PopSize)(m_population * (double)m_cityStats.birthRate);
+
+}
+
+std::string City::GetFullName() {
+
+	return m_name + ", "; // TODO: return region, state, and country when that's been implemented
 
 }

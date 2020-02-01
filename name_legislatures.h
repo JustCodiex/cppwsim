@@ -1,6 +1,5 @@
 #pragma once
-#include <string>
-#include "Random.h"
+#include "stdlib.h"
 
 std::string name_legislatures[] = {
 	"Congress", "Parliament", "National Assembly", "House of Representatives", "National Legislature", "National Council", "Supreme Legislature", "Supreme Council",

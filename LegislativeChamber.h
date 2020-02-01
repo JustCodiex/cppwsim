@@ -1,7 +1,5 @@
 #pragma once
-#include <vector>
-#include <map>
-#include "TimeDate.h"
+#include "stdlib.h"
 #include "ElectoralMap.h"
 #include "LegislativeSeat.h"
 #include "LegislativeElection.h"

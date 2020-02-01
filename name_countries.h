@@ -1,8 +1,5 @@
 #pragma once
-#include <string>
-#include <vector>
-#include <algorithm>
-#include "Random.h"
+#include "stdlib.h"
 
 // Global vector (I know, it's bad) for keeping track of available names
 std::vector<std::string> taken_country_names;

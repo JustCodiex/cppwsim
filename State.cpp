@@ -19,6 +19,12 @@ State::State(bool isMain) {
 
 void State::GenerateRegions(Random random) {
 
+	int maxRegion = 10;
+	
+	if (m_isMain) {
+		maxRegion += 31;
+	}
+
 	int regionCount = random.NextInt(1, 10);
 
 	for (int i = 0; i < regionCount; i++) {

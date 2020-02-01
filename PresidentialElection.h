@@ -1,13 +1,10 @@
 #pragma once
-#include <map>
-#include <vector>
+#include "stdlib.h"
 
 class Ballot;
 class Country;
 class Politician;
 class ElectoralMap;
-
-typedef unsigned long long PopSize;
 
 struct PresidentialElectionResults {
 	Politician* pWinner;
