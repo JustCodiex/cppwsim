@@ -91,3 +91,15 @@ PopSize City::GetSocialClass(SOCIAL_CLASS socialClass, CountryProfile* pProfile,
 	return 0;
 
 }
+
+void City::UpdateEconomy() {
+
+
+
+}
+
+void City::UpdateDemographics() {
+
+
+
+}

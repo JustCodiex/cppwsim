@@ -19,6 +19,9 @@ public:
 
 	int GetAdminLevel() override { return 1; }
 
+	void UpdateEconomy();
+	void UpdateDemographics();
+
 private:
 
 	City* NewCity(int size, Random random);

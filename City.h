@@ -35,6 +35,9 @@ public:
 
 	bool HasUniversity() { return false; }
 
+	void UpdateEconomy();
+	void UpdateDemographics();
+
 private:
 
 	void GenerateDemographics(Random random);

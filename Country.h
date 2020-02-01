@@ -82,6 +82,7 @@ private:
 	void UpdateLegislature(World* pWorld);
 	void UpdateGovernment(World* pWorld);
 	void UpdateRoyalFamily(World* pWorld);
+	void UpdateDemographics(World* pWorld);
 
 	void GenerateRoyalFamily(Random random);
 

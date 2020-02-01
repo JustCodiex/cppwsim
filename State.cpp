@@ -61,3 +61,19 @@ std::vector<City*> State::GetCities() {
 	return cities;
 
 }
+
+void State::UpdateEconomy() {
+
+	for (auto region : m_regions) {
+		region->UpdateEconomy();
+	}
+
+}
+
+void State::UpdateDemographics() {
+
+	for (auto region : m_regions) {
+		region->UpdateDemographics();
+	}
+
+}

@@ -137,7 +137,7 @@ void LegislativeChamber::ElectSeat(int seatIndex, ElectoralDistrictResult& voteR
 
 	for (auto result : voteResults.votes) {
 		
-		if (pol == NULL || result.second > voteResults.votes[result.first]) {
+		if (pol == NULL || result.second > voteResults.votes[pol]) {
 			pol = result.first;
 		}
 

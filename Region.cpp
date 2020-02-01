@@ -85,3 +85,19 @@ PopSize Region::GetPopulationSize() {
 int Region::GetCityCount() {
 	return (int)m_cities.size();
 }
+
+void Region::UpdateEconomy() {
+
+	for (auto city : m_cities) {
+		city->UpdateEconomy();
+	}
+
+}
+
+void Region::UpdateDemographics() {
+
+	for (auto city : m_cities) {
+		city->UpdateDemographics();
+	}
+
+}

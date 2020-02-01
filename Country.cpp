@@ -39,6 +39,8 @@ void Country::GenerateGeography(Random random) {
 
 			State* subState = new State(false);
 			subState->GenerateRegions(random);
+			subState->UpdateDemographics();
+			subState->UpdateEconomy();
 
 			m_states.push_back(subState);
 
@@ -48,6 +50,8 @@ void Country::GenerateGeography(Random random) {
 
 		State* mainState = new State(true);
 		mainState->GenerateRegions(random);
+		mainState->UpdateDemographics();
+		mainState->UpdateEconomy();
 
 		m_states.push_back(mainState);
 
@@ -194,6 +198,9 @@ void Country::GenerateCountryProfile(Random random) {
 
 void Country::UpdateCountry(World* pWorld) {
 
+	// Call Demographics Update
+	this->UpdateDemographics(pWorld);
+
 	// Call Economy update
 	this->UpdateEconomy(pWorld);
 
@@ -207,7 +214,19 @@ void Country::UpdateCountry(World* pWorld) {
 
 void Country::UpdateEconomy(World* pWorld) {
 
+	// Update state economies
+	for (auto state : m_states) {
+		state->UpdateEconomy();
+	}
 
+}
+
+void Country::UpdateDemographics(World* pWorld) {
+
+	// Update state demographics
+	for (auto state : m_states) {
+		state->UpdateDemographics();
+	}
 
 }
 

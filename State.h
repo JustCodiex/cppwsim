@@ -23,6 +23,9 @@ public:
 
 	int GetAdminLevel() override { return 2; }
 
+	void UpdateEconomy();
+	void UpdateDemographics();
+
 private:
 
 	Government* m_stateGovernment;
