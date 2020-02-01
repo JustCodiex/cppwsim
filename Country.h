@@ -5,13 +5,13 @@
 #include "Government.h"
 #include "Legislature.h"
 #include "CountryProfile.h"
-#include "CountryEconomy.h"
 #include "PoliticalParty.h"
 
 class World;
 class Person;
 class RoyalFamily;
 class Newspaper;
+class CountryEconomy;
 
 enum class CountryType {
 	Kingdom,
@@ -45,7 +45,7 @@ public:
 	Government* GetGovernment() { return &m_countryGovernment; }
 	Legislature* GetLegislature() { return m_countryLegislature; }
 
-	CountryEconomy* GetEconomy() { return &m_countryEconomy; }
+	CountryEconomy* GetEconomy() { return m_countryEconomy; }
 	CountryProfile* GetProfile() { return &m_countryProfile; }
 
 	Person* GetHeadOfState() { return m_headOfState; }
@@ -91,6 +91,7 @@ private:
 	void GeneratePoliticalParties(Random random);
 
 	void GenerateCountryProfile(Random random);
+	void GenerateCountryEconomy(Random random);
 
 private:
 
@@ -99,7 +100,7 @@ private:
 	Government m_countryGovernment;
 	Legislature* m_countryLegislature;
 
-	CountryEconomy m_countryEconomy;
+	CountryEconomy* m_countryEconomy;
 	CountryProfile m_countryProfile;
 
 	Person* m_headOfState;
@@ -110,7 +111,7 @@ private:
 	std::vector<State*> m_states;
 
 	std::vector<Party> m_parties;
-
+	
 	bool m_useInitialPartyIndex;
 	std::vector<std::string> m_partyShorts;
 

@@ -3,6 +3,8 @@
 #include "Person.h"
 #include "RoyalFamily.h"
 #include "Newspaper.h"
+#include "Market.h"
+#include "CountryEconomy.h"
 
 Country::Country(std::string name) {
 
@@ -10,10 +12,14 @@ Country::Country(std::string name) {
 
 	m_royals = 0;
 	m_headOfState = 0;
+	m_countryEconomy = 0;
 
 }
 
 void Country::GenerateCountry(Random random) {
+
+	// Generate the base economy of the country
+	GenerateCountryEconomy(random);
 
 	// Generate the geography of the country
 	GenerateGeography(random);
@@ -26,6 +32,13 @@ void Country::GenerateCountry(Random random) {
 
 	// Finally, we can generate the country profile
 	GenerateCountryProfile(random);
+
+}
+
+void Country::GenerateCountryEconomy(Random random) {
+
+	// Create the new economy
+	m_countryEconomy = new CountryEconomy;
 
 }
 
@@ -214,6 +227,9 @@ void Country::UpdateCountry(World* pWorld) {
 
 void Country::UpdateEconomy(World* pWorld) {
 
+	// Update national economy
+	m_countryEconomy->UpdateEconomy();
+
 	// Update state economies
 	for (auto state : m_states) {
 		state->UpdateEconomy();
@@ -223,6 +239,7 @@ void Country::UpdateEconomy(World* pWorld) {
 
 void Country::UpdateDemographics(World* pWorld) {
 
+	// Should we update the demographics of the country
 	if (pWorld->GetDate().isLaterOrSameThan(m_lastMonthTime)) {
 
 		// Update state demographics
