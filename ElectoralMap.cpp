@@ -168,6 +168,8 @@ void ElectoralMap::CreateNationalElectoralCollege(Country* pCountry, unsigned sh
 		// Sort from size
 		std::sort(adminLvls.begin(), adminLvls.end(), [](CountryAdministrationLevel* a, CountryAdministrationLevel* b) -> bool { return a->GetPopulationSize() > b->GetPopulationSize(); });
 
+		// TODO: Merge administrative levels that are too small
+
 		// For each administrative level
 		for (auto admin : adminLvls) {
 		
@@ -177,11 +179,16 @@ void ElectoralMap::CreateNationalElectoralCollege(Country* pCountry, unsigned sh
 			// Calculate elector count
 			unsigned short count = (unsigned short)((adminPop / (double)totalPop) * electors);
 
-			// Get cities
-			std::vector<City*> cities = admin->GetCities();
+			// Temporary crash fix, look at TODO for fix solution
+			if (count > 0) {
 
-			// Create districts from cities
-			CreateDistrictsFromCities(pCountry, cities, count);
+				// Get cities
+				std::vector<City*> cities = admin->GetCities();
+
+				// Create districts from cities
+				CreateDistrictsFromCities(pCountry, cities, count);
+
+			}
 
 		}
 

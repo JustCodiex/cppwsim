@@ -31,7 +31,7 @@ namespace LegislativeElection {
 
 	}
 
-	void FinalizeResults(LegislativeChamber* pChamber, LegislatureElectionResult& result, double divBy) {
+	void FinalizeResults(LegislativeChamber* pChamber, LegislatureElectionResult& result, double divBy, bool calculateVoteShare) {
 
 		// Calculate the average turnout
 		result.turnout = result.turnout / divBy;
@@ -40,9 +40,14 @@ namespace LegislativeElection {
 		if (result.turnout > 1.0f)
 			result.turnout = 1.0f;
 
-		// For all parties in result, calculate average share of vote
-		for (auto partyResult : result.voteShare) {
-			result.voteShare[partyResult.first] = result.voteShare[partyResult.first] / (double)result.totalVotes;
+		// Calculate vore share if asked
+		if (calculateVoteShare) {
+
+			// For all parties in result, calculate average share of vote
+			for (auto partyResult : result.voteShare) {
+				result.voteShare[partyResult.first] = result.voteShare[partyResult.first] / (double)result.totalVotes;
+			}
+
 		}
 
 		// For all seats in chamber
@@ -66,6 +71,8 @@ namespace LegislativeElection {
 		// Collect votes from the districts
 		std::vector<ElectoralDistrictResult> districtVotes = CollectVotesFromDistricts(pChamber, seats, pCountry);
 
+		std::map<PoliticalParty*, PopSize> votes;
+
 		// Loop through results
 		for (size_t i = 0; i < districtVotes.size(); i++) {
 
@@ -78,7 +85,7 @@ namespace LegislativeElection {
 
 			// Add votes to total vote count
 			for (auto share : results.votes) {
-				result.voteShare[share.first->GetParty()] += (double)share.second;
+				votes[share.first->GetParty()] += share.second;
 			}
 
 			// Elect the seat
@@ -89,8 +96,12 @@ namespace LegislativeElection {
 
 		}
 
+		for (auto vote : votes) {
+			result.voteShare[vote.first] = (vote.second / (double)result.totalVotes);
+		}
+
 		// Finalize the results
-		FinalizeResults(pChamber, result, divBy);
+		FinalizeResults(pChamber, result, divBy, false);
 
 		// Return result
 		return result;
@@ -126,7 +137,7 @@ namespace LegislativeElection {
 		}
 
 		// Finalize the results
-		FinalizeResults(pChamber, result, divBy);
+		FinalizeResults(pChamber, result, divBy, true);
 
 		// Return result
 		return result;
@@ -262,7 +273,7 @@ namespace LegislativeElection {
 		}
 
 		// Finalize the results
-		FinalizeResults(pChamber, result, divBy);
+		FinalizeResults(pChamber, result, divBy, true);
 
 		// Return result
 		return result;
@@ -336,7 +347,7 @@ namespace LegislativeElection {
 		}
 
 		// Finalize the results
-		FinalizeResults(pChamber, result, divBy);
+		FinalizeResults(pChamber, result, divBy, true);
 
 		// Return result
 		return result;

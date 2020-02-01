@@ -14,8 +14,9 @@
 #include "TimeDate.h"
 #include "StringUtilities.h"
 
-TimeDate TimeDate::Decade = TimeDate(10, 1, 1);
-TimeDate TimeDate::Century = TimeDate(100, 1, 1);
+TimeDate TimeDate::Month = TimeDate(0, 2, 0);
+TimeDate TimeDate::Decade = TimeDate(10, 0, 0);
+TimeDate TimeDate::Century = TimeDate(100, 0, 0);
 
 void printLegChamber(LegislativeChamber* pChamber) {
 	std::cout << "\t\t" << pChamber->GetName() << ": " << pChamber->GetSeatCount() << " seats, " << (int)pChamber->GetTermLength() << " year term. " << std::endl;

@@ -116,6 +116,8 @@ private:
 	bool m_useInitialPartyIndex;
 	std::vector<std::string> m_partyShorts;
 
+	TimeDate m_lastMonthTime;
+
 	friend class PoliticalParty;
 
 };

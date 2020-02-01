@@ -11,10 +11,15 @@ struct CountryProfile;
 class City {
 
 public:
+
 	enum class Size {
 		CITYSIZE_SMALL,
 		CITYSIZE_LARGE,
 		CITYSIZE_METROPOLIS,
+	};
+
+	struct Statistics {
+		double birthRate;
 	};
 
 public:
@@ -38,9 +43,12 @@ public:
 	void UpdateEconomy();
 	void UpdateDemographics();
 
+	Statistics* GetCityStatistics() { return &m_cityStats; }
+
 private:
 
 	void GenerateDemographics(Random random);
+	void GenerateStatistics(Random random);
 
 private:
 
@@ -50,5 +58,7 @@ private:
 	FixedChart m_socialClass;
 
 	PopSize m_population;
+
+	Statistics m_cityStats;
 
 };

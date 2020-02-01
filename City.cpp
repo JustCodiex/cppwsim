@@ -31,6 +31,9 @@ City::City(Size size, Random random) {
 	// Generate demographics
 	GenerateDemographics(random);
 
+	// Gnerate city statistics
+	GenerateStatistics(random);
+
 }
 
 void City::GenerateDemographics(Random random) {
@@ -45,6 +48,13 @@ void City::GenerateDemographics(Random random) {
 
 	// Make social class chart (any missing numbers will be generated fixed here)
 	m_socialClass = FixedChart(socialClasses, (int)SOCIAL_CLASS::CLASS_COUNT);
+
+}
+
+void City::GenerateStatistics(Random random) {
+
+	// The birthrate of the city
+	m_cityStats.birthRate = random.NextFloat(0.01f, 0.025f);
 
 }
 
@@ -100,6 +110,7 @@ void City::UpdateEconomy() {
 
 void City::UpdateDemographics() {
 
-
+	// Update population size
+	m_population += (PopSize)(m_population * (double)m_cityStats.birthRate);
 
 }

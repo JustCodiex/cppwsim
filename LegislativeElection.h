@@ -65,7 +65,7 @@ namespace LegislativeElection {
 	LegislatureElectionResult HoldMixedElection(LegislativeChamber* pChamber, std::vector<int> seats, Country* pCountry, TimeDate electionDate);
 
 	LegislatureElectionResult NewEmptyResults(LegislativeChamber* pChamber, std::vector<int> seats, Country* pCountry);
-	void FinalizeResults(LegislativeChamber* pChamber, LegislatureElectionResult& results, double divBy);
+	void FinalizeResults(LegislativeChamber* pChamber, LegislatureElectionResult& results, double divBy, bool calculateVoteShare);
 
 	std::map<Politician*, PopSize> Proportional_Base(std::vector< ElectoralDistrictResult> districtVotes, LegislatureElectionResult& chamberResults, double& divBy, bool modChamberResults);
 	void Proportional_DHondtMethod(LegislativeChamber* pChamber, PopSize totalVotes, std::vector<int> seats, std::map<Politician*, PopSize> candidateVotes, LegislatureElectionResult& chamberResults, TimeDate electionDate);

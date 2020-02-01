@@ -223,9 +223,16 @@ void Country::UpdateEconomy(World* pWorld) {
 
 void Country::UpdateDemographics(World* pWorld) {
 
-	// Update state demographics
-	for (auto state : m_states) {
-		state->UpdateDemographics();
+	if (pWorld->GetDate().isLaterOrSameThan(m_lastMonthTime)) {
+
+		// Update state demographics
+		for (auto state : m_states) {
+			state->UpdateDemographics();
+		}
+
+		// Update last update time
+		m_lastMonthTime = pWorld->GetDate().addTime(TimeDate::Month);
+
 	}
 
 }
