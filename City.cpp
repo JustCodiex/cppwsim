@@ -11,10 +11,16 @@ City::City() {
 	m_size = Size::CITYSIZE_SMALL;
 	m_cityStats = Statistics();
 	m_name = "Unnamed City";
+	m_cityEconomy = Economy(this);
+	m_localMarket = Market(this);
 
 }
 
 City::City(Size size, Random random) {
+
+	// Set city economy
+	m_cityEconomy = Economy(this);
+	m_localMarket = Market(this);
 
 	// Store size of city
 	m_size = size;
@@ -145,9 +151,10 @@ PopSize City::GetSocialClass(SOCIAL_CLASS socialClass, CountryProfile* pProfile,
 
 }
 
-void City::UpdateEconomy() {
+void City::UpdateEconomy(int days) {
 
-
+	// Tell the city economy to update itself
+	m_cityEconomy.UpdateEconomy();
 
 }
 

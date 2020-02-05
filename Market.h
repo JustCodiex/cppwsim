@@ -1,34 +1,13 @@
 #pragma once
 #include "stdlib.h"
-#include "Company.h"
+#include "Finance.h"
 
-enum class Resource {
+class EconomyLevel;
 
-	None,
-	Timber,
-	Coal,
-	Oil,
-	Steel,
-	Grain,
-	Meat,
-	Produce, // Generic term for veggies, fruits ++
-	Wool,
-
-};
-
-enum class Product {
-
-	None,
-	Furniture,
-	Fabric, // + Clothes
-	Heat,
-	Weapons,
-	Transport, // Cars, Trains, Boats, Aircrafts eg.
-	Food,
-	Electricity,
-	Tools,
-	Machinery,
-
+enum class MarketLevel {
+	Local,
+	National,
+	Global,
 };
 
 class Market {
@@ -36,26 +15,22 @@ class Market {
 public:
 
 	Market();
+	Market(EconomyLevel* pEconomyTarget);
 
-	void AddSupplier(Company* pSupplyCompany);
-	void AddDemander(Company* pDemandCompany);
-
-	void SetResourceMarket(Resource resource);
-	void SetProductMarket(Product product);
-
-	bool IsResourceMarket() { return m_isResourceMarket; }
-	bool IsProductMarket() { return !m_isResourceMarket; }
-
-	void UpdateMarket();
+	void SetNextMarket(Market* pMarket);
+	
+	bool IsLowestMarket() { return m_prevMarkets.size() == 0; }
+	bool IsHighestMarket() { return m_nextMarket == 0; }
 
 private:
 
-	Resource m_resource;
-	Product m_product;
+	void AddLowerMarket(Market* pMarket);
 
-	bool m_isResourceMarket;
+private:
 
-	std::vector<Company*> m_suppliers;
-	std::vector<Company*> m_demanders;
+	EconomyLevel* m_economyTarget;
+	
+	Market* m_nextMarket;
+	std::vector<Market*> m_prevMarkets;
 
 };

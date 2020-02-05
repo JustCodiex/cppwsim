@@ -1,48 +1,49 @@
 #pragma once
 #include "stdlib.h"
+#include "Finance.h"
 
-class City;
+enum class CompanySector {
+	Primary, // Raw material extraction
+	Secondary, // Manufacturing
+	Tertiary, // Services
+};
 
-enum class CompanyType {
-	Unknown,
-	Extraction,
-	Manufacturing, // Production
-	Logistics,
-	Sales,
-	Construction,
-	Service,
+enum class CompanyOwnership {
+	Public,
+	Private,
+	Voluntary,
 };
 
 class Company {
 
 public:
 
-	struct Branch {
+	Company();
+	Company(CompanySector sector, CompanyOwnership ownership);
 
-		City* location;
+	void SetParentCompany(Company* pParent);
 
-		unsigned int employed;
+	void SetOutputType(MarketProduct outputType) { m_outputProductType = outputType; }
+	MarketProduct GetOutputType() { return m_outputProductType; }
 
-		double income;
-		double outcome; // AKA expenditure
+	void SetInputType(MarketProduct inputType) { m_inputRequirementType = inputType; }
+	MarketProduct GetInputType() { return m_inputRequirementType; }
 
-
-	};
-
-public:
-
-	virtual CompanyType GetType() = 0;
-
-	//bool IsMakingAProfit() { return m_income > m_outcome; }
-
-
-
-protected:
-
-	std::vector< Branch> m_branches;
+	void CalculateRevenue();
 
 private:
 
+	CompanySector m_sector;
+	CompanyOwnership m_ownershipType;
 
+	Company* m_parentCompany;
+	std::vector<Company*> m_subsidiaries;
+
+	MarketProduct m_inputRequirementType;
+	MarketProduct m_outputProductType;
+
+	Capital m_income;
+	Capital m_outcome;
+	Capital m_savings;
 
 };

@@ -4,6 +4,8 @@
 #include "Government.h"
 #include "Legislature.h"
 
+class Country;
+
 class State : public CountryAdministrationLevel {
 
 public:
@@ -22,11 +24,15 @@ public:
 
 	int GetAdminLevel() override { return 2; }
 
-	void UpdateEconomy();
+	void UpdateEconomy(int days);
 	void UpdateDemographics();
+
+	void SetCountry(Country* pCountry) { m_country = pCountry; }
+	Country* GetCountry() { return m_country; }
 
 private:
 
+	Country* m_country;
 	Government* m_stateGovernment;
 	Legislature* m_stateLegislature;
 

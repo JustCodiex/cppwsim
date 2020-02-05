@@ -3,6 +3,8 @@
 #include "Legislature.h"
 #include "CountryAdministrationLevel.h"
 
+class State;
+
 class Region : public CountryAdministrationLevel {
 
 public:
@@ -18,10 +20,13 @@ public:
 
 	int GetAdminLevel() override { return 1; }
 
-	void UpdateEconomy();
+	void UpdateEconomy(int days);
 	void UpdateDemographics();
 
 	City* GetCityByName(std::string name);
+
+	State* GetState() { return m_state; }
+	void SetState(State* pState) { m_state = pState; }
 
 private:
 
@@ -31,6 +36,7 @@ private:
 
 private:
 
+	State* m_state;
 	std::vector<City*> m_cities;
 
 	Legislature* m_regionalCouncil;

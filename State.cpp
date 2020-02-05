@@ -4,10 +4,12 @@ State::State() {
 	m_stateGovernment = 0;
 	m_stateLegislature = 0;
 	m_isMain = true;
+	m_country = 0;
 }
 
 State::State(bool isMain) {
 	m_isMain = isMain;
+	m_country = 0;
 	if (isMain) {
 		m_stateGovernment = 0;
 		m_stateLegislature = 0;
@@ -30,6 +32,7 @@ void State::GenerateRegions(Random random) {
 	for (int i = 0; i < regionCount; i++) {
 
 		Region* region = new Region();
+		region->SetState(this);
 		region->Generate(!m_isMain, random);
 
 		m_regions.push_back(region);
@@ -68,10 +71,10 @@ std::vector<City*> State::GetCities() {
 
 }
 
-void State::UpdateEconomy() {
+void State::UpdateEconomy(int days) {
 
 	for (auto region : m_regions) {
-		region->UpdateEconomy();
+		region->UpdateEconomy(days);
 	}
 
 }

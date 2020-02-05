@@ -3,7 +3,7 @@
 
 // An administrative level in the organization of a country.
 // Either a state or a region.
-class CountryAdministrationLevel {
+class CountryAdministrationLevel : public EconomyLevel {
 
 public:
 
@@ -15,5 +15,8 @@ public:
 
 	// Get the cities under the administration level
 	virtual std::vector<City*> GetCities() = 0;
+
+	// Get the economy level of the country level
+	int GetEconomyLevel() override final { return this->GetAdminLevel(); };
 
 };

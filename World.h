@@ -1,11 +1,12 @@
 #pragma once
 #include "stdlib.h"
 #include "History.h"
-#include "WorldEconomy.h"
+#include "Economy.h"
+#include "Market.h"
 
 class Country;
 
-class World {
+class World : public EconomyLevel {
 
 public:
 
@@ -21,7 +22,8 @@ public:
 
 	void UpdateWorld(TimeDate date);
 
-	WorldEconomy* GetWorldEconomy() { return &m_worldEconomy; }
+	Economy* GetWorldEconomy() { return &m_worldEconomy; }
+	Market* GetGlobalEconomy() { return &m_globalMarket; }
 
 	TimeDate GetDate() { return m_currentDate; }
 
@@ -29,13 +31,16 @@ public:
 
 	Random GetRandom() { return m_worldRandom; }
 
+	int GetEconomyLevel() override { return 4; }
+
 private:
 
 
 	TimeDate m_currentDate;
 	TimeDate m_lastDate;
 
-	WorldEconomy m_worldEconomy;
+	Economy m_worldEconomy;
+	Market m_globalMarket;
 
 	Random m_worldRandom;
 

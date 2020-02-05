@@ -1,7 +1,12 @@
 #include "Region.h"
+#include "State.h"
+#include "Country.h"
 
 Region::Region() {
+	
+	m_state = 0;
 	m_regionalCouncil = 0;
+
 }
 
 void Region::Generate(bool isPartOfFederation, Random random) {
@@ -31,6 +36,12 @@ City* Region::NewCity(int size, Random random) {
 	if (!pCity) {
 		throw std::exception("Failed to create city!");
 	}
+
+	// Set region and name
+	pCity->SetRegionAndName(random, this);
+
+	// Get the market of the country
+	pCity->GetMarket()->SetNextMarket(m_state->GetCountry()->GetMarket());
 
 	// Return city
 	return pCity;
@@ -86,10 +97,10 @@ int Region::GetCityCount() {
 	return (int)m_cities.size();
 }
 
-void Region::UpdateEconomy() {
+void Region::UpdateEconomy(int days) {
 
 	for (auto city : m_cities) {
-		city->UpdateEconomy();
+		city->UpdateEconomy(days);
 	}
 
 }

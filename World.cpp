@@ -23,6 +23,9 @@ void World::Generate(Random random) {
 		// Create country
 		Country* pCountry = this->NewCountry(random);
 
+		// Add country market to global market
+		pCountry->GetMarket()->SetNextMarket(&m_globalMarket);
+
 		// Add country to country list
 		m_countries.push_back(pCountry);
 
@@ -51,6 +54,7 @@ void World::UpdateWorld(TimeDate date) {
 	// For each Country in the world, update
 	for (auto* country : m_countries) {
 
+		// Update country
 		country->UpdateCountry(this);
 
 	}

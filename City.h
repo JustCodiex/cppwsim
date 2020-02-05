@@ -4,11 +4,14 @@
 #include "Government.h"
 #include "FixedChart.h"
 #include "SocialClass.h"
+#include "Economy.h"
+#include "EconomyLevel.h"
+#include "Market.h"
 
 class Region;
 struct CountryProfile;
 
-class City {
+class City : public EconomyLevel {
 
 public:
 
@@ -49,10 +52,15 @@ public:
 
 	bool HasUniversity() { return false; }
 
-	void UpdateEconomy();
+	void UpdateEconomy(int days);
 	void UpdateDemographics();
 
 	Statistics* GetCityStatistics() { return &m_cityStats; }
+
+	Economy* GetEconomy() { return &m_cityEconomy; }
+	Market* GetMarket() { return &m_localMarket; }
+
+	int GetEconomyLevel() override { return 0; }
 
 private:
 
@@ -73,5 +81,10 @@ private:
 	PopSize m_population;
 
 	Statistics m_cityStats;
+	Economy m_cityEconomy;
+	Market m_localMarket;
+
+	// Allow the city economy class to access privates
+	friend class CityEconomy;
 
 };

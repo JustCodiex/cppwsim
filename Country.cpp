@@ -3,8 +3,8 @@
 #include "Person.h"
 #include "RoyalFamily.h"
 #include "Newspaper.h"
+#include "Economy.h"
 #include "Market.h"
-#include "CountryEconomy.h"
 
 Country::Country(std::string name) {
 
@@ -13,6 +13,7 @@ Country::Country(std::string name) {
 	m_royals = 0;
 	m_headOfState = 0;
 	m_countryEconomy = 0;
+	m_countryMarket = 0;
 
 }
 
@@ -38,7 +39,10 @@ void Country::GenerateCountry(Random random) {
 void Country::GenerateCountryEconomy(Random random) {
 
 	// Create the new economy
-	m_countryEconomy = new CountryEconomy;
+	m_countryEconomy = new Economy(this);
+
+	// Create the country economy
+	m_countryMarket = new Market(this);
 
 }
 
@@ -51,9 +55,10 @@ void Country::GenerateGeography(Random random) {
 		for (int i = 0; i < stateCount; i++) {
 
 			State* subState = new State(false);
+			subState->SetCountry(this);
 			subState->GenerateRegions(random);
 			subState->UpdateDemographics();
-			subState->UpdateEconomy();
+			subState->UpdateEconomy(31);
 
 			m_states.push_back(subState);
 
@@ -62,10 +67,11 @@ void Country::GenerateGeography(Random random) {
 	} else {
 
 		State* mainState = new State(true);
+		mainState->SetCountry(this);
 		mainState->GenerateRegions(random);
 		mainState->UpdateDemographics();
-		mainState->UpdateEconomy();
-
+		mainState->UpdateEconomy(31);
+		
 		m_states.push_back(mainState);
 
 	}
@@ -211,11 +217,20 @@ void Country::GenerateCountryProfile(Random random) {
 
 void Country::UpdateCountry(World* pWorld) {
 
-	// Call Demographics Update
-	this->UpdateDemographics(pWorld);
 
-	// Call Economy update
-	this->UpdateEconomy(pWorld);
+	// Should we update the demographics of the country
+	if (pWorld->GetDate().isLaterOrSameThan(m_lastMonthTime)) {
+
+		// Call Demographics Update
+		this->UpdateDemographics(pWorld);
+
+		// Call Economy update
+		this->UpdateEconomy(pWorld, pWorld->GetDate().getTotalDays() - m_lastMonthTime.addTime(TimeDate::Month).getTotalDays());
+
+		// Update last update time
+		m_lastMonthTime = pWorld->GetDate().addTime(TimeDate::Month);
+
+	}
 
 	// Call legislature update
 	this->UpdateLegislature(pWorld);
@@ -225,31 +240,23 @@ void Country::UpdateCountry(World* pWorld) {
 
 }
 
-void Country::UpdateEconomy(World* pWorld) {
+void Country::UpdateEconomy(World* pWorld, int days) {
 
 	// Update national economy
 	m_countryEconomy->UpdateEconomy();
 
 	// Update state economies
 	for (auto state : m_states) {
-		state->UpdateEconomy();
+		state->UpdateEconomy(days);
 	}
 
 }
 
 void Country::UpdateDemographics(World* pWorld) {
 
-	// Should we update the demographics of the country
-	if (pWorld->GetDate().isLaterOrSameThan(m_lastMonthTime)) {
-
-		// Update state demographics
-		for (auto state : m_states) {
-			state->UpdateDemographics();
-		}
-
-		// Update last update time
-		m_lastMonthTime = pWorld->GetDate().addTime(TimeDate::Month);
-
+	// Update state demographics
+	for (auto state : m_states) {
+		state->UpdateDemographics();
 	}
 
 }

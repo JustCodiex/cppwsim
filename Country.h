@@ -6,12 +6,14 @@
 #include "Legislature.h"
 #include "CountryProfile.h"
 #include "PoliticalParty.h"
+#include "CountryAdministrationLevel.h"
 
 class World;
 class Person;
 class RoyalFamily;
 class Newspaper;
-class CountryEconomy;
+class Economy;
+class Market;
 
 enum class CountryType {
 	Kingdom,
@@ -19,7 +21,7 @@ enum class CountryType {
 	Federation,
 };
 
-class Country {
+class Country : public CountryAdministrationLevel {
 
 public:
 
@@ -45,7 +47,8 @@ public:
 	Government* GetGovernment() { return &m_countryGovernment; }
 	Legislature* GetLegislature() { return m_countryLegislature; }
 
-	CountryEconomy* GetEconomy() { return m_countryEconomy; }
+	Economy* GetEconomy() { return m_countryEconomy; }
+	Market* GetMarket() { return m_countryMarket; }
 	CountryProfile* GetProfile() { return &m_countryProfile; }
 
 	Person* GetHeadOfState() { return m_headOfState; }
@@ -56,7 +59,7 @@ public:
 	bool IsFederation() { return (int)m_states.size() > 1; }
 	bool IsRepublic() { return m_countryGovernment.GetGovernmentType() == GovernmentType::Democracy; }
 
-	PopSize GetPopulationSize();
+	PopSize GetPopulationSize() override;
 	int GetCityCount();
 
 	int GetStateCount() { return (int)m_states.size(); }
@@ -65,7 +68,7 @@ public:
 	// SLOW
 	City* GetCityByUnsafeIndex(int index);
 
-	std::vector<City*> GetCities();
+	std::vector<City*> GetCities() override;
 	std::vector<Region*> GetRegions();
 	std::vector<State*> GetStates();
 
@@ -74,9 +77,11 @@ public:
 	bool hasPartyWithShort(std::string partyshort);
 	PoliticalParty* GetPartyByName(std::string partyname);
 
+	int GetAdminLevel() override { return 3; }
+
 private:
 
-	void UpdateEconomy(World* pWorld);
+	void UpdateEconomy(World* pWorld, int days);
 	void UpdateLegislature(World* pWorld);
 	void UpdateGovernment(World* pWorld);
 	void UpdateRoyalFamily(World* pWorld);
@@ -100,7 +105,8 @@ private:
 	Government m_countryGovernment;
 	Legislature* m_countryLegislature;
 
-	CountryEconomy* m_countryEconomy;
+	Economy* m_countryEconomy;
+	Market* m_countryMarket;
 	CountryProfile m_countryProfile;
 
 	Person* m_headOfState;
@@ -118,5 +124,6 @@ private:
 	TimeDate m_lastMonthTime;
 
 	friend class PoliticalParty;
+	friend class CountryEconomy;
 
 };

@@ -1,35 +1,33 @@
 #include "Market.h"
+#include "EconomyLevel.h"
 
 Market::Market() {
-	
-	m_resource = Resource::None;
-	m_product = Product::None;
-	m_isResourceMarket = false;
+
+	m_nextMarket = 0;
+	m_economyTarget = 0;
 
 }
 
-void Market::AddSupplier(Company* pSupplyCompany) {
-	m_suppliers.push_back(pSupplyCompany);
+Market::Market(EconomyLevel* pEconomyTarget) {
+
+	m_nextMarket = 0;
+	m_economyTarget = pEconomyTarget;
+
 }
 
-void Market::AddDemander(Company* pDemandCompany) {
-	m_demanders.push_back(pDemandCompany);
+void Market::SetNextMarket(Market* pMarket) {
+
+	// Set next market
+	m_nextMarket = pMarket;
+
+	// Update the upper markets connection to this
+	m_nextMarket->AddLowerMarket(this);
+
 }
 
-void Market::SetResourceMarket(Resource resource) {
-	m_isResourceMarket = true;
-	m_resource = resource;
-	m_product = Product::None;
-}
+void Market::AddLowerMarket(Market* pMarket) {
 
-void Market::SetProductMarket(Product product) {
-	m_isResourceMarket = false;
-	m_product = product;
-	m_resource = Resource::None;
-}
-
-void Market::UpdateMarket() {
-
-
+	// Add market to previous market list
+	m_prevMarkets.push_back(pMarket);
 
 }
