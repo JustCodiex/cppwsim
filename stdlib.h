@@ -24,8 +24,11 @@ typedef unsigned long long UInt64;
 // Signed Integer (64 bit)
 typedef signed long long Int64;
 
+// Unsigned short (16 bit)
+typedef unsigned short UInt16;
+
 // Try and find an element in a vector
 #define FIND_VECTOR_ELEMENT(v, e) std::find(v.begin(), v.end(), e)
 
 // Does the vector contain the specified element
-#define CONTAINS_VECTOR_ELEMENT(v, e) std::find(v.begin(), v.end(), e) != v.end()
+#define CONTAINS_VECTOR_ELEMENT(v, e) (std::find(v.begin(), v.end(), e) != v.end())

@@ -165,9 +165,6 @@
     <ClCompile Include="Economy.cpp">
       <Filter>Source Files\finance</Filter>
     </ClCompile>
-    <ClCompile Include="Company.cpp">
-      <Filter>Source Files\finance</Filter>
-    </ClCompile>
     <ClCompile Include="Finance.cpp">
       <Filter>Source Files\finance</Filter>
     </ClCompile>
@@ -309,9 +306,6 @@
       <Filter>Header Files\finance</Filter>
     </ClInclude>
     <ClInclude Include="Market.h">
-      <Filter>Header Files\finance</Filter>
-    </ClInclude>
-    <ClInclude Include="Company.h">
       <Filter>Header Files\finance</Filter>
     </ClInclude>
     <ClInclude Include="EconomyLevel.h">

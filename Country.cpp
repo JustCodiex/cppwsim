@@ -5,7 +5,6 @@
 #include "Newspaper.h"
 #include "Economy.h"
 #include "Market.h"
-#include "Company.h"
 
 Country::Country(std::string name) {
 
@@ -243,46 +242,16 @@ void Country::UpdateCountry(World* pWorld) {
 
 void Country::UpdateEconomy(World* pWorld, int days) {
 
-	// Update national economy
-	m_countryEconomy->UpdateEconomy();
+	// Update the national market
+	m_countryMarket->UpdateMarket();
 
 	// Update state economies
 	for (State* state : m_states) {
 		state->UpdateEconomy(days);
 	}
 
-	// Registered company iterator
-	std::vector<Company*>::iterator itt = m_registeredCompanies.begin();
-
-	// For all registered companies...
-	while (itt < m_registeredCompanies.end()) {
-
-		// Current company
-		Company* company = *itt;
-
-		// Updat the economy of the company
-		company->UpdateEconomy();
-
-		// Is the company in debt?
-		if (company->InDebt()) {
-
-			// Remove from registered companies list
-			itt = m_registeredCompanies.erase(itt);
-
-			// Close the company
-			company->CloseCompany();
-
-			// Delete from memory
-			delete company;
-
-		} else {
-
-			// Advance to next company
-			itt++;
-
-		}
-
-	}
+	// Update national economy
+	m_countryEconomy->UpdateEconomy();
 
 }
 

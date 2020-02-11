@@ -2,7 +2,6 @@
 #include "stdlib.h"
 #include "Finance.h"
 
-class Company;
 class EconomyLevel;
 
 enum class MarketLevel {
@@ -15,9 +14,24 @@ class Market {
 
 public:
 
-	struct MarketSupplyBatch {
-		UInt32 amount;
-		double price;
+	struct ProductSupply {
+		UInt32 supply;
+		UInt32 demand;
+		UInt16 suppliers; // AKA companies
+		UInt16 employed;
+		Capital price;
+		Capital wages;
+		Capital profit;
+		std::vector<MarketProduct> requirements;
+		ProductSupply() {
+			supply = 0;
+			suppliers = 0;
+			employed = 0;
+			price = 1.0;
+			wages = 1.0;
+			profit = 0.0;
+			demand = 0;
+		}
 	};
 
 public:
@@ -30,20 +44,17 @@ public:
 	bool IsLowestMarket() { return m_prevMarkets.size() == 0; }
 	bool IsHighestMarket() { return m_nextMarket == 0; }
 
-	void UpdateMarket();
+	void NewCompany(MarketProduct product, UInt16 employees);
 
-	void AddSupplyBatch(MarketProduct product, UInt32 amount, double price, Company* pSource);
-	bool BuySupply(MarketProduct product, UInt32 amount, UInt32& endamount, double funds, double& endprice);
+	void UpdateMarket();
 
 	EconomyLevel* GetEconomyTarget() { return m_economyTarget; }
 
-	void RemoveCompanyFromMarket(Company* pCompany);
-
 private:
 
-	bool BuySupply(MarketProduct product, UInt32 amount, UInt32& endamount, double funds, double& endprice, int transportFee);
-
 	void AddLowerMarket(Market* pMarket);
+
+	ProductSupply* GetSupply(MarketProduct p) { return &m_supplies[p]; }
 
 private:
 
@@ -51,6 +62,6 @@ private:
 	
 	Market* m_nextMarket;
 	std::vector<Market*> m_prevMarkets;
-	std::map<MarketProduct, std::map<Company*, MarketSupplyBatch>> m_supplies;
+	std::map<MarketProduct, ProductSupply> m_supplies;
 
 };

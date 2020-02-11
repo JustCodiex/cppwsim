@@ -1,5 +1,4 @@
 #include "Market.h"
-#include "Company.h"
 #include "EconomyLevel.h"
 #include "City.h"
 
@@ -14,6 +13,11 @@ Market::Market(EconomyLevel* pEconomyTarget) {
 
 	m_nextMarket = 0;
 	m_economyTarget = pEconomyTarget;
+
+	for (int p = 0; p < (int)MarketProduct::MARKET_PRODUCT_COUNT; p++) {
+		m_supplies[(MarketProduct)p] = ProductSupply();
+		m_supplies[(MarketProduct)p].requirements = GetProductRequirements((MarketProduct)p);
+	}
 
 }
 
@@ -34,92 +38,90 @@ void Market::AddLowerMarket(Market* pMarket) {
 
 }
 
-void Market::AddSupplyBatch(MarketProduct product, UInt32 amount, double price, Company* pSource) {
-
-	// If new entry
-	if (m_supplies[product].find(pSource) == m_supplies[product].end()) {
-
-		// Supply to add
-		MarketSupplyBatch supply;
-		supply.amount = amount;
-		supply.price = price;
-
-		m_supplies[product][pSource] = supply;
-
-	} else {
-
-		MarketSupplyBatch& supply = m_supplies[product][pSource];
-
-		// Add batch to our supply
-		supply.amount += amount;
-		supply.price = price;
-
-	}
-
-}
-
-bool Market::BuySupply(MarketProduct product, UInt32 amount, UInt32& endamount, double funds, double& endprice) {
-	return BuySupply(product, amount, endamount, funds, endprice, 1);
-}
-
-bool Market::BuySupply(MarketProduct product, UInt32 amount, UInt32& endamount, double funds, double& endprice, int transportFee) {
-
-	if (m_economyTarget->GetEconomyLevel() == 0) {
-
-		double transportCost = (((UInt64)transportFee + 1UL) * 20.0);
-
-		for (auto sources : m_supplies[product]) {
-
-			if (sources.second.amount >= amount && sources.second.price <= funds + transportCost) {
-
-				sources.first->BuyStock(amount, sources.second.price + transportCost);
-				endprice = sources.second.price + transportCost;
-				endamount = amount;
-
-				sources.second.amount -= amount;
-
-				return true;
-
-			}
-
-		}
-
-	} else {
-
-		for (Market* pMarket : m_prevMarkets) {
-			if (pMarket->BuySupply(product, amount, endamount, funds, endprice, transportFee)) {
-				return true;
-			}
-		}
-
-		return m_nextMarket->BuySupply(product, amount, endamount, funds, endprice, transportFee + 1);
-
-	}
-
-	return false;
-
-}
-
 void Market::UpdateMarket() {
 
+	if (!IsLowestMarket()) {
 
+		bool isFirstMarket = true;
+
+		for (Market* pPrevMarkets : m_prevMarkets) {
+
+			// Update previous markets
+			pPrevMarkets->UpdateMarket();
+
+			for (int p = 0; p < (int)MarketProduct::MARKET_PRODUCT_COUNT; p++) {
+
+				MarketProduct m = (MarketProduct)p;
+				ProductSupply* s = pPrevMarkets->GetSupply(m);
+
+				m_supplies[m].supply += s->supply;
+				m_supplies[m].profit += s->profit;
+
+				if (isFirstMarket) {
+					
+					m_supplies[m].employed = s->employed;
+					m_supplies[m].price = s->price;
+					m_supplies[m].suppliers = s->suppliers;
+					m_supplies[m].wages = s->wages;
+
+					isFirstMarket = false;
+
+				} else {
+					
+					m_supplies[m].employed += s->employed;
+					m_supplies[m].price += s->price;
+					m_supplies[m].suppliers += s->suppliers;
+					m_supplies[m].wages += s->wages;
+					
+				}
+
+			}
+
+			for (int p = 0; p < (int)MarketProduct::MARKET_PRODUCT_COUNT; p++) {
+
+				MarketProduct m = (MarketProduct)p;
+
+				m_supplies[m].wages /= (Capital)m_prevMarkets.size();
+				m_supplies[m].price /= (Capital)m_prevMarkets.size();
+
+			}
+
+		}
+
+
+	} else {
+
+		for (int p = 0; p < (int)MarketProduct::MARKET_PRODUCT_COUNT; p++) {
+
+			MarketProduct m = (MarketProduct)p;
+
+			double productionPrice = GetProductProductionBaseOutput(m);
+			double output = (m_supplies[m].employed * productionPrice);
+
+			m_supplies[m].supply += (UInt32)(output / m_supplies[m].suppliers);
+			
+			for (MarketProduct req : m_supplies[m].requirements) {
+				m_supplies[req].demand += GetProductConversionRate(m) * m_supplies[m].supply;
+			}
+
+			if (m_supplies[m].supply > 0) {
+
+				double competitionFactor = 1.0 + (m_supplies[m].demand / m_supplies[m].supply);
+
+				m_supplies[m].price = ((GetProductProductionCost(m) + m_supplies[m].wages) / (Capital)m_supplies[m].suppliers) * competitionFactor;
+				m_supplies[m].profit = (m_supplies[m].price * m_supplies[m].supply) - (m_supplies[m].employed * m_supplies[m].wages);
+
+			}
+
+		}
+
+	}
 
 }
 
-void Market::RemoveCompanyFromMarket(Company* pCompany) {
+void Market::NewCompany(MarketProduct product, UInt16 employees) {
 
-	// Remove supplies
-	m_supplies[pCompany->GetOutputType()].erase(pCompany);
-
-	// If city
-	if (m_economyTarget->GetEconomyLevel() == 0) {
-
-		// Cast of target to city
-		City* pCity = (City*)m_economyTarget;
-
-		// Unregister the company
-		pCity->UnregisterCompany(pCompany);
-
-	}
+	m_supplies[product].suppliers++;
+	m_supplies[product].employed += employees;
 
 }

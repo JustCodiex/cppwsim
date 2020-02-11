@@ -156,7 +156,6 @@
     <ClCompile Include="Ballot.cpp" />
     <ClCompile Include="Bill.cpp" />
     <ClCompile Include="City.cpp" />
-    <ClCompile Include="Company.cpp" />
     <ClCompile Include="Country.cpp" />
     <ClCompile Include="CountryProfile.cpp" />
     <ClCompile Include="Economy.cpp" />
@@ -195,7 +194,6 @@
     <ClInclude Include="Ballot.h" />
     <ClInclude Include="Bill.h" />
     <ClInclude Include="City.h" />
-    <ClInclude Include="Company.h" />
     <ClInclude Include="Country.h" />
     <ClInclude Include="CountryAdministrationLevel.h" />
     <ClInclude Include="CountryProfile.h" />

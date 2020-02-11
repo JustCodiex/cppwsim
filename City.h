@@ -9,7 +9,6 @@
 #include "Market.h"
 
 class Region;
-class Company;
 struct CountryProfile;
 
 class City : public EconomyLevel {
@@ -65,8 +64,6 @@ public:
 
 	void GenerateEconomy(Random random);
 
-	void UnregisterCompany(Company* pCompany);
-
 private:
 
 	void GenerateDemographics(Random random);
@@ -91,8 +88,6 @@ private:
 	Statistics m_cityStats;
 	Economy m_cityEconomy;
 	Market m_localMarket;
-
-	std::vector<Company*> m_localCompanies;
 
 	// Allow the city economy class to access privates
 	friend class CityEconomy;

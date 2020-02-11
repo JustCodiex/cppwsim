@@ -28,12 +28,13 @@ enum class MarketProduct {
 	Vehicles,
 
 	// Services (Tertiary Sector):
-	Sales,
 	Banking,
 	Software,
 	Transport,
 	Judicial,
 	Heating,
+
+	MARKET_PRODUCT_COUNT,
 
 };
 
@@ -42,7 +43,7 @@ const inline bool IsMarketMaterial(MarketProduct p) {
 }
 
 const inline bool IsMarketService(MarketProduct p) {
-	return p == MarketProduct::Sales || p == MarketProduct::Banking || p == MarketProduct::Software || p == MarketProduct::Transport || p == MarketProduct::Judicial || p == MarketProduct::Heating;
+	return p == MarketProduct::Banking || p == MarketProduct::Software || p == MarketProduct::Transport || p == MarketProduct::Judicial || p == MarketProduct::Heating;
 }
 
 const inline bool IsMarketGoods(MarketProduct p) {
@@ -54,3 +55,5 @@ const double GetProductProductionBaseOutput(MarketProduct p);
 const double GetProductProductionCost(MarketProduct p);
 
 const UInt32 GetProductConversionRate(MarketProduct p);
+
+const std::vector<MarketProduct> GetProductRequirements(MarketProduct p);

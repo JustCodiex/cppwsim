@@ -53,3 +53,12 @@ std::map<MarketProduct, UInt32> conversionRate = {
 const UInt32 GetProductConversionRate(MarketProduct p) {
 	return conversionRate[p];
 }
+
+const std::vector<MarketProduct> GetProductRequirements(MarketProduct p) {
+	switch (p) {
+	case MarketProduct::Food:
+		return std::vector<MarketProduct> { MarketProduct::Animals, MarketProduct::Produce };
+	default:
+		return std::vector<MarketProduct>();
+	}
+}
