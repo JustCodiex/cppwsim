@@ -40,6 +40,9 @@ City* Region::NewCity(int size, Random random) {
 	// Set region and name
 	pCity->SetRegionAndName(random, this);
 
+	// Generate the economy
+	pCity->GenerateEconomy(random);
+
 	// Get the market of the country
 	pCity->GetMarket()->SetNextMarket(m_state->GetCountry()->GetMarket());
 

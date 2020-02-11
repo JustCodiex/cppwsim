@@ -163,6 +163,7 @@
     <ClCompile Include="Election.cpp" />
     <ClCompile Include="ElectoralDistrict.cpp" />
     <ClCompile Include="ElectoralMap.cpp" />
+    <ClCompile Include="Finance.cpp" />
     <ClCompile Include="Government.cpp" />
     <ClCompile Include="GovernmentMinistry.cpp" />
     <ClCompile Include="History.cpp" />

@@ -1,5 +1,8 @@
 #include "City.h"
 #include "Region.h"
+#include "State.h"
+#include "Company.h"
+#include "Country.h"
 #include "CountryProfile.h"
 #include "name_cities.h"
 
@@ -107,6 +110,91 @@ void City::GenerateStatistics(Random random) {
 
 }
 
+void City::GenerateEconomy(Random random) {
+
+	int agriculturalMin, agriculturalMax;
+
+	if (m_size == City::Size::CITYSIZE_SMALL) { // Much Agriculture, Low industry
+
+		agriculturalMin = 5;
+		agriculturalMax = 10;
+
+	} else if (m_size == City::Size::CITYSIZE_LARGE) { // Some industry, no agriculture
+
+		agriculturalMin = 0;
+		agriculturalMax = 5;
+
+	} else { // Metropolis
+
+		agriculturalMin = agriculturalMax = 0;
+
+	}
+
+	// Create agriculture
+	CreateAgriculture(random, agriculturalMin, agriculturalMax);
+
+	// Create foods
+	CreateFoodCompanies(random, agriculturalMin / 3, agriculturalMax / 3);
+
+}
+
+void City::CreateAgriculture(Random random, int min, int max) {
+
+	// Make sure there's something to do
+	if (min == max && min == 0) {
+		return;
+	}
+
+	// Find out how many agricultural companies to make
+	int agricultural = random.NextInt(min, max);
+
+	// Create these agricultural companies
+	for (int i = 0; i < agricultural; i++) {
+
+		// Set output type
+		Company* farm = new Company(CompanySector::Primary, CompanyOwnership::Private);
+		farm->SetOutputType(random.NextBool(0.35f) ? MarketProduct::Animals : MarketProduct::Produce);
+		farm->EnterMarket(&m_localMarket);
+
+		// Register company
+		m_region->GetState()->GetCountry()->RegisterCompany(farm);
+
+		// Register company as local
+		m_localCompanies.push_back(farm);
+
+	}
+
+}
+
+void City::CreateFoodCompanies(Random random, int min, int max) {
+
+	// Make sure there's something to do
+	if (min == max && min == 0) {
+		return;
+	}
+
+	// Find out how many agricultural companies to make
+	int foods = random.NextInt(min, max);
+
+	// Create these food companies
+	for (int i = 0; i < foods; i++) {
+
+		// Set output type
+		Company* food = new Company(CompanySector::Secondary, CompanyOwnership::Private);
+		food->SetInputType(random.NextBool(0.35f) ? MarketProduct::Animals : MarketProduct::Produce);
+		food->SetOutputType(MarketProduct::Food);
+		food->EnterMarket(&m_localMarket);
+
+		// Register company
+		m_region->GetState()->GetCountry()->RegisterCompany(food);
+
+		// Register company as local
+		m_localCompanies.push_back(food);
+
+	}
+
+}
+
 PopSize City::GetVoterCount(CountryProfile* pProfile) {
 
 	PopSize votPop = 0;
@@ -153,6 +241,17 @@ PopSize City::GetSocialClass(SOCIAL_CLASS socialClass, CountryProfile* pProfile,
 
 void City::UpdateEconomy(int days) {
 
+	// Update the local market
+	m_localMarket.UpdateMarket();
+
+	// Update the local companies
+	for (Company* company : m_localCompanies) {
+
+		// Update the company
+		company->UpdateCompany(&m_localMarket);
+
+	}
+
 	// Tell the city economy to update itself
 	m_cityEconomy.UpdateEconomy();
 
@@ -169,4 +268,11 @@ std::string City::GetFullName() {
 
 	return m_name + ", "; // TODO: return region, state, and country when that's been implemented
 
+}
+
+void City::UnregisterCompany(Company* pCompany) {
+	auto itt = FIND_VECTOR_ELEMENT(m_localCompanies, pCompany);
+	if (itt != m_localCompanies.end()) {
+		m_localCompanies.erase(itt);
+	}
 }

@@ -14,14 +14,47 @@ enum class CompanyOwnership {
 	Voluntary,
 };
 
+class Market;
+
+struct ProducerModule {
+	UInt32 productionCapacity;
+	UInt32 productionCurrent;
+	UInt32 productionIncrease;
+	UInt32 productionMaxIncrease;
+	ProducerModule() {
+		productionCapacity = productionCurrent = productionIncrease = productionMaxIncrease = 0;
+	}
+};
+
+struct InputModule {
+	UInt32 inputRequirements;
+	UInt32 inputStock;
+	InputModule() {
+		inputRequirements = inputStock = 0;
+	}
+	double GetEfficiency() { return (inputRequirements == inputStock) ? 1.0 : inputStock / (double)inputRequirements; }
+};
+
+struct StockModule {
+	UInt32 outputStock;
+	UInt32 outputUnitsSold;
+	double outputUnitPrice;
+	double artificialPrice;
+	StockModule() {
+		outputStock = 0;
+		outputUnitsSold = 0;
+		outputUnitPrice = 0.0;
+		artificialPrice = 0.0;
+	}
+	double GetPrice() { return outputUnitPrice + artificialPrice; }
+};
+
 class Company {
 
 public:
 
 	Company();
 	Company(CompanySector sector, CompanyOwnership ownership);
-
-	void SetParentCompany(Company* pParent);
 
 	void SetOutputType(MarketProduct outputType) { m_outputProductType = outputType; }
 	MarketProduct GetOutputType() { return m_outputProductType; }
@@ -31,13 +64,33 @@ public:
 
 	void CalculateRevenue();
 
+	bool IsNationalCompany() { return m_markets.size() > 1; }
+
+	void EnterMarket(Market* pMarket) { m_markets.push_back(pMarket); }
+	void LeaveMarket(Market* pMarket) { m_markets.erase(FIND_VECTOR_ELEMENT(m_markets, pMarket)); }
+
+	void UpdateCompany(Market* pMarketCaller);
+
+	void UpdateEconomy();
+
+	void BuyStock(UInt32 amount, double price);
+
+	bool InDebt() { return m_savings < 0.0; }
+
+	void CloseCompany();
+
+private:
+
+	void UpdateProduction();
+	void UpdateRequirements(Market* pMarket);
+	void UpdateStock();
+
+	void BusinessLogic();
+
 private:
 
 	CompanySector m_sector;
 	CompanyOwnership m_ownershipType;
-
-	Company* m_parentCompany;
-	std::vector<Company*> m_subsidiaries;
 
 	MarketProduct m_inputRequirementType;
 	MarketProduct m_outputProductType;
@@ -45,5 +98,14 @@ private:
 	Capital m_income;
 	Capital m_outcome;
 	Capital m_savings;
+
+	double m_employeeWage;
+	unsigned short m_employeeCount;
+
+	ProducerModule m_productionModule;
+	StockModule m_stockModule;
+	InputModule m_inputModule;
+
+	std::vector<Market*> m_markets;
 
 };

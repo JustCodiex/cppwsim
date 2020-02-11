@@ -5,6 +5,7 @@
 #include "Newspaper.h"
 #include "Economy.h"
 #include "Market.h"
+#include "Company.h"
 
 Country::Country(std::string name) {
 
@@ -246,8 +247,41 @@ void Country::UpdateEconomy(World* pWorld, int days) {
 	m_countryEconomy->UpdateEconomy();
 
 	// Update state economies
-	for (auto state : m_states) {
+	for (State* state : m_states) {
 		state->UpdateEconomy(days);
+	}
+
+	// Registered company iterator
+	std::vector<Company*>::iterator itt = m_registeredCompanies.begin();
+
+	// For all registered companies...
+	while (itt < m_registeredCompanies.end()) {
+
+		// Current company
+		Company* company = *itt;
+
+		// Updat the economy of the company
+		company->UpdateEconomy();
+
+		// Is the company in debt?
+		if (company->InDebt()) {
+
+			// Remove from registered companies list
+			itt = m_registeredCompanies.erase(itt);
+
+			// Close the company
+			company->CloseCompany();
+
+			// Delete from memory
+			delete company;
+
+		} else {
+
+			// Advance to next company
+			itt++;
+
+		}
+
 	}
 
 }
@@ -255,7 +289,7 @@ void Country::UpdateEconomy(World* pWorld, int days) {
 void Country::UpdateDemographics(World* pWorld) {
 
 	// Update state demographics
-	for (auto state : m_states) {
+	for (State* state : m_states) {
 		state->UpdateDemographics();
 	}
 
@@ -321,7 +355,7 @@ void Country::UpdateRoyalFamily(World* pWorld) {
 
 PopSize Country::GetPopulationSize() {
 	PopSize size = 0;
-	for (auto state : m_states) {
+	for (State* state : m_states) {
 		size += state->GetPopulationSize();
 	}
 	return size;
@@ -334,8 +368,8 @@ int Country::GetCityCount() {
 City* Country::GetCityByUnsafeIndex(int index) {
 
 	int i = index;
-	for (State*& state : m_states) {
-		for (Region*& region : state->GetRegions()) {
+	for (State* state : m_states) {
+		for (Region* region : state->GetRegions()) {
 			if (i < region->GetCityCount()) {
 				i -= region->GetCityCount();
 				return region->GetCities()[i];
@@ -353,9 +387,9 @@ std::vector<City*> Country::GetCities() {
 
 	std::vector<City*> citylist;
 
-	for (auto state : m_states) {
-		for (auto region : state->GetRegions()) {
-			for (auto city : region->GetCities()) {
+	for (State* state : m_states) {
+		for (Region* region : state->GetRegions()) {
+			for (City* city : region->GetCities()) {
 				citylist.push_back(city);
 			}
 		}
@@ -396,7 +430,7 @@ int Country::GetRegionCount() {
 
 	int count = 0;
 
-	for (auto state : m_states) {
+	for (State* state : m_states) {
 		count += (int)state->GetRegions().size();
 	}
 
@@ -408,8 +442,8 @@ std::vector<Region*> Country::GetRegions() {
 
 	std::vector<Region*> regions;
 
-	for (auto state : m_states) {
-		for (auto reg : state->GetRegions()) {
+	for (State* state : m_states) {
+		for (Region* reg : state->GetRegions()) {
 			regions.push_back(reg);
 		}
 	}

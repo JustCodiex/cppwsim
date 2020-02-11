@@ -168,6 +168,9 @@
     <ClCompile Include="Company.cpp">
       <Filter>Source Files\finance</Filter>
     </ClCompile>
+    <ClCompile Include="Finance.cpp">
+      <Filter>Source Files\finance</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.h">

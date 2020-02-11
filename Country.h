@@ -10,6 +10,7 @@
 
 class World;
 class Person;
+class Company;
 class RoyalFamily;
 class Newspaper;
 class Economy;
@@ -77,6 +78,8 @@ public:
 	bool hasPartyWithShort(std::string partyshort);
 	PoliticalParty* GetPartyByName(std::string partyname);
 
+	void RegisterCompany(Company* pCompany) { m_registeredCompanies.push_back(pCompany); }
+
 	int GetAdminLevel() override { return 3; }
 
 private:
@@ -122,6 +125,8 @@ private:
 	std::vector<std::string> m_partyShorts;
 
 	TimeDate m_lastMonthTime;
+
+	std::vector<Company*> m_registeredCompanies;
 
 	friend class PoliticalParty;
 	friend class CountryEconomy;
